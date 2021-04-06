@@ -51,14 +51,24 @@ function App() {
         setFilter(filterCondition)
     }
 
+    function changeTaskIsDone(taskId: string, isDone: boolean) {
+        let task = tasks.find(t => t.id === taskId)
+        if (task) {
+            task.isDone = isDone
+            setTasks([...tasks])
+        }
+    }
+
 
     return (
         <div className="App">
             <Todolist title='What to learn'
                       tasks={tasksForTodolist}
+                      filter={filter}
                       removeTask={removeTask}
                       filterTasks={filterTasks}
                       addNewTask={addNewTask}
+                      changeTaskIsDone={changeTaskIsDone}
             />
         </div>
     );
