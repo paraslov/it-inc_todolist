@@ -3,11 +3,12 @@ import {FilterValuesType, TaskType} from './App';
 
 //* Types declaration ===================================================>
 type PropsType = {
+    id: string
     title: string
     tasks: Array<TaskType>
-    removeTask: (id: string) => void
-    filterTasks: (filterCondition: FilterValuesType) => void
-    addNewTask: (newTaskTitle: string) => void
+    removeTask: (id: string, todolistId: string) => void
+    filterTasks: (filterCondition: FilterValuesType, id: string) => void
+    addNewTask: (newTaskTitle: string, todolistId: string) => void
 }
 
 function Todolist(props: PropsType) {
@@ -18,7 +19,7 @@ function Todolist(props: PropsType) {
     //* <li> elements mapping for tasks <ul> list =========================>
     const tasksElements = props.tasks
         .map(task => {
-            const removeTask = () => props.removeTask(task.id)
+            const removeTask = () => props.removeTask(task.id, props.id)
             return <li key={task.id}>
                 <input type="checkbox" checked={task.isDone}/>
                 <span>{task.title}</span>
@@ -28,16 +29,16 @@ function Todolist(props: PropsType) {
 
     //* Callbacks for adding new task, <input> and <button> tags  ==========>
     const addNewTask = () => {
-        props.addNewTask(newTaskTitle)
+        props.addNewTask(newTaskTitle, props.id)
         setNewTaskTitle('')
     }
     const onTaskTitleChange = (e: ChangeEvent<HTMLInputElement>) => setNewTaskTitle(e.currentTarget.value)
     const onTaskTitleKeyEnterPress = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.charCode === 13) addNewTask()
     }
-    const setFilterAll = () => props.filterTasks('all')
-    const setFilterCompleted = () => props.filterTasks('completed')
-    const setFilterActive = () => props.filterTasks('active')
+    const setFilterAll = () => props.filterTasks('all', props.id)
+    const setFilterCompleted = () => props.filterTasks('completed', props.id)
+    const setFilterActive = () => props.filterTasks('active', props.id)
 
 
     return (
