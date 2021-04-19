@@ -7,6 +7,15 @@
     margin-right: 50px;
 }
 
+.addTDList {
+    height: 70px;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px;
+    border: 1px solid #333;
+    border-radius: 10px;
+}
+
 .error {
     color: red;
 }
