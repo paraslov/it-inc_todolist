@@ -37,7 +37,7 @@ export const tasksReducer = (state: TasksType, action: TodolistActionsType): Tas
             delete stateCopy[action.id]
             return stateCopy
         default:
-            throw new Error('There is an action type error in todolistReducer!')
+            return state
     }
 }
 

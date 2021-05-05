@@ -8,15 +8,15 @@ export const todolistsReducer = (state: Array<TodolistType>, action: TodolistAct
             return state.filter(tl => tl.id !== action.id)
         case 'ADD-TODOLIST':
             return [
-                ...state,
-                {id: action.todolistId, title: action.title, filter: 'all'}
+                {id: action.todolistId, title: action.title, filter: 'all'},
+                ...state
             ]
         case 'CHANGE-TODOLIST-TITLE':
             return state.map(tl => tl.id === action.id ? ({...tl, title: action.title}) : tl)
         case 'CHANGE-TODOLIST-FILTER':
             return state.map(tl => tl.id === action.id ? ({...tl, filter: action.filter}) : tl)
         default:
-            throw new Error('There is an action type error in todolistReducer!')
+            return state
     }
 }
 

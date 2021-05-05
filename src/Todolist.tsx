@@ -12,10 +12,10 @@ type PropsType = {
     filter: FilterValuesType
     tasks: Array<TaskType>
     removeTask: (id: string, todolistId: string) => void
-    filterTasks: (filterCondition: FilterValuesType, id: string) => void
+    filterTasks: (id: string, filterCondition: FilterValuesType) => void
     addNewTask: (newTaskTitle: string, todolistId: string) => void
     changeTaskTitle: (newTaskTitle: string, taskId: string, todolistId: string) => void
-    changeTaskIsDone: (taskId: string, isDone: boolean, todolistId: string) => void
+    changeTaskIsDone: (taskId: string, todolistId: string) => void
     removeTodolist: (todolistId: string) => void
     changeTodolistTitle: (newTodolistTitle: string, todolistId: string) => void
 }
@@ -25,21 +25,20 @@ function Todolist(props: PropsType) {
     //* Callbacks for adding new task, <input> and <button> tags callbacks  =======================================>
     const addNewTask = (newTaskTitle: string) => props.addNewTask(newTaskTitle, props.todolistId)
     const removeTodolist = () => props.removeTodolist(props.todolistId)
-    const setFilterAll = () => props.filterTasks('all', props.todolistId)
-    const setFilterCompleted = () => props.filterTasks('completed', props.todolistId)
-    const setFilterActive = () => props.filterTasks('active', props.todolistId)
+    const setFilterAll = () => props.filterTasks(props.todolistId, 'all')
+    const setFilterCompleted = () => props.filterTasks(props.todolistId, 'completed')
+    const setFilterActive = () => props.filterTasks(props.todolistId, 'active')
     const setFilterVariant = (filter: FilterValuesType) => props.filter === filter ? 'contained' : 'outlined'
     const setFilterColor = (filter: FilterValuesType) => props.filter === filter ? 'primary' : 'default'
     const changeTodolistTitle = (newTodolistTitle: string) => {
         props.changeTodolistTitle(newTodolistTitle, props.todolistId)
     }
-
     //* <li> elements mapping for tasks <ul> list ================================================================>
     const tasksElements = props.tasks
         .map(task => {
             const removeTask = () => props.removeTask(task.id, props.todolistId)
-            const changeTaskIsDone = (e: ChangeEvent<HTMLInputElement>) =>
-                props.changeTaskIsDone(task.id, e.currentTarget.checked, props.todolistId)
+            const changeTaskIsDone = () =>
+                props.changeTaskIsDone(task.id, props.todolistId)
             const changeTaskTitle = (newTaskTitle: string) => {
                 props.changeTaskTitle(newTaskTitle, task.id, props.todolistId)
             }
