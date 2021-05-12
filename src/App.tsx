@@ -5,7 +5,6 @@ import {v1} from 'uuid';
 import {AddItemForm} from './AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
-import classes from '*.module.css';
 
 //* Types declaration ==================================================================================>
 export type TaskType = {
@@ -28,6 +27,7 @@ export type FilterValuesType = 'all' | 'completed' | 'active'
 
 
 function App() {
+    console.log('APP')
 
     //* Todolists data declaration section  =============================================================>
 

@@ -1,9 +1,6 @@
 import {FilterValuesType, TodolistType} from '../App';
 import {v1} from 'uuid';
 
-export const todolist1 = v1()
-export const todolist2 = v1()
-export const todolist3 = v1()
 
 const initState: Array<TodolistType> = []
 

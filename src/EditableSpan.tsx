@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useCallback, useState} from 'react';
 import {TextField} from '@material-ui/core';
 
 type EditableSpanPropsType = {
@@ -6,23 +6,24 @@ type EditableSpanPropsType = {
     onChange: (newSpanTitle: string) => void
 }
 
-export function EditableSpan(props: EditableSpanPropsType) {
+export const EditableSpan = React.memo(({onChange, title}: EditableSpanPropsType) => {
+    console.log('ES R')
     const [editMode, setEditMode] = useState<boolean>(false)
     const [newSpanTitle, setNewSpanTitle] = useState('')
 
-    function onInputChange(e: ChangeEvent<HTMLInputElement>) {
+    const onInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setNewSpanTitle(e.currentTarget.value)
-    }
+    }, [])
 
-    function onSpanDblClick() {
-        setNewSpanTitle(props.title)
+    const onSpanDblClick = useCallback(() => {
+        setNewSpanTitle(title)
         setEditMode(true)
-    }
+    }, [title])
 
-    function onInputBlur() {
-        props.onChange(newSpanTitle)
+    const onInputBlur = useCallback(() => {
+        onChange(newSpanTitle)
         setEditMode(false)
-    }
+    }, [onChange, newSpanTitle])
 
     return (
         <>
@@ -32,8 +33,8 @@ export function EditableSpan(props: EditableSpanPropsType) {
                     onBlur={onInputBlur}
                     onChange={onInputChange}
                     autoFocus/> :
-                <span onDoubleClick={onSpanDblClick}>{props.title}</span>
+                <span onDoubleClick={onSpanDblClick}>{title}</span>
             }
         </>
     )
-}
+})

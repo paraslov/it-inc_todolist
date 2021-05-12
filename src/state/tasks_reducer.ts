@@ -1,6 +1,6 @@
 import {TasksType} from '../App';
 import {v1} from 'uuid';
-import {addTodolistAC, removeTodolistAC, todolist1, todolist2, todolist3} from './todolists_reducer';
+import {addTodolistAC, removeTodolistAC} from './todolists_reducer';
 
 const initState: TasksType = {}
 
