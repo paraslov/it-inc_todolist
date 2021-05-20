@@ -2,7 +2,7 @@ import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react';
 import {IconButton, TextField} from '@material-ui/core';
 import {AddCircle} from '@material-ui/icons';
 
-type AddItemFormPropsType = {
+export type AddItemFormPropsType = {
     label: string
     addNewItem: (newTaskTitle: string) => void
 }

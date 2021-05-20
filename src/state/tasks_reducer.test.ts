@@ -1,7 +1,7 @@
 import {v1} from 'uuid';
-import {TasksType} from '../App';
 import {addTaskAC, changeTaskIsDoneAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './tasks_reducer';
 import {addTodolistAC, removeTodolistAC} from './todolists_reducer';
+import {TasksType} from '../AppWithRedux';
 
 const todolist1 = v1()
 const todolist2 = v1()
@@ -29,7 +29,7 @@ beforeEach(() => {
 test('should delete task #3 from todolist1', () => {
 
     const taskToRemoveId = tasks[todolist1][2].id
-    const newTasks = tasksReducer(tasks, removeTaskAC(todolist1, taskToRemoveId))
+    const newTasks: TasksType = tasksReducer(tasks, removeTaskAC(todolist1, taskToRemoveId))
 
     expect(newTasks[todolist1].length).toBe(4)
     expect(newTasks[todolist1][2].title).toBe('Rest API')

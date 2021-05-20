@@ -1,5 +1,6 @@
-import {FilterValuesType, TodolistType} from '../App';
+
 import {v1} from 'uuid';
+import {FilterValuesType, TodolistType} from '../AppWithRedux';
 
 
 const initState: Array<TodolistType> = []

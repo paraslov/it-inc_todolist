@@ -1,10 +1,11 @@
-import {TaskType} from './App';
+
 import React from 'react';
 import {Checkbox, IconButton} from '@material-ui/core';
-import {EditableSpan} from './EditableSpan';
+import {EditableSpan} from '../common/EditableSpan/EditableSpan';
 import {Delete} from '@material-ui/icons';
+import {TaskType} from '../../AppWithRedux';
 
-type TaskPropsType = {
+export type TaskPropsType = {
     task: TaskType
     todolistId: string
     changeTaskIsDone: (taskId: string, todolistId: string) => void

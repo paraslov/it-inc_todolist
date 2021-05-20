@@ -1,8 +1,8 @@
 import React, {useReducer} from 'react';
-import './App.css';
-import Todolist from './Todolist';
+import '../../App.css';
+import Todolist from '../Todolist/Todolist';
 import {v1} from 'uuid';
-import {AddItemForm} from './AddItemForm';
+import {AddItemForm} from '../common/AddItemForm/AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import {
@@ -11,8 +11,8 @@ import {
     changeTodolistTitleAC,
     removeTodolistAC,
     todolistsReducer
-} from './state/todolists_reducer';
-import {addTaskAC, changeTaskIsDoneAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './state/tasks_reducer';
+} from '../../state/todolists_reducer';
+import {addTaskAC, changeTaskIsDoneAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from '../../state/tasks_reducer';
 
 //* Types declaration ==================================================================================>
 export type TaskType = {
@@ -141,14 +141,14 @@ function AppWithReducers() {
                 </Grid>
 
                 <Grid container spacing={2}>
-                    {todolists.map((tl: any) => {
+                    {todolists.map((tl: TodolistType) => {
                             //* Todolist filters logic ==============================================================>
                             let tasksForTodolist = tasks[tl.id]
                             if (tl.filter === 'completed') {
-                                tasksForTodolist = tasks[tl.id].filter(t => t.isDone)
+                                tasksForTodolist = tasks[tl.id].filter((t: TaskType) => t.isDone)
                             }
                             if (tl.filter === 'active') {
-                                tasksForTodolist = tasks[tl.id].filter(t => !t.isDone)
+                                tasksForTodolist = tasks[tl.id].filter((t: TaskType) => !t.isDone)
                             }
                             return <Grid item key={tl.id}>
                                 <Paper style={{padding: '10px'}}>
