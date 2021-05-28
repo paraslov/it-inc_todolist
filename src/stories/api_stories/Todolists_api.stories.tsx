@@ -1,32 +1,25 @@
 import React, {useEffect, useState} from 'react'
 import {Meta} from '@storybook/react';
-import axios from 'axios';
+import {todoListsAPI, TodoListType} from '../../api/todoLists_api';
 
 export default {
     title: 'API/todo lists'
 } as Meta
 
-const settings = {
-    withCredentials: true,
-    headers: {
-        'api-key': '00162dc2-204e-4559-bcf6-6384570c4ef5'
-    }
-}
 
 export const GetTodoLists = () => {
-    const [state, setState] = useState<any>(null)
+    const [state, setState] = useState<TodoListType[] | null>(null)
 
     useEffect(() => {
-        console.log('get todo lists')
-        axios.get('https://social-network.samuraijs.com/api/1.1/todo-lists', settings)
-            .then(res => {
-                setState(res.data)
+        todoListsAPI.getTodoLists()
+            .then(data => {
+                setState(data)
             })
     }, [])
 
     return (
         <div>
-            {state ? state.map((tl: any) => {
+            {state ? state.map(tl => {
                 return <div>
                     <div>title: {tl.title}</div>
                     <div>todolistId: {tl.id}</div>
@@ -44,9 +37,9 @@ export const PostTodoLists = () => {
     const [newTitle, setNewTitle] = useState('')
 
     const postTodoList = (title: string) => {
-        axios.post('https://social-network.samuraijs.com/api/1.1/todo-lists', {title: title}, settings)
-            .then(res => {
-                setState(res.data.data.item)
+        todoListsAPI.postTodoList(title)
+            .then(data => {
+                setState(data.data.item)
             })
     }
 
@@ -71,9 +64,9 @@ export const DeleteTodoLists = () => {
     const [todoListId, setTodoListId] = useState('')
 
     const deleteTL = (id: string) => {
-        axios.delete(`https://social-network.samuraijs.com/api/1.1/todo-lists/${id}`, settings)
-            .then(res => {
-                setState(res.data)
+        todoListsAPI.deleteTodoList(id)
+            .then(data => {
+                setState(data)
             })
     }
 
@@ -100,10 +93,10 @@ export const PutTodoLists = () => {
     const [updatedTitle, setUpdatedTitle] = useState('')
 
     const updateTL = (id: string, title: string) => {
-        axios.put(`https://social-network.samuraijs.com/api/1.1/todo-lists/${id}`, {title: title}, settings)
-            .then(res => {
-                console.log(res)
-                setState(res.data)
+        todoListsAPI.updateTodoList(id, title)
+            .then(data => {
+                console.log(data)
+                setState(data)
             })
     }
 
