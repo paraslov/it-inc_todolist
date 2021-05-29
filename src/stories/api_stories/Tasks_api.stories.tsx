@@ -21,10 +21,7 @@ export const GetTasks = () => {
 
     return (
         <div>
-            <div>
-                {JSON.stringify(state)}
-                <div>::====================================::</div>
-            </div>
+            <div>::====================================::</div>
             <div>
                 {state ? state.map(task => {
                     return <div>
