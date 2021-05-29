@@ -32,7 +32,7 @@ export const GetTodoLists = () => {
     )
 }
 
-export const PostTodoLists = () => {
+export const PostTodoList = () => {
     const [state, setState] = useState<any>(null)
     const [newTitle, setNewTitle] = useState('')
 
@@ -59,7 +59,7 @@ export const PostTodoLists = () => {
     )
 }
 
-export const DeleteTodoLists = () => {
+export const DeleteTodoList = () => {
     const [state, setState] = useState<any>(null)
     const [todoListId, setTodoListId] = useState('')
 
@@ -81,13 +81,13 @@ export const DeleteTodoLists = () => {
                     onChange={(e) => setTodoListId(e.currentTarget.value)}/>
             </div>
             <div>
-                <button onClick={() => deleteTL(todoListId)}>delete TL</button>
+                <button onClick={() => deleteTL(todoListId)}>Delete todo list</button>
             </div>
         </div>
     )
 }
 
-export const PutTodoLists = () => {
+export const UpdateTodoList = () => {
     const [state, setState] = useState<any>(null)
     const [todoListId, setTodoListId] = useState('')
     const [updatedTitle, setUpdatedTitle] = useState('')
@@ -106,7 +106,7 @@ export const PutTodoLists = () => {
             <div>
                 <input
                     type="text"
-                    placeholder={'id of TL u want to delete'}
+                    placeholder={'id of TL u want to update'}
                     value={todoListId}
                     onChange={(e) => setTodoListId(e.currentTarget.value)}/>
                 <input
@@ -116,7 +116,7 @@ export const PutTodoLists = () => {
                     onChange={(e) => setUpdatedTitle(e.currentTarget.value)}/>
             </div>
             <div>
-                <button onClick={() => updateTL(todoListId, updatedTitle)}>update TL</button>
+                <button onClick={() => updateTL(todoListId, updatedTitle)}>Update todo list</button>
             </div>
         </div>
     )
