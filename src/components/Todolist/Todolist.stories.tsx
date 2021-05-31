@@ -3,6 +3,7 @@ import Todolist, {TodolistPropsType} from './Todolist';
 import {Meta, Story} from '@storybook/react';
 import {action} from '@storybook/addon-actions';
 import {v1} from 'uuid';
+import {TaskPriorities, TaskStatuses} from '../../api/tasks_api';
 
 
 export default {
@@ -43,8 +44,17 @@ TodolistBaseExample.args = {
     ...baseArgs,
     todolistId: 'todolistId1',
     tasks: [
-        {id: v1(), title: 'HTML&CSS', isDone: true},
-        {id: v1(), title: 'JS', isDone: true},
-        {id: v1(), title: 'Angular', isDone: false},
+        {
+            id: v1(), title: 'HTML&CSS', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
+            addedDate: '', order: 0, startDate: '', deadline: '', todoListId: 'todolistId1', description: 'desc'
+        },
+        {
+            id: v1(), title: 'JS', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
+            addedDate: '', order: 0, startDate: '', deadline: '', todoListId: 'todolistId1', description: 'desc'
+        },
+        {
+            id: v1(), title: 'Angular', status: TaskStatuses.New, priority: TaskPriorities.Middle,
+            addedDate: '', order: 0, startDate: '', deadline: '', todoListId: 'todolistId1', description: 'desc'
+        },
     ]
 }

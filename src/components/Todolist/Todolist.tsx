@@ -4,7 +4,8 @@ import {EditableSpan} from '../common/EditableSpan/EditableSpan';
 import {Button, IconButton} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
 import {Task} from '../Task/Task';
-import {FilterValuesType, TaskType} from '../../AppWithRedux';
+import {FilterValuesType} from '../../state/todolists_reducer';
+import {TaskStatuses, TaskType} from '../../api/tasks_api';
 
 //* Types declaration ============================================================================================>
 export type TodolistPropsType = {
@@ -16,7 +17,7 @@ export type TodolistPropsType = {
     filterTasks: (id: string, filterCondition: FilterValuesType) => void
     addNewTask: (newTaskTitle: string, todolistId: string) => void
     changeTaskTitle: (newTaskTitle: string, taskId: string, todolistId: string) => void
-    changeTaskIsDone: (taskId: string, todolistId: string) => void
+    changeTaskIsDone: (taskId: string, todolistId: string, status: TaskStatuses) => void
     removeTodolist: (todolistId: string) => void
     changeTodolistTitle: (newTodolistTitle: string, todolistId: string) => void
 }
@@ -44,10 +45,10 @@ const Todolist = React.memo((props: TodolistPropsType) => {
     //* Todolist filters logic ======================================================================================>
     let tasksForTodolist = props.tasks
     if (props.filter === 'completed') {
-        tasksForTodolist = props.tasks.filter(t => t.isDone)
+        tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.Completed)
     }
     if (props.filter === 'active') {
-        tasksForTodolist = props.tasks.filter(t => !t.isDone)
+        tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.New)
     }
 
     //* <li> elements mapping for tasks <ul> list ===================================================================>

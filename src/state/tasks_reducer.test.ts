@@ -1,7 +1,7 @@
 import {v1} from 'uuid';
-import {addTaskAC, changeTaskIsDoneAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './tasks_reducer';
-import {addTodolistAC, removeTodolistAC} from './todolists_reducer';
-import {TasksType} from '../AppWithRedux';
+import {addTaskAC, changeTaskIsDoneAC, changeTaskTitleAC, removeTaskAC, tasksReducer, TasksType} from './tasks_reducer';
+import {addTodoListAC, removeTodoListAC} from './todolists_reducer';
+import {TaskPriorities, TaskStatuses} from '../api/tasks_api';
 
 const todolist1 = v1()
 const todolist2 = v1()
@@ -11,17 +11,44 @@ let tasks: TasksType
 beforeEach(() => {
     tasks = {
         [todolist1]: [
-            {id: v1(), title: 'HTML&CSS', isDone: true},
-            {id: v1(), title: 'JavaScript', isDone: true},
-            {id: v1(), title: 'ReactJS', isDone: false},
-            {id: v1(), title: 'Rest API', isDone: false},
-            {id: v1(), title: 'GraphQL', isDone: false},
+            {
+                id: v1(), title: 'HTML&CSS', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+            },
+            {
+                id: v1(), title: 'JavaScript', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+            },
+            {
+                id: v1(), title: 'ReactJS', status: TaskStatuses.New, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+            },
+            {
+                id: v1(), title: 'Rest API', status: TaskStatuses.New, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+            },
+            {
+                id: v1(), title: 'GraphQL', status: TaskStatuses.New, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+            },
         ],
         [todolist2]: [
-            {id: v1(), title: 'CD', isDone: false},
-            {id: v1(), title: 'HF:JavaScript', isDone: true},
-            {id: v1(), title: 'Clean code', isDone: true},
-            {id: v1(), title: 'Algorithms', isDone: false},
+            {
+                id: v1(), title: 'CD', status: TaskStatuses.New, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist2, description: 'desc'
+            },
+            {
+                id: v1(), title: 'HF:JavaScript', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist2, description: 'desc'
+            },
+            {
+                id: v1(), title: 'Clean code', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist2, description: 'desc'
+            },
+            {
+                id: v1(), title: 'Algorithms', status: TaskStatuses.New, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist2, description: 'desc'
+            },
         ],
     }
 })
@@ -47,7 +74,7 @@ test('should add task to todolist2', () => {
 
     expect(newTasks[todolist2].length).toBe(5)
     expect(newTasks[todolist2][0].title).toBe(newTaskTitle)
-    expect(newTasks[todolist2][0].isDone).toBe(false)
+    expect(newTasks[todolist2][0].status).toBe(TaskStatuses.New)
     expect(newTasks[todolist2][0].id).toBeDefined()
     expect(newTasks).not.toBe(tasks)
     expect(tasks[todolist2].length).toBe(4)
@@ -67,16 +94,15 @@ test('should change task title "HTML&CSS" to "Layout"', () => {
 
 test('should toggle todolist2 4th task isDone', () => {
     const taskId = tasks[todolist2][3].id
-    const newTasks = tasksReducer(tasks, changeTaskIsDoneAC(todolist2, taskId))
+    const newTasks = tasksReducer(tasks, changeTaskIsDoneAC(todolist2, taskId, TaskStatuses.New))
 
-    expect(newTasks[todolist2][3].isDone).toBeTruthy()
     expect(newTasks).not.toBe(tasks)
-    expect(tasks[todolist2][3].isDone).toBeFalsy()
+    expect(tasks[todolist2][3].status === TaskStatuses.New).toBeTruthy()
 })
 
 test('when removing todolist, array of tasks should be removed', () => {
 
-    const newTasks = tasksReducer(tasks, removeTodolistAC(todolist2))
+    const newTasks = tasksReducer(tasks, removeTodoListAC(todolist2))
     const keys = Object.keys(newTasks)
 
     expect(keys.length).toBe(1)
@@ -86,7 +112,7 @@ test('when removing todolist, array of tasks should be removed', () => {
 
 test('when adding todolist, array of tasks should be added', () => {
 
-    const newTasks = tasksReducer(tasks, addTodolistAC('title no matter'))
+    const newTasks = tasksReducer(tasks, addTodoListAC('title no matter'))
     const keys = Object.keys(newTasks)
     const newKey = keys.find(k => k !== todolist1 && k !== todolist2)
 
