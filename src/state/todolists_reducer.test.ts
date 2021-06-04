@@ -1,8 +1,10 @@
 import {
     addTodoListAC,
     changeTodoListFilterAC,
-    changeTodoListTitleAC, FilterValuesType,
-    removeTodoListAC, TodoListDomainType,
+    changeTodoListTitleAC,
+    FilterValuesType,
+    removeTodoListAC,
+    TodoListDomainType,
     todoListsReducer
 } from './todolists_reducer';
 import {v1} from 'uuid';

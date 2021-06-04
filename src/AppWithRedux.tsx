@@ -27,7 +27,7 @@ function AppWithRedux() {
         dispatch(fetchTodoListsTC())
     }, [])
 
-    //* Todolists data declaration section  =============================================================>
+    //* TodoLists data declaration section  =============================================================>
     const todolists = useSelector(SelectTodoLists)
 
     //* Tasks data declaration section =====================================================================>

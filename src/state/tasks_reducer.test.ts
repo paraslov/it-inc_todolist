@@ -1,5 +1,13 @@
 import {v1} from 'uuid';
-import {addTaskAC, changeTaskIsDoneAC, changeTaskTitleAC, removeTaskAC, tasksReducer, TasksType} from './tasks_reducer';
+import {
+    addTaskAC,
+    changeTaskIsDoneAC,
+    changeTaskTitleAC,
+    removeTaskAC,
+    setTasks,
+    tasksReducer,
+    TasksType
+} from './tasks_reducer';
 import {addTodoListAC, removeTodoListAC} from './todolists_reducer';
 import {TaskPriorities, TaskStatuses} from '../api/tasks_api';
 
@@ -123,4 +131,12 @@ test('when adding todolist, array of tasks should be added', () => {
     expect(keys.length).toBe(3)
     expect(newTasks[newKey]).toStrictEqual([])
     expect(tasks[newKey]).toBeUndefined()
+})
+
+test('tasks should be settled to todo list', () => {
+
+    const newTasks = tasksReducer({}, setTasks('newTodoListId', tasks[todolist2]))
+
+    expect(newTasks['newTodoListId'].length).toBe(4)
+    expect(newTasks['newTodoListId'][1].title).toBe('HF:JavaScript')
 })
