@@ -1,5 +1,5 @@
-import {AppRootType} from '../state/store';
+import {AppStateType} from '../state/store';
 
 
-export const SelectTasks = (state: AppRootType) => state.tasks
-export const SelectTodoLists = (state: AppRootType) => state.todoLists
+export const SelectTasks = (state: AppStateType) => state.tasks
+export const SelectTodoLists = (state: AppStateType) => state.todoLists

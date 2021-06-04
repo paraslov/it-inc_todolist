@@ -1,6 +1,7 @@
-import {combineReducers, createStore} from 'redux';
-import {tasksReducer} from './tasks_reducer';
-import {todoListsReducer} from './todolists_reducer';
+import {Action, applyMiddleware, combineReducers, createStore} from 'redux';
+import {TasksActionsType, tasksReducer} from './tasks_reducer';
+import {TodoListActionsType, todoListsReducer} from './todolists_reducer';
+import thunkMW, {ThunkAction} from 'redux-thunk'
 
 
 const rootReducer = combineReducers({
@@ -8,6 +9,11 @@ const rootReducer = combineReducers({
     todoLists: todoListsReducer
 })
 
-export type AppRootType = ReturnType<typeof rootReducer>
+export type AppStateType = ReturnType<typeof rootReducer>
 
-export const store = createStore(rootReducer)
+export type AppActionsType = TasksActionsType | TodoListActionsType
+
+//* Common thunk typesation ==========================================================================================>>
+export type BaseThunkType<A extends Action = AppActionsType, R = void> = ThunkAction<R, AppStateType, unknown, A>
+
+export const store = createStore(rootReducer, applyMiddleware(thunkMW))

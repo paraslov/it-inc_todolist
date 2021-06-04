@@ -1,6 +1,6 @@
 import React from 'react'
 import {Provider} from 'react-redux'
-import {AppRootType} from '../../state/store'
+import {AppStateType} from '../../state/store'
 import {StoryFnReactReturnType} from '@storybook/react/dist/ts3.9/client/preview/types'
 import {combineReducers, createStore} from 'redux'
 import {tasksReducer} from '../../state/tasks_reducer'
@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
 })
 
 //* initial state for storybook tests only ============================================================================>>
-const initialGlobalState: AppRootType = {
+const initialGlobalState: AppStateType = {
     todoLists: [
         {id: 'todolistId1', title: 'What to learn', filter: 'all', addedDate: '', order: 0},
         {id: 'todolistId2', title: 'What to buy', filter: 'all', addedDate: '', order: 0}

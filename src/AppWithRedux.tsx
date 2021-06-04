@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import Todolist from './components/Todolist/Todolist';
 import {AddItemForm} from './components/common/AddItemForm/AddItemForm';
@@ -8,13 +8,12 @@ import {
     addTodoListAC,
     changeTodoListFilterAC,
     changeTodoListTitleAC,
+    fetchTodoListsTC,
     FilterValuesType,
-    removeTodoListAC,
-    TodolistActionsType
+    removeTodoListAC
 } from './state/todolists_reducer';
-import {addTaskAC, changeTaskIsDoneAC, changeTaskTitleAC, removeTaskAC, TasksActionsType} from './state/tasks_reducer';
+import {addTaskAC, changeTaskIsDoneAC, changeTaskTitleAC, removeTaskAC} from './state/tasks_reducer';
 import {useDispatch, useSelector} from 'react-redux';
-import {Dispatch} from 'redux';
 import {SelectTasks, SelectTodoLists} from './selectors/selectors';
 import {TaskStatuses} from './api/tasks_api';
 
@@ -22,7 +21,11 @@ import {TaskStatuses} from './api/tasks_api';
 function AppWithRedux() {
     console.log('APP R')
 
-    const dispatch = useDispatch<Dispatch<TodolistActionsType | TasksActionsType>>()
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(fetchTodoListsTC())
+    }, [])
 
     //* Todolists data declaration section  =============================================================>
     const todolists = useSelector(SelectTodoLists)
