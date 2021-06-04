@@ -5,12 +5,12 @@ import {AddItemForm} from './components/common/AddItemForm/AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import {
-    addTodoListAC,
-    changeTodoListFilterAC,
-    changeTodoListTitleAC,
+    _changeTodoListFilter,
+    addTodoList,
+    changeTodoListTitle,
     fetchTodoListsTC,
     FilterValuesType,
-    removeTodoListAC
+    removeTodoList
 } from './state/todolists_reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {SelectTasks, SelectTodoLists} from './selectors/selectors';
@@ -51,20 +51,20 @@ function AppWithRedux() {
     }, [dispatch])
 
     //* Callbacks for Todolists management  ====================================================================>
-    const removeTodolist = useCallback((todolistId: string) => {
-        dispatch(removeTodoListAC(todolistId))
+    const removeTodolistCallback = useCallback((todolistId: string) => {
+        dispatch(removeTodoList(todolistId))
     }, [dispatch])
 
     const addNewTodolist = useCallback((newTodolistTitle: string) => {
-        dispatch(addTodoListAC(newTodolistTitle))
+        dispatch(addTodoList(newTodolistTitle))
     }, [dispatch])
 
     const filterTasks = useCallback((id: string, filterCondition: FilterValuesType) => {
-        dispatch(changeTodoListFilterAC(id, filterCondition))
+        dispatch(_changeTodoListFilter(id, filterCondition))
     }, [dispatch])
 
-    const changeTodolistTitle = useCallback((newTodolistTitle: string, todolistId: string) => {
-        dispatch(changeTodoListTitleAC(todolistId, newTodolistTitle))
+    const changeTodoListTitleCallback = useCallback((newTodolistTitle: string, todolistId: string) => {
+        dispatch(changeTodoListTitle(todolistId, newTodolistTitle))
     }, [dispatch])
 
     return (
@@ -101,8 +101,8 @@ function AppWithRedux() {
                                         filter={tl.filter}
                                         changeTaskTitle={changeTaskTitle}
                                         changeTaskIsDone={changeTaskIsDone}
-                                        removeTodolist={removeTodolist}
-                                        changeTodolistTitle={changeTodolistTitle}
+                                        removeTodolist={removeTodolistCallback}
+                                        changeTodolistTitle={changeTodoListTitleCallback}
                                     />
                                 </Paper>
                             </Grid>

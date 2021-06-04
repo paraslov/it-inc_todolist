@@ -6,13 +6,15 @@ import {AddItemForm} from '../common/AddItemForm/AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import {
-    addTodoListAC,
-    changeTodoListFilterAC,
-    changeTodoListTitleAC, FilterValuesType,
-    removeTodoListAC, TodoListDomainType,
+    _addTodoList,
+    _changeTodoListFilter,
+    _changeTodoListTitle,
+    _removeTodoList,
+    FilterValuesType,
+    TodoListDomainType,
     todoListsReducer
 } from '../../state/todolists_reducer';
-import {_addTask, _updateTask, _removeTask, tasksReducer} from '../../state/tasks_reducer';
+import {_addTask, _removeTask, _updateTask, tasksReducer} from '../../state/tasks_reducer';
 import {TaskPriorities, TaskStatuses, TaskType} from '../../api/tasks_api';
 
 
@@ -131,22 +133,22 @@ function AppWithReducers() {
 
     //* Callbacks for Todolists management  ====================================================================>
     function removeTodolist(todolistId: string) {
-        dispatchToTodolistsReducer(removeTodoListAC(todolistId))
-        dispatchToTasksReducer(removeTodoListAC(todolistId))
+        dispatchToTodolistsReducer(_removeTodoList(todolistId))
+        dispatchToTasksReducer(_removeTodoList(todolistId))
     }
 
     function addNewTodolist(newTodolistTitle: string) {
-        const action = addTodoListAC(newTodolistTitle)
+        const action = _addTodoList({id: v1(), title: newTodolistTitle, addedDate: '', order: 0})
         dispatchToTodolistsReducer(action)
         dispatchToTasksReducer(action)
     }
 
     function filterTasks(id: string, filterCondition: FilterValuesType) {
-        dispatchToTodolistsReducer(changeTodoListFilterAC(id, filterCondition))
+        dispatchToTodolistsReducer(_changeTodoListFilter(id, filterCondition))
     }
 
     function changeTodolistTitle(newTodolistTitle: string, todolistId: string) {
-        dispatchToTodolistsReducer(changeTodoListTitleAC(todolistId, newTodolistTitle))
+        dispatchToTodolistsReducer(_changeTodoListTitle(todolistId, newTodolistTitle))
     }
 
     return (

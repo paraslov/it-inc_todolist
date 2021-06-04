@@ -1,4 +1,4 @@
-import {addTodoListAC, removeTodoListAC, setTodoListsAC} from './todolists_reducer';
+import {_addTodoList, _fetchTodoLists, _removeTodoList} from './todolists_reducer';
 import {TaskPriorities, tasksAPI, TaskStatuses, TaskType, TaskUpdateModelType} from '../api/tasks_api';
 import {BaseThunkType} from './store';
 
@@ -31,7 +31,7 @@ export const tasksReducer = (state: TasksType = initState, action: TasksActionsT
         case 'para-slov/todoListReducer/ADD-TODOLIST':
             return {
                 ...state,
-                [action.todolistId]: []
+                [action.todoList.id]: []
             }
         case 'para-slov/todoListReducer/REMOVE-TODOLIST':
             let stateCopy = {...state}
@@ -54,9 +54,9 @@ export type TasksActionsType =
     | ReturnType<typeof _addTask>
     | ReturnType<typeof _updateTask>
     |
-    ReturnType<typeof addTodoListAC>
-    | ReturnType<typeof removeTodoListAC>
-    | ReturnType<typeof setTodoListsAC>
+    ReturnType<typeof _addTodoList>
+    | ReturnType<typeof _removeTodoList>
+    | ReturnType<typeof _fetchTodoLists>
     |
     ReturnType<typeof _fetchTasks>
 
@@ -94,7 +94,7 @@ export const removeTask = (todoListId: string, taskId: string): ThunkType => dis
             }
         })
 }
-
+// type for updateTask thunk realization to use only those props user wants to update
 export type TaskUpdateDomainModelType = {
     title?: string
     description?: string
@@ -106,17 +106,22 @@ export type TaskUpdateDomainModelType = {
 
 export const updateTask = (todoListId: string, task: TaskType, model: TaskUpdateDomainModelType): ThunkType =>
     dispatch => {
-    const updatedTaskModel = {
-        ...task,
-        ...model
+        const updatedTaskModel: TaskUpdateModelType = {
+            title: task.title,
+            startDate: task.startDate,
+            priority: task.priority,
+            deadline: task.deadline,
+            description: task.description,
+            status: task.status,
+            ...model
+        }
+        tasksAPI.updateTask(todoListId, task.id, updatedTaskModel)
+            .then(data => {
+                if (data.resultCode === 0) {
+                    dispatch(_updateTask(todoListId, task.id, updatedTaskModel))
+                }
+            })
     }
-    tasksAPI.updateTask(todoListId, task.id, updatedTaskModel)
-        .then(data => {
-            if(data.resultCode === 0) {
-                dispatch(_updateTask(todoListId, task.id, updatedTaskModel))
-            }
-        })
-}
 
 
 

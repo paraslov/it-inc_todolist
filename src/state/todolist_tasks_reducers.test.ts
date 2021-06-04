@@ -1,12 +1,13 @@
-import {addTodoListAC, setTodoListsAC, TodoListDomainType, todoListsReducer} from './todolists_reducer';
+import {_addTodoList, _fetchTodoLists, TodoListDomainType, todoListsReducer} from './todolists_reducer';
 import {tasksReducer, TasksType} from './tasks_reducer';
+import {v1} from 'uuid';
 
 
 test('ids should be equals', () => {
     const startTasksState: TasksType = {};
     const startTodoListsState: Array<TodoListDomainType> = [];
 
-    const action = addTodoListAC('new todolist');
+    const action = _addTodoList({id: v1(), title: 'new todolist', addedDate: '', order: 0});
 
     const endTasksState = tasksReducer(startTasksState, action)
     const endTodoListsState = todoListsReducer(startTodoListsState, action)
@@ -15,8 +16,8 @@ test('ids should be equals', () => {
     const idFromTasks = keys[0];
     const idFromTodoLists = endTodoListsState[0].id;
 
-    expect(idFromTasks).toBe(action.todolistId);
-    expect(idFromTodoLists).toBe(action.todolistId);
+    expect(idFromTasks).toBe(action.todoList.id);
+    expect(idFromTodoLists).toBe(action.todoList.id);
 });
 
 test('todo lists should be settled to the state and an empty array should be created for tasks', () => {
@@ -25,7 +26,7 @@ test('todo lists should be settled to the state and an empty array should be cre
         {id: 'todolistId2', title: 'What to buy', filter: 'all', addedDate: '', order: 0}
     ]
 
-    const action = setTodoListsAC(startState);
+    const action = _fetchTodoLists(startState);
 
     const endTasksState = tasksReducer({}, action)
     const endTodoListsState = todoListsReducer([], action)
