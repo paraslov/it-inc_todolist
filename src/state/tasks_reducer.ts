@@ -1,6 +1,5 @@
-import {v1} from 'uuid';
 import {addTodoListAC, removeTodoListAC, setTodoListsAC} from './todolists_reducer';
-import {TaskPriorities, tasksAPI, TaskStatuses, TaskType} from '../api/tasks_api';
+import {TaskPriorities, tasksAPI, TaskStatuses, TaskType, TaskUpdateModelType} from '../api/tasks_api';
 import {BaseThunkType} from './store';
 
 //* ====== Types =====================================================================================================>>
@@ -20,31 +19,14 @@ export const tasksReducer = (state: TasksType = initState, action: TasksActionsT
         case 'para-slov/tasksReducer/ADD-TASK':
             return {
                 ...state,
-                [action.todolistId]: [{
-                    id: v1(),
-                    title: action.title,
-                    status: TaskStatuses.New,
-                    priority: TaskPriorities.Middle,
-                    addedDate: '',
-                    order: 0,
-                    startDate: '',
-                    deadline: '',
-                    todoListId: action.todolistId,
-                    description: 'desc'
-                },
+                [action.todolistId]: [action.task,
                     ...state[action.todolistId]]
             }
-        case 'para-slov/tasksReducer/CHANGE-TASK-TITLE':
+        case 'para-slov/tasksReducer/UPDATE-TASK':
             return {
                 ...state,
                 [action.todolistId]: state[action.todolistId]
-                    .map(task => task.id === action.taskId ? {...task, title: action.title} : task)
-            }
-        case 'para-slov/tasksReducer/CHANGE-TASK-IS-DONE':
-            return {
-                ...state,
-                [action.todolistId]: state[action.todolistId]
-                    .map(task => task.id === action.taskId ? {...task, status: action.status} : task)
+                    .map(task => task.id === action.taskId ? {...task, ...action.model} : task)
             }
         case 'para-slov/todoListReducer/ADD-TODOLIST':
             return {
@@ -67,27 +49,74 @@ export const tasksReducer = (state: TasksType = initState, action: TasksActionsT
 }
 
 //* ====== Action Creators ===========================================================================================>>
-export type TasksActionsType = ReturnType<typeof removeTaskAC> | ReturnType<typeof addTaskAC> |
-    ReturnType<typeof changeTaskTitleAC> | ReturnType<typeof changeTaskIsDoneAC> |
-    ReturnType<typeof addTodoListAC> | ReturnType<typeof removeTodoListAC> | ReturnType<typeof setTodoListsAC> |
-    ReturnType<typeof setTasks>
+export type TasksActionsType =
+    ReturnType<typeof _removeTask>
+    | ReturnType<typeof _addTask>
+    | ReturnType<typeof _updateTask>
+    |
+    ReturnType<typeof addTodoListAC>
+    | ReturnType<typeof removeTodoListAC>
+    | ReturnType<typeof setTodoListsAC>
+    |
+    ReturnType<typeof _fetchTasks>
 
-export const removeTaskAC = (todolistId: string, taskId: string) =>
+export const _removeTask = (todolistId: string, taskId: string) =>
     ({type: 'para-slov/tasksReducer/REMOVE-TASK', todolistId, taskId} as const)
-export const addTaskAC = (todolistId: string, title: string) =>
-    ({type: 'para-slov/tasksReducer/ADD-TASK', todolistId: todolistId, title: title} as const)
-export const changeTaskIsDoneAC = (todolistId: string, taskId: string, status: TaskStatuses) =>
-    ({type: 'para-slov/tasksReducer/CHANGE-TASK-IS-DONE', todolistId, taskId, status} as const)
-export const changeTaskTitleAC = (todolistId: string, taskId: string, title: string) =>
-    ({type: 'para-slov/tasksReducer/CHANGE-TASK-TITLE', todolistId, taskId, title} as const)
-export const setTasks = (todolistId: string, tasks: TaskType[]) =>
+export const _addTask = (todolistId: string, task: TaskType) =>
+    ({type: 'para-slov/tasksReducer/ADD-TASK', todolistId, task} as const)
+export const _updateTask = (todolistId: string, taskId: string, model: TaskUpdateModelType) =>
+    ({type: 'para-slov/tasksReducer/UPDATE-TASK', todolistId, taskId, model} as const)
+export const _fetchTasks = (todolistId: string, tasks: TaskType[]) =>
     ({type: 'para-slov/tasksReducer/SET-TASKS', todolistId, tasks} as const)
 
 //* ====== Thunk Creators ============================================================================================>>
 type ThunkType = BaseThunkType<TasksActionsType>
 export const fetchTasks = (todolistId: string): ThunkType => dispatch => {
-    tasksAPI.getTasks(todolistId).then(data => {
-        debugger
-        dispatch(setTasks(todolistId, data.items))
+    tasksAPI.fetchTasks(todolistId).then(data => {
+        dispatch(_fetchTasks(todolistId, data.items))
     })
 }
+
+export const addTask = (todoListId: string, title: string): ThunkType => dispatch => {
+    tasksAPI.addTask(todoListId, title)
+        .then(data => {
+            if (data.resultCode === 0) {
+                dispatch(_addTask(todoListId, data.data.item))
+            }
+        })
+}
+
+export const removeTask = (todoListId: string, taskId: string): ThunkType => dispatch => {
+    tasksAPI.removeTask(todoListId, taskId)
+        .then(data => {
+            if (data.resultCode === 0) {
+                dispatch(_removeTask(todoListId, taskId))
+            }
+        })
+}
+
+export type TaskUpdateDomainModelType = {
+    title?: string
+    description?: string
+    status?: TaskStatuses
+    priority?: TaskPriorities
+    startDate?: string
+    deadline?: string
+}
+
+export const updateTask = (todoListId: string, task: TaskType, model: TaskUpdateDomainModelType): ThunkType =>
+    dispatch => {
+    const updatedTaskModel = {
+        ...task,
+        ...model
+    }
+    tasksAPI.updateTask(todoListId, task.id, updatedTaskModel)
+        .then(data => {
+            if(data.resultCode === 0) {
+                dispatch(_updateTask(todoListId, task.id, updatedTaskModel))
+            }
+        })
+}
+
+
+

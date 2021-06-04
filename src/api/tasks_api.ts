@@ -44,14 +44,14 @@ export type TaskUpdateModelType = {
 }
 
 export const tasksAPI = {
-    getTasks(todoListId: string) {
+    fetchTasks(todoListId: string) {
         return instance.get<GetTasksResponseType>(`todo-lists/${todoListId}/tasks`).then(res => res.data)
     },
-    postTask(todoListId: string, title: string) {
+    addTask(todoListId: string, title: string) {
         return instance.post<CommonResponseType<{ item: TaskType }>>(`todo-lists/${todoListId}/tasks`, {title: title})
             .then(res => res.data)
     },
-    deleteTask(todoListId: string, taskId: string) {
+    removeTask(todoListId: string, taskId: string) {
         return instance.delete<CommonResponseType>(`todo-lists/${todoListId}/tasks/${taskId}`).then(res => res.data)
     },
     updateTask(todoListId: string, taskId: string, model: TaskUpdateModelType) {

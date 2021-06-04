@@ -25,7 +25,6 @@ const Template: Story<TaskPropsType> = (args) => <Task {...args}/>
 export const TaskDoneBaseExample = Template.bind({})
 TaskDoneBaseExample.args = {
     ...baseArgs,
-    todolistId: 'todolist1',
     task: {
         id: '101', title: 'HTML', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
         addedDate: '', order: 0, startDate: '', deadline: '', todoListId: 'todolist1', description: 'desc'
@@ -35,7 +34,6 @@ TaskDoneBaseExample.args = {
 export const TaskNotDoneBaseExample = Template.bind({})
 TaskNotDoneBaseExample.args = {
     ...baseArgs,
-    todolistId: 'todolist2',
     task: {
         id: '102', title: 'Angular', status: TaskStatuses.New, priority: TaskPriorities.Middle,
         addedDate: '', order: 0, startDate: '', deadline: '', todoListId: 'todolist2', description: 'desc'

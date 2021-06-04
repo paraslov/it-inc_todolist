@@ -6,7 +6,7 @@ import {AddItemForm} from '../common/AddItemForm/AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import {FilterValuesType, TodoListDomainType} from '../../state/todolists_reducer';
-import {TaskPriorities, TaskStatuses} from '../../api/tasks_api';
+import {TaskPriorities, TaskStatuses, TaskType} from '../../api/tasks_api';
 import {TasksType} from '../../state/tasks_reducer';
 
 
@@ -121,16 +121,16 @@ function App() {
         setTasks({...tasks})
     }
 
-    function changeTaskIsDone(taskId: string, todolistId: string, status: TaskStatuses) {
-        const updatingTask = tasks[todolistId].find(t => t.id === taskId)
+    function changeTaskIsDone(todolistId: string, task: TaskType, status: TaskStatuses) {
+        const updatingTask = tasks[todolistId].find(t => t.id === task.id)
         if (updatingTask) {
             updatingTask.status = status
             setTasks({...tasks})
         }
     }
 
-    function changeTaskTitle(newTaskTitle: string, taskId: string, todolistId: string) {
-        const updatingTask = tasks[todolistId].find(t => t.id === taskId)
+    function changeTaskTitle(todolistId: string, task: TaskType, newTaskTitle: string) {
+        const updatingTask = tasks[todolistId].find(t => t.id === task.id)
         if (updatingTask) {
             updatingTask.title = newTaskTitle
             setTasks({...tasks})

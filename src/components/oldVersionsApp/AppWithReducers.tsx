@@ -12,7 +12,7 @@ import {
     removeTodoListAC, TodoListDomainType,
     todoListsReducer
 } from '../../state/todolists_reducer';
-import {addTaskAC, changeTaskIsDoneAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from '../../state/tasks_reducer';
+import {_addTask, _updateTask, _removeTask, tasksReducer} from '../../state/tasks_reducer';
 import {TaskPriorities, TaskStatuses, TaskType} from '../../api/tasks_api';
 
 
@@ -111,19 +111,22 @@ function AppWithReducers() {
 
     //* Callbacks for Tasks management  ==================================================================>
     function removeTask(id: string, todolistId: string) {
-        dispatchToTasksReducer(removeTaskAC(todolistId, id))
+        dispatchToTasksReducer(_removeTask(todolistId, id))
     }
 
     function addNewTask(newTaskTitle: string, todolistId: string) {
-        dispatchToTasksReducer(addTaskAC(todolistId, newTaskTitle))
+        dispatchToTasksReducer(_addTask(todolistId, {
+            id: '101', title: newTaskTitle, status: TaskStatuses.New, priority: TaskPriorities.Middle,
+            addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolistId, description: 'desc'
+        }))
     }
 
-    function changeTaskIsDone(taskId: string, todolistId: string, status: TaskStatuses) {
-        dispatchToTasksReducer(changeTaskIsDoneAC(todolistId, taskId, status))
+    function changeTaskIsDone(todolistId: string, task: TaskType, status: TaskStatuses) {
+        dispatchToTasksReducer(_updateTask(todolistId, task.id, {...task, status}))
     }
 
-    function changeTaskTitle(newTaskTitle: string, taskId: string, todolistId: string) {
-        dispatchToTasksReducer(changeTaskTitleAC(todolistId, taskId, newTaskTitle))
+    function changeTaskTitle(todolistId: string, task: TaskType, newTaskTitle: string) {
+        dispatchToTasksReducer(_updateTask(todolistId, task.id, {...task, title: newTaskTitle}))
     }
 
     //* Callbacks for Todolists management  ====================================================================>

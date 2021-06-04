@@ -18,8 +18,8 @@ export type TodolistPropsType = {
     removeTask: (id: string, todolistId: string) => void
     filterTasks: (id: string, filterCondition: FilterValuesType) => void
     addNewTask: (newTaskTitle: string, todolistId: string) => void
-    changeTaskTitle: (newTaskTitle: string, taskId: string, todolistId: string) => void
-    changeTaskIsDone: (taskId: string, todolistId: string, status: TaskStatuses) => void
+    changeTaskTitle: (todolistId: string, task: TaskType, newTaskTitle: string) => void
+    changeTaskIsDone: (todolistId: string, task: TaskType, status: TaskStatuses) => void
     removeTodolist: (todolistId: string) => void
     changeTodolistTitle: (newTodolistTitle: string, todolistId: string) => void
 }
@@ -32,7 +32,7 @@ const Todolist = React.memo((props: TodolistPropsType) => {
     }, [])
     //* Callbacks for EditableSpan, AddItemForm and Buttons callbacks  ===============================================>>
     const addNewTask = useCallback((newTaskTitle: string) =>
-        props.addNewTask(newTaskTitle, props.todolistId), [props.addNewTask, props.todolistId])
+        props.addNewTask(props.todolistId, newTaskTitle), [props.addNewTask, props.todolistId])
     const removeTodolist = useCallback(() =>
         props.removeTodolist(props.todolistId), [props.removeTodolist, props.todolistId])
     const setFilterAll = useCallback(() =>
@@ -61,7 +61,6 @@ const Todolist = React.memo((props: TodolistPropsType) => {
     const tasksElements = tasksForTodolist
         .map(task => <Task key={task.id}
                            task={task}
-                           todolistId={props.todolistId}
                            changeTaskIsDone={props.changeTaskIsDone}
                            changeTaskTitle={props.changeTaskTitle}
                            removeTask={props.removeTask}

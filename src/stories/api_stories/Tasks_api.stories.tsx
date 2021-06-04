@@ -13,7 +13,7 @@ export const GetTasks = () => {
     const [todoListId, setTodoListId] = useState(initTodoListId)
 
     const getTasks = (todoListId: string) => {
-        tasksAPI.getTasks(todoListId)
+        tasksAPI.fetchTasks(todoListId)
             .then(data => {
                 setState(data.items)
             })
@@ -54,7 +54,7 @@ export const PostTask = () => {
     const [todoListId, setTodoListId] = useState(initTodoListId)
 
     const postTask = (todoListId: string, title: string) => {
-        tasksAPI.postTask(todoListId, title)
+        tasksAPI.addTask(todoListId, title)
             .then(data => {
                 setState(data.data.item)
             })
@@ -86,7 +86,7 @@ export const DeleteTask = () => {
     const [taskId, setTaskId] = useState('')
 
     const deleteTask = (todoListId: string, taskId: string) => {
-        tasksAPI.deleteTask(todoListId, taskId)
+        tasksAPI.removeTask(todoListId, taskId)
             .then(data => {
                 setState(data)
             })

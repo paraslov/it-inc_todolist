@@ -6,18 +6,17 @@ import {TaskStatuses, TaskType} from '../../api/tasks_api';
 
 export type TaskPropsType = {
     task: TaskType
-    todolistId: string
-    changeTaskIsDone: (taskId: string, todolistId: string, status: TaskStatuses) => void
-    changeTaskTitle: (newTaskTitle: string, taskId: string, todolistId: string) => void
-    removeTask: (id: string, todolistId: string) => void
+    changeTaskIsDone: (todolistId: string, task: TaskType, status: TaskStatuses) => void
+    changeTaskTitle: (todolistId: string, task: TaskType, newTaskTitle: string) => void
+    removeTask: ( todolistId: string, taskId: string) => void
 }
 export const Task = React.memo((props: TaskPropsType) => {
-    const removeTask = () => props.removeTask(props.task.id, props.todolistId)
+    const removeTask = () => props.removeTask(props.task.todoListId, props.task.id)
     const changeTaskIsDone = () =>
-        props.changeTaskIsDone(props.task.id, props.todolistId,
+        props.changeTaskIsDone(props.task.todoListId, props.task,
             props.task.status === TaskStatuses.New ? TaskStatuses.Completed : TaskStatuses.New)
     const changeTaskTitle = (newTaskTitle: string) => {
-        props.changeTaskTitle(newTaskTitle, props.task.id, props.todolistId)
+        props.changeTaskTitle(props.task.todoListId, props.task, newTaskTitle)
     }
 
     return (
