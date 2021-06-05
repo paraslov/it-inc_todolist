@@ -1,8 +1,8 @@
 import React, {useReducer} from 'react';
-import '../../App.css';
-import Todolist from '../Todolist/Todolist';
+import '../../app/App.css';
+import Todolist from '../../features/TodoLists/TodoList/Todolist';
 import {v1} from 'uuid';
-import {AddItemForm} from '../common/AddItemForm/AddItemForm';
+import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import {
@@ -13,8 +13,8 @@ import {
     FilterValuesType,
     TodoListDomainType,
     todoListsReducer
-} from '../../state/todolists_reducer';
-import {_addTask, _removeTask, _updateTask, tasksReducer} from '../../state/tasks_reducer';
+} from '../../features/TodoLists/todolists_reducer';
+import {_addTask, _removeTask, _updateTask, tasksReducer} from '../../features/TodoLists/TodoList/tasks_reducer';
 import {TaskPriorities, TaskStatuses, TaskType} from '../../api/tasks_api';
 
 

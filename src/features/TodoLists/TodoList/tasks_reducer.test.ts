@@ -1,7 +1,7 @@
 import {v1} from 'uuid';
 import {_addTask, _fetchTasks, _removeTask, _updateTask, tasksReducer, TasksType} from './tasks_reducer';
-import {_addTodoList, _removeTodoList} from './todolists_reducer';
-import {TaskPriorities, TaskStatuses} from '../api/tasks_api';
+import {_addTodoList, _removeTodoList} from '../todolists_reducer';
+import {TaskPriorities, TaskStatuses} from '../../../api/tasks_api';
 
 const todolist1 = v1()
 const todolist2 = v1()

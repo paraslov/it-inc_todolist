@@ -1,10 +1,10 @@
 import React from 'react'
 import {Provider} from 'react-redux'
-import {AppStateType} from '../../state/store'
+import {AppStateType} from '../../app/store'
 import {StoryFnReactReturnType} from '@storybook/react/dist/ts3.9/client/preview/types'
 import {combineReducers, createStore} from 'redux'
-import {tasksReducer} from '../../state/tasks_reducer'
-import {todoListsReducer} from '../../state/todolists_reducer'
+import {tasksReducer} from '../../features/TodoLists/TodoList/tasks_reducer'
+import {todoListsReducer} from '../../features/TodoLists/todolists_reducer'
 import {v1} from 'uuid'
 import {TaskPriorities, TaskStatuses} from '../../api/tasks_api';
 

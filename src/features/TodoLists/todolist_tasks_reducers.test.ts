@@ -1,5 +1,5 @@
 import {_addTodoList, _fetchTodoLists, TodoListDomainType, todoListsReducer} from './todolists_reducer';
-import {tasksReducer, TasksType} from './tasks_reducer';
+import {tasksReducer, TasksType} from './TodoList/tasks_reducer';
 import {v1} from 'uuid';
 
 

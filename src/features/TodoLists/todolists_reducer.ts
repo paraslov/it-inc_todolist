@@ -1,12 +1,5 @@
-import {todoListsAPI, TodoListType} from '../api/todoLists_api';
-import {BaseThunkType} from './store';
-
-//* ====== Types =====================================================================================================>>
-export type FilterValuesType = 'all' | 'completed' | 'active'
-
-export type TodoListDomainType = TodoListType & {
-    filter: FilterValuesType
-}
+import {todoListsAPI, TodoListType} from '../../api/todoLists_api';
+import {BaseThunkType} from '../../app/store';
 
 const initState: Array<TodoListDomainType> = []
 
@@ -17,10 +10,7 @@ export const todoListsReducer =
             case 'para-slov/todoListReducer/REMOVE-TODOLIST':
                 return state.filter(tl => tl.id !== action.id)
             case 'para-slov/todoListReducer/ADD-TODOLIST':
-                return [
-                    {...action.todoList, filter: 'all'},
-                    ...state
-                ]
+                return [{...action.todoList, filter: 'all'}, ...state]
             case 'para-slov/todoListReducer/CHANGE-TODOLIST-TITLE':
                 return state.map(tl => tl.id === action.id ? ({...tl, title: action.title}) : tl)
             case 'para-slov/todoListReducer/CHANGE-TODOLIST-FILTER':
@@ -33,13 +23,6 @@ export const todoListsReducer =
     }
 
 //* ====== Action Creators ===========================================================================================>>
-export type TodoListActionsType =
-    ReturnType<typeof _removeTodoList>
-    | ReturnType<typeof _addTodoList>
-    | ReturnType<typeof _changeTodoListTitle>
-    | ReturnType<typeof _changeTodoListFilter>
-    | ReturnType<typeof _fetchTodoLists>
-
 export const _removeTodoList = (todolistId: string) =>
     ({type: 'para-slov/todoListReducer/REMOVE-TODOLIST', id: todolistId} as const)
 export const _addTodoList = (todoList: TodoListType) =>
@@ -52,15 +35,12 @@ export const _fetchTodoLists = (todolists: TodoListType[]) =>
     ({type: 'para-slov/todoListReducer/SET-TODOLISTS', todolists} as const)
 
 //* ====== Thunk Creators ============================================================================================>>
-type ThunkType = BaseThunkType<TodoListActionsType>
-
 export const fetchTodoListsTC = (): ThunkType => dispatch => {
     todoListsAPI.fetchTodoLists()
         .then(data => {
             dispatch(_fetchTodoLists(data))
         })
 }
-
 export const addTodoList = (title: string): ThunkType => dispatch => {
     todoListsAPI.addTodoList(title)
         .then(data => {
@@ -69,7 +49,6 @@ export const addTodoList = (title: string): ThunkType => dispatch => {
             }
         })
 }
-
 export const removeTodoList = (todoListId: string): ThunkType => dispatch => {
     todoListsAPI.removeTodoList(todoListId)
         .then(data => {
@@ -78,7 +57,6 @@ export const removeTodoList = (todoListId: string): ThunkType => dispatch => {
             }
         })
 }
-
 export const changeTodoListTitle = (todoListId: string, title: string): ThunkType => dispatch => {
     todoListsAPI.updateTodoList(todoListId, title)
         .then(data => {
@@ -87,4 +65,18 @@ export const changeTodoListTitle = (todoListId: string, title: string): ThunkTyp
             }
         })
 }
+
+//* ====== Types =====================================================================================================>>
+export type FilterValuesType = 'all' | 'completed' | 'active'
+export type TodoListDomainType = TodoListType & {
+    filter: FilterValuesType
+}
+
+export type TodoListActionsType = ReturnType<typeof _removeTodoList>
+    | ReturnType<typeof _addTodoList>
+    | ReturnType<typeof _changeTodoListTitle>
+    | ReturnType<typeof _changeTodoListFilter>
+    | ReturnType<typeof _fetchTodoLists>
+
+type ThunkType = BaseThunkType<TodoListActionsType>
 

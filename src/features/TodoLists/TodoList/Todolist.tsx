@@ -1,15 +1,15 @@
 import React, {useCallback, useEffect} from 'react';
-import {AddItemForm} from '../common/AddItemForm/AddItemForm';
-import {EditableSpan} from '../common/EditableSpan/EditableSpan';
+import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
+import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
 import {Button, IconButton} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
-import {Task} from '../Task/Task';
-import {FilterValuesType} from '../../state/todolists_reducer';
-import {TaskStatuses, TaskType} from '../../api/tasks_api';
+import {Task} from './Task/Task';
+import {FilterValuesType} from '../todolists_reducer';
+import {TaskStatuses, TaskType} from '../../../api/tasks_api';
 import {useDispatch} from 'react-redux';
-import {fetchTasks} from '../../state/tasks_reducer';
+import {fetchTasks} from './tasks_reducer';
 
-//* Types declaration ============================================================================================>
+//* Types declaration ================================================================================================>>
 export type TodolistPropsType = {
     todolistId: string
     title: string
@@ -27,9 +27,11 @@ export type TodolistPropsType = {
 const Todolist = React.memo((props: TodolistPropsType) => {
     console.log('TL R')
     const dispatch = useDispatch()
+
     useEffect(() => {
         dispatch(fetchTasks(props.todolistId))
     }, [])
+
     //* Callbacks for EditableSpan, AddItemForm and Buttons callbacks  ===============================================>>
     const addNewTask = useCallback((newTaskTitle: string) =>
         props.addNewTask(props.todolistId, newTaskTitle), [props.addNewTask, props.todolistId])
