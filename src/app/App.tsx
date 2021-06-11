@@ -4,10 +4,13 @@ import {AppBar, Button, Container, IconButton, LinearProgress, Toolbar, Typograp
 import {Menu} from '@material-ui/icons';
 import {TodoLists} from '../features/TodoLists/TodoLists';
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
+import {useSelector} from 'react-redux';
+import {selectAppStatus} from '../utils/selectors/selectors';
 
 
 function App() {
     console.log('APP R')
+    const appStatus = useSelector(selectAppStatus)
     return (
         <div className="App">
             <AppBar position="static">
@@ -21,9 +24,9 @@ function App() {
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
-            <div>
+            {appStatus === 'loading' && <div>
                 <LinearProgress color="secondary"/>
-            </div>
+            </div>}
             <Container fixed>
                 <TodoLists/>
             </Container>

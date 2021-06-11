@@ -8,7 +8,7 @@ import {
     FilterValuesType,
     removeTodoList
 } from './todolists_reducer';
-import {SelectTasks, SelectTodoLists} from '../../utils/selectors/selectors';
+import {selectTasks, selectTodoLists} from '../../utils/selectors/selectors';
 import {addTask, removeTask, updateTask} from './TodoList/tasks_reducer';
 import {TaskStatuses, TaskType} from '../../api/tasks_api';
 import {Grid, Paper} from '@material-ui/core';
@@ -25,10 +25,10 @@ export function TodoLists() {
     }, [])
 
     //* TodoLists data declaration section  =============================================================>
-    const todoLists = useSelector(SelectTodoLists)
+    const todoLists = useSelector(selectTodoLists)
 
     //* Tasks data declaration section =====================================================================>
-    const tasks = useSelector(SelectTasks)
+    const tasks = useSelector(selectTasks)
 
     //* Callbacks for Tasks management  ==================================================================>
     const removeTaskCallback = useCallback((todolistId: string, taskId: string) => {

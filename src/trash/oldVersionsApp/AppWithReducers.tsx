@@ -30,17 +30,17 @@ function AppWithReducers() {
         {
             id: todolist1,
             title: 'What to learn',
-            filter: 'all', addedDate: '', order: 0
+            filter: 'all', addedDate: '', order: 0, entityStatus: 'idle'
         },
         {
             id: todolist2,
             title: 'What to buy',
-            filter: 'active', addedDate: '', order: 0
+            filter: 'active', addedDate: '', order: 0, entityStatus: 'idle'
         },
         {
             id: todolist3,
             title: 'TODO with todolist, lol',
-            filter: 'completed', addedDate: '', order: 0
+            filter: 'completed', addedDate: '', order: 0, entityStatus: 'idle'
         }
     ])
 

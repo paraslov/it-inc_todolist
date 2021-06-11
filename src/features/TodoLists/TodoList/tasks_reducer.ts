@@ -1,6 +1,7 @@
 import {_addTodoList, _fetchTodoLists, _removeTodoList} from '../todolists_reducer';
 import {TaskPriorities, tasksAPI, TaskStatuses, TaskType, TaskUpdateModelType} from '../../../api/tasks_api';
 import {BaseThunkType} from '../../../app/store';
+import {setError, setStatus} from '../../../app/app_reducer';
 
 const initState: TasksType = {}
 
@@ -12,8 +13,10 @@ export const tasksReducer = (state: TasksType = initState, action: TasksActionsT
         case 'para-slov/tasksReducer/ADD-TASK':
             return {...state, [action.todolistId]: [action.task, ...state[action.todolistId]]}
         case 'para-slov/tasksReducer/UPDATE-TASK':
-            return {...state, [action.todolistId]: state[action.todolistId]
-                    .map(task => task.id === action.taskId ? {...task, ...action.model} : task)}
+            return {
+                ...state, [action.todolistId]: state[action.todolistId]
+                    .map(task => task.id === action.taskId ? {...task, ...action.model} : task)
+            }
         case 'para-slov/todoListReducer/ADD-TODOLIST':
             return {...state, [action.todoList.id]: []}
         case 'para-slov/todoListReducer/REMOVE-TODOLIST':
@@ -43,28 +46,42 @@ export const _fetchTasks = (todolistId: string, tasks: TaskType[]) =>
 
 //* ====== Thunk Creators ============================================================================================>>
 export const fetchTasks = (todolistId: string): ThunkType => dispatch => {
+    dispatch(setStatus('loading'))
     tasksAPI.fetchTasks(todolistId).then(data => {
         dispatch(_fetchTasks(todolistId, data.items))
+        dispatch(setStatus('succeeded'))
     })
 }
 export const addTask = (todoListId: string, title: string): ThunkType => dispatch => {
+    dispatch(setStatus('loading'))
     tasksAPI.addTask(todoListId, title)
         .then(data => {
             if (data.resultCode === 0) {
                 dispatch(_addTask(todoListId, data.data.item))
+                dispatch(setStatus('succeeded'))
+            } else {
+                if (data.resultCode === 1) {
+                    data.messages.length && dispatch(setError(data.messages[0]))
+                } else {
+                    dispatch(setError('some error occurred'))
+                }
+                dispatch(setStatus('failed'))
             }
         })
 }
 export const removeTask = (todoListId: string, taskId: string): ThunkType => dispatch => {
+    setStatus('loading')
     tasksAPI.removeTask(todoListId, taskId)
         .then(data => {
             if (data.resultCode === 0) {
                 dispatch(_removeTask(todoListId, taskId))
             }
+            setStatus('succeeded')
         })
 }
 export const updateTask = (todoListId: string, task: TaskType, model: TaskUpdateDomainModelType): ThunkType =>
     dispatch => {
+        dispatch(setStatus('loading'))
         const updatedTaskModel: TaskUpdateModelType = {
             title: task.title,
             startDate: task.startDate,
@@ -79,8 +96,9 @@ export const updateTask = (todoListId: string, task: TaskType, model: TaskUpdate
                 if (data.resultCode === 0) {
                     dispatch(_updateTask(todoListId, task.id, updatedTaskModel))
                 }
+                dispatch(setStatus('succeeded'))
             })
-}
+    }
 
 //* ====== Types =====================================================================================================>>
 export type TasksType = {
@@ -93,6 +111,8 @@ export type TasksActionsType = ReturnType<typeof _removeTask>
     | ReturnType<typeof _removeTodoList>
     | ReturnType<typeof _fetchTodoLists>
     | ReturnType<typeof _fetchTasks>
+    | ReturnType<typeof setStatus>
+    | ReturnType<typeof setError>
 
 type ThunkType = BaseThunkType<TasksActionsType>
 // type for updateTask thunk realization to use only those props user wants to update
