@@ -1,9 +1,9 @@
 import {todoListsAPI, TodoListType} from '../../api/todoLists_api';
 import {BaseThunkType} from '../../app/store';
 
+//* ====== Reducer ===================================================================================================>>
 const initState: Array<TodoListDomainType> = []
 
-//* ====== Reducer ===================================================================================================>>
 export const todoListsReducer =
     (state: Array<TodoListDomainType> = initState, action: TodoListActionsType): Array<TodoListDomainType> => {
         switch (action.type) {

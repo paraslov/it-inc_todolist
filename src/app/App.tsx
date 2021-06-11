@@ -1,8 +1,9 @@
 import React from 'react';
 import './App.css';
-import {AppBar, Button, Container, IconButton, Toolbar, Typography} from '@material-ui/core';
+import {AppBar, Button, Container, IconButton, LinearProgress, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import {TodoLists} from '../features/TodoLists/TodoLists';
+import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
 
 
 function App() {
@@ -20,9 +21,13 @@ function App() {
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
+            <div>
+                <LinearProgress color="secondary"/>
+            </div>
             <Container fixed>
                 <TodoLists/>
             </Container>
+            <ErrorSnackbar />
         </div>
     )
 }
