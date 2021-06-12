@@ -2,22 +2,22 @@ import {
     _addTodoList,
     _changeTodoListFilter,
     _changeTodoListTitle,
-    _removeTodoList,
+    _removeTodoList, _setTodoListStatus,
     FilterValuesType,
     TodoListDomainType,
     todoListsReducer
 } from './todolists_reducer';
 import {v1} from 'uuid';
+import {ResponseStatusType} from '../../app/app_reducer';
 
 const todolistId1 = v1()
 const todolistId2 = v1()
 let startState: Array<TodoListDomainType>
 
 beforeEach(() => {
-
     startState = [
-        {id: todolistId1, title: 'What to learn', filter: 'all', addedDate: '', order: 0},
-        {id: todolistId2, title: 'What to buy', filter: 'all', addedDate: '', order: 0}
+        {id: todolistId1, title: 'What to learn', filter: 'all', addedDate: '', order: 0, todoListStatus: 'idle'},
+        {id: todolistId2, title: 'What to buy', filter: 'all', addedDate: '', order: 0, todoListStatus: 'idle'}
     ]
 })
 
@@ -61,6 +61,16 @@ test('correct filter of todolist should be changed', () => {
 
     expect(endState[0].filter).toBe('all');
     expect(endState[1].filter).toBe(newFilter);
+});
+
+test('correct status of todolist should be settled', () => {
+    let newStatus: ResponseStatusType = 'loading';
+    const action = _setTodoListStatus(todolistId2, newStatus);
+    const endState = todoListsReducer(startState, action);
+
+    expect(endState[0].todoListStatus).toBe('idle');
+    expect(startState[1].todoListStatus).toBe('idle');
+    expect(endState[1].todoListStatus).toBe(newStatus);
 });
 
 

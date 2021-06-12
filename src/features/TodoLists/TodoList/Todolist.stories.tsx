@@ -4,11 +4,13 @@ import {Meta, Story} from '@storybook/react';
 import {action} from '@storybook/addon-actions';
 import {v1} from 'uuid';
 import {TaskPriorities, TaskStatuses} from '../../../api/tasks_api';
+import {ReduxStoreProviderDecorator} from '../../../utils/ReduxStoreProviderDecorator/ReduxStoreProviderDecorator';
 
 
 export default {
     title: 'Todo List/Todolist component',
     component: Todolist,
+    decorators: [ReduxStoreProviderDecorator],
     argTypes: {
         title: {
             description: 'Todo list title',
@@ -42,7 +44,8 @@ const Template: Story<TodolistPropsType> = (args) => <Todolist {...args}/>
 export const TodolistBaseExample = Template.bind({})
 TodolistBaseExample.args = {
     ...baseArgs,
-    todolistId: 'todolistId1',
+    demo: true,
+    todoList: {id: 'todolistId1', title: 'What to learn TL', filter: 'all', addedDate: '', order: 0, todoListStatus: 'idle'},
     tasks: [
         {
             id: v1(), title: 'HTML&CSS', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,

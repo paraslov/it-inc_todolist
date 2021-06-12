@@ -7,8 +7,10 @@ import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
 import {useSelector} from 'react-redux';
 import {selectAppStatus} from '../utils/selectors/selectors';
 
-
-function App() {
+type PropsType = {
+    demo?: boolean
+}
+function App({demo = false}: PropsType) {
     console.log('APP R')
     const appStatus = useSelector(selectAppStatus)
     return (
@@ -28,7 +30,7 @@ function App() {
                 <LinearProgress color="secondary"/>
             </div>}
             <Container fixed>
-                <TodoLists/>
+                <TodoLists demo = {demo}/>
             </Container>
             <ErrorSnackbar />
         </div>

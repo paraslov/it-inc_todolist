@@ -70,13 +70,13 @@ export const addTask = (todoListId: string, title: string): ThunkType => dispatc
         })
 }
 export const removeTask = (todoListId: string, taskId: string): ThunkType => dispatch => {
-    setStatus('loading')
+    dispatch(setStatus('loading'))
     tasksAPI.removeTask(todoListId, taskId)
         .then(data => {
             if (data.resultCode === 0) {
                 dispatch(_removeTask(todoListId, taskId))
             }
-            setStatus('succeeded')
+            dispatch(setStatus('succeeded'))
         })
 }
 export const updateTask = (todoListId: string, task: TaskType, model: TaskUpdateDomainModelType): ThunkType =>

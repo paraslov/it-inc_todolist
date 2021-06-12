@@ -23,17 +23,17 @@ function App() {
         {
             id: todolist1,
             title: 'What to learn',
-            filter: 'all', addedDate: '', order: 0, entityStatus: 'idle'
+            filter: 'all', addedDate: '', order: 0, todoListStatus: 'idle'
         },
         {
             id: todolist2,
             title: 'What to buy',
-            filter: 'active', addedDate: '', order: 0, entityStatus: 'idle'
+            filter: 'active', addedDate: '', order: 0, todoListStatus: 'idle'
         },
         {
             id: todolist3,
             title: 'TODO with todolist, lol',
-            filter: 'completed', addedDate: '', order: 0, entityStatus: 'idle'
+            filter: 'completed', addedDate: '', order: 0, todoListStatus: 'idle'
         }
     ])
 
@@ -151,7 +151,7 @@ function App() {
             filter: 'all',
             addedDate: '',
             order: 0,
-            entityStatus: 'idle'
+            todoListStatus: 'idle'
         }
         setTodolists([newTodolist, ...todolists])
         setTasks({
@@ -207,13 +207,11 @@ function App() {
                             return <Grid item key={tl.id}>
                                 <Paper style={{padding: '10px'}}>
                                     <Todolist
-                                        title={tl.title}
                                         tasks={tasksForTodolist}
-                                        todolistId={tl.id}
+                                        todoList={tl}
                                         removeTask={removeTask}
                                         filterTasks={filterTasks}
                                         addNewTask={addNewTask}
-                                        filter={tl.filter}
                                         changeTaskTitle={changeTaskTitle}
                                         changeTaskIsDone={changeTaskIsDone}
                                         removeTodolist={removeTodolist}

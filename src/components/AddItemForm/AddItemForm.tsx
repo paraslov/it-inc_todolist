@@ -3,11 +3,12 @@ import {IconButton, TextField} from '@material-ui/core';
 import {AddCircle} from '@material-ui/icons';
 
 export type AddItemFormPropsType = {
+    disabled?: boolean
     label: string
     addNewItem: (newTaskTitle: string) => void
 }
 
-export const AddItemForm = React.memo(({label, addNewItem}: AddItemFormPropsType) => {
+export const AddItemForm = React.memo(({label, addNewItem, disabled = false}: AddItemFormPropsType) => {
     console.log('AIF R')
     //* useState ===============================================================================================>
     const [newTaskTitle, setNewTaskTitle] = useState('')
@@ -31,14 +32,16 @@ export const AddItemForm = React.memo(({label, addNewItem}: AddItemFormPropsType
 
     return (
         <div>
-            <TextField value={newTaskTitle}
-                       label={label}
-                       variant={'outlined'}
-                       error={!!error}
-                       helperText={error}
-                       onChange={onTaskTitleChange}
-                       onKeyPress={onTaskTitleKeyEnterPress}/>
-            <IconButton onClick={addNewItemCallback}>
+            <TextField
+                disabled={disabled}
+                value={newTaskTitle}
+                label={label}
+                variant={'outlined'}
+                error={!!error}
+                helperText={error}
+                onChange={onTaskTitleChange}
+                onKeyPress={onTaskTitleKeyEnterPress}/>
+            <IconButton onClick={addNewItemCallback} disabled={disabled}>
                 <AddCircle fontSize={'large'}/>
             </IconButton>
         </div>

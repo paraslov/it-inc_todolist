@@ -18,29 +18,29 @@ import {_addTask, _removeTask, _updateTask, tasksReducer} from '../../features/T
 import {TaskPriorities, TaskStatuses, TaskType} from '../../api/tasks_api';
 
 
-function AppWithReducers() {
+export function AppWithReducers() {
 
-    //* Todolists data declaration section  =============================================================>
+    //* TodoLists data declaration section  =============================================================>
 
     const todolist1 = v1()
     const todolist2 = v1()
     const todolist3 = v1()
 
-    const [todolists, dispatchToTodolistsReducer] = useReducer(todoListsReducer, [
+    const [todoLists, dispatchToTodoListsReducer] = useReducer(todoListsReducer, [
         {
             id: todolist1,
             title: 'What to learn',
-            filter: 'all', addedDate: '', order: 0, entityStatus: 'idle'
+            filter: 'all', addedDate: '', order: 0, todoListStatus: 'idle'
         },
         {
             id: todolist2,
             title: 'What to buy',
-            filter: 'active', addedDate: '', order: 0, entityStatus: 'idle'
+            filter: 'active', addedDate: '', order: 0, todoListStatus: 'idle'
         },
         {
             id: todolist3,
             title: 'TODO with todolist, lol',
-            filter: 'completed', addedDate: '', order: 0, entityStatus: 'idle'
+            filter: 'completed', addedDate: '', order: 0, todoListStatus: 'idle'
         }
     ])
 
@@ -97,7 +97,7 @@ function AppWithReducers() {
                 addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
             },
             {
-                id: v1(), title: 'Create mult TL', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
+                id: v1(), title: 'Create multiple TL', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
                 addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
             },
             {
@@ -131,24 +131,24 @@ function AppWithReducers() {
         dispatchToTasksReducer(_updateTask(todolistId, task.id, {...task, title: newTaskTitle}))
     }
 
-    //* Callbacks for Todolists management  ====================================================================>
+    //* Callbacks for TodoLists management  ====================================================================>
     function removeTodolist(todolistId: string) {
-        dispatchToTodolistsReducer(_removeTodoList(todolistId))
+        dispatchToTodoListsReducer(_removeTodoList(todolistId))
         dispatchToTasksReducer(_removeTodoList(todolistId))
     }
 
     function addNewTodolist(newTodolistTitle: string) {
         const action = _addTodoList({id: v1(), title: newTodolistTitle, addedDate: '', order: 0})
-        dispatchToTodolistsReducer(action)
+        dispatchToTodoListsReducer(action)
         dispatchToTasksReducer(action)
     }
 
     function filterTasks(id: string, filterCondition: FilterValuesType) {
-        dispatchToTodolistsReducer(_changeTodoListFilter(id, filterCondition))
+        dispatchToTodoListsReducer(_changeTodoListFilter(id, filterCondition))
     }
 
     function changeTodolistTitle(newTodolistTitle: string, todolistId: string) {
-        dispatchToTodolistsReducer(_changeTodoListTitle(todolistId, newTodolistTitle))
+        dispatchToTodoListsReducer(_changeTodoListTitle(todolistId, newTodolistTitle))
     }
 
     return (
@@ -170,7 +170,7 @@ function AppWithReducers() {
                 </Grid>
 
                 <Grid container spacing={2}>
-                    {todolists.map((tl: TodoListDomainType) => {
+                    {todoLists.map((tl: TodoListDomainType) => {
                             //* Todolist filters logic ==============================================================>
                             let tasksForTodolist = tasks[tl.id]
                             if (tl.filter === 'completed') {
@@ -182,13 +182,11 @@ function AppWithReducers() {
                             return <Grid item key={tl.id}>
                                 <Paper style={{padding: '10px'}}>
                                     <Todolist
-                                        title={tl.title}
                                         tasks={tasksForTodolist}
-                                        todolistId={tl.id}
+                                        todoList={tl}
                                         removeTask={removeTask}
                                         filterTasks={filterTasks}
                                         addNewTask={addNewTask}
-                                        filter={tl.filter}
                                         changeTaskTitle={changeTaskTitle}
                                         changeTaskIsDone={changeTaskIsDone}
                                         removeTodolist={removeTodolist}
@@ -203,5 +201,3 @@ function AppWithReducers() {
         </div>
     );
 }
-
-export default AppWithReducers;

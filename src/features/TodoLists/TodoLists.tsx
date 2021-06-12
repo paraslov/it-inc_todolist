@@ -15,12 +15,16 @@ import {Grid, Paper} from '@material-ui/core';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import Todolist from './TodoList/Todolist';
 
-export function TodoLists() {
+type PropsType = {
+    demo?: boolean
+}
+export function TodoLists({demo = false}: PropsType) {
     console.log('TodoLists R')
 
     const dispatch = useDispatch()
 
     useEffect(() => {
+        if(demo) return
         dispatch(fetchTodoListsTC())
     }, [])
 
@@ -69,13 +73,12 @@ export function TodoLists() {
                         return <Grid item key={tl.id}>
                             <Paper style={{padding: '10px'}}>
                                 <Todolist
-                                    title={tl.title}
+                                    demo = {demo}
+                                    todoList={tl}
                                     tasks={tasks[tl.id]}
-                                    todolistId={tl.id}
                                     removeTask={removeTaskCallback}
                                     filterTasks={filterTasks}
                                     addNewTask={addNewTask}
-                                    filter={tl.filter}
                                     changeTaskTitle={changeTaskTitle}
                                     changeTaskIsDone={changeTaskIsDone}
                                     removeTodolist={removeTodolistCallback}
