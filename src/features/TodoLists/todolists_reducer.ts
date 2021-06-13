@@ -20,7 +20,10 @@ export const todoListsReducer =
             case 'para-slov/todoListReducer/SET-TODOLISTS':
                 return action.todolists.map(tl => ({...tl, filter: 'all', todoListStatus: 'idle'}))
             case 'para-slov/todoListReducer/SET-TODOLISTS-STATUS':
-                return state.map(tl => tl.id === action.todoListId ? ({...tl, todoListStatus: action.todoListStatus}) : tl)
+                return state.map(tl => tl.id === action.todoListId ? ({
+                    ...tl,
+                    todoListStatus: action.todoListStatus
+                }) : tl)
             default:
                 return state
         }
@@ -48,6 +51,9 @@ export const fetchTodoListsTC = (): ThunkType => dispatch => {
             dispatch(_fetchTodoLists(data))
             dispatch(setAppStatus('succeeded'))
         })
+        .catch(error => {
+            thunkServerCatchError(error, dispatch)
+        })
 }
 export const addTodoList = (title: string): ThunkType => dispatch => {
     dispatch(setAppStatus('loading'))
@@ -74,22 +80,25 @@ export const removeTodoList = (todoListId: string): ThunkType => dispatch => {
             }
             dispatch(setAppStatus('succeeded'))
         })
+        .catch(error => {
+            thunkServerCatchError(error, dispatch)
+        })
 }
 export const changeTodoListTitle = (todoListId: string, title: string): ThunkType => dispatch => {
     dispatch(setAppStatus('loading'))
+    dispatch(_setTodoListStatus(todoListId, 'loading'))
     todoListsAPI.updateTodoList(todoListId, title)
         .then(data => {
             if (data.resultCode === 0) {
                 dispatch(_changeTodoListTitle(todoListId, title))
                 dispatch(setAppStatus('succeeded'))
+                dispatch(_setTodoListStatus(todoListId, 'succeeded'))
             } else {
-                if(data.messages.length) {
-                    dispatch(setAppError(data.messages[0]))
-                } else {
-                    dispatch(setAppError('some error occurred'))
-                }
-                dispatch(setAppStatus('failed'))
+                thunkServerResponseError(data, dispatch)
             }
+        })
+        .catch(error => {
+            thunkServerCatchError(error, dispatch)
         })
 }
 

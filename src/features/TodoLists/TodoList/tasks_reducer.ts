@@ -1,7 +1,8 @@
 import {_addTodoList, _fetchTodoLists, _removeTodoList} from '../todolists_reducer';
 import {TaskPriorities, tasksAPI, TaskStatuses, TaskType, TaskUpdateModelType} from '../../../api/tasks_api';
 import {BaseThunkType} from '../../../app/store';
-import {setAppError, setAppStatus} from '../../../app/app_reducer';
+import {ResponseStatusType, setAppError, setAppStatus} from '../../../app/app_reducer';
+import {thunkServerCatchError, thunkServerResponseError} from '../../../utils/thunk-helpers/thunk-errors-handle';
 
 const initState: TasksType = {}
 
@@ -47,10 +48,14 @@ export const _fetchTasks = (todolistId: string, tasks: TaskType[]) =>
 //* ====== Thunk Creators ============================================================================================>>
 export const fetchTasks = (todolistId: string): ThunkType => dispatch => {
     dispatch(setAppStatus('loading'))
-    tasksAPI.fetchTasks(todolistId).then(data => {
-        dispatch(_fetchTasks(todolistId, data.items))
-        dispatch(setAppStatus('succeeded'))
-    })
+    tasksAPI.fetchTasks(todolistId)
+        .then(data => {
+            dispatch(_fetchTasks(todolistId, data.items))
+            dispatch(setAppStatus('succeeded'))
+        })
+        .catch(error => {
+            thunkServerCatchError(error, dispatch)
+        })
 }
 export const addTask = (todoListId: string, title: string): ThunkType => dispatch => {
     dispatch(setAppStatus('loading'))
@@ -60,13 +65,11 @@ export const addTask = (todoListId: string, title: string): ThunkType => dispatc
                 dispatch(_addTask(todoListId, data.data.item))
                 dispatch(setAppStatus('succeeded'))
             } else {
-                if (data.resultCode === 1) {
-                    data.messages.length && dispatch(setAppError(data.messages[0]))
-                } else {
-                    dispatch(setAppError('some error occurred'))
-                }
-                dispatch(setAppStatus('failed'))
+                thunkServerResponseError(data, dispatch)
             }
+        })
+        .catch(error => {
+            thunkServerCatchError(error, dispatch)
         })
 }
 export const removeTask = (todoListId: string, taskId: string): ThunkType => dispatch => {
@@ -77,6 +80,9 @@ export const removeTask = (todoListId: string, taskId: string): ThunkType => dis
                 dispatch(_removeTask(todoListId, taskId))
             }
             dispatch(setAppStatus('succeeded'))
+        })
+        .catch(error => {
+            thunkServerCatchError(error, dispatch)
         })
 }
 export const updateTask = (todoListId: string, task: TaskType, model: TaskUpdateDomainModelType): ThunkType =>
@@ -95,12 +101,18 @@ export const updateTask = (todoListId: string, task: TaskType, model: TaskUpdate
             .then(data => {
                 if (data.resultCode === 0) {
                     dispatch(_updateTask(todoListId, task.id, updatedTaskModel))
+                    dispatch(setAppStatus('succeeded'))
+                } else {
+                    thunkServerResponseError(data, dispatch)
                 }
-                dispatch(setAppStatus('succeeded'))
+            })
+            .catch(error => {
+                thunkServerCatchError(error, dispatch)
             })
     }
 
 //* ====== Types =====================================================================================================>>
+export type TaskDomainType = TaskType & {taskStatus: ResponseStatusType}
 export type TasksType = {
     [key: string]: Array<TaskType>
 }
