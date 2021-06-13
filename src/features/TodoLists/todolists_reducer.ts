@@ -1,6 +1,7 @@
 import {todoListsAPI, TodoListType} from '../../api/todoLists_api';
 import {BaseThunkType} from '../../app/store';
-import {ResponseStatusType, setError, setStatus} from '../../app/app_reducer';
+import {ResponseStatusType, setAppError, setAppStatus} from '../../app/app_reducer';
+import {thunkServerCatchError, thunkServerResponseError} from '../../utils/thunk-helpers/thunk-errors-handle';
 
 //* ====== Reducer ===================================================================================================>>
 const initState: Array<TodoListDomainType> = []
@@ -41,50 +42,54 @@ export const _setTodoListStatus = (todoListId: string, todoListStatus: ResponseS
 
 //* ====== Thunk Creators ============================================================================================>>
 export const fetchTodoListsTC = (): ThunkType => dispatch => {
-    dispatch(setStatus('loading'))
+    dispatch(setAppStatus('loading'))
     todoListsAPI.fetchTodoLists()
         .then(data => {
             dispatch(_fetchTodoLists(data))
-            dispatch(setStatus('succeeded'))
+            dispatch(setAppStatus('succeeded'))
         })
 }
 export const addTodoList = (title: string): ThunkType => dispatch => {
-    dispatch(setStatus('loading'))
+    dispatch(setAppStatus('loading'))
     todoListsAPI.addTodoList(title)
         .then(data => {
             if (data.resultCode === 0) {
                 dispatch(_addTodoList(data.data.item))
-                dispatch(setStatus('succeeded'))
+                dispatch(setAppStatus('succeeded'))
             } else {
-                if (data.resultCode === 1) {
-                    data.messages.length && dispatch(setError(data.messages[0]))
-                } else {
-                    dispatch(setError('some error occurred'))
-                }
-                dispatch(setStatus('failed'))
+                thunkServerResponseError(data, dispatch)
             }
-
+        })
+        .catch(error => {
+            thunkServerCatchError(error, dispatch)
         })
 }
 export const removeTodoList = (todoListId: string): ThunkType => dispatch => {
-    dispatch(setStatus('loading'))
+    dispatch(setAppStatus('loading'))
     dispatch(_setTodoListStatus(todoListId, 'loading'))
     todoListsAPI.removeTodoList(todoListId)
         .then(data => {
             if (data.resultCode === 0) {
                 dispatch(_removeTodoList(todoListId))
             }
-            dispatch(setStatus('succeeded'))
+            dispatch(setAppStatus('succeeded'))
         })
 }
 export const changeTodoListTitle = (todoListId: string, title: string): ThunkType => dispatch => {
-    dispatch(setStatus('loading'))
+    dispatch(setAppStatus('loading'))
     todoListsAPI.updateTodoList(todoListId, title)
         .then(data => {
             if (data.resultCode === 0) {
                 dispatch(_changeTodoListTitle(todoListId, title))
+                dispatch(setAppStatus('succeeded'))
+            } else {
+                if(data.messages.length) {
+                    dispatch(setAppError(data.messages[0]))
+                } else {
+                    dispatch(setAppError('some error occurred'))
+                }
+                dispatch(setAppStatus('failed'))
             }
-            dispatch(setStatus('succeeded'))
         })
 }
 
@@ -101,8 +106,8 @@ export type TodoListActionsType = ReturnType<typeof _removeTodoList>
     | ReturnType<typeof _changeTodoListFilter>
     | ReturnType<typeof _fetchTodoLists>
     | ReturnType<typeof _setTodoListStatus>
-    | ReturnType<typeof setStatus>
-    | ReturnType<typeof setError>
+    | ReturnType<typeof setAppStatus>
+    | ReturnType<typeof setAppError>
 
 type ThunkType = BaseThunkType<TodoListActionsType>
 

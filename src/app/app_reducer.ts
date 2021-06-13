@@ -16,13 +16,13 @@ export const appReducer = (state: AppReducerStateType = initialState, action: Ap
 }
 
 //* ====== Action Creators ===========================================================================================>>
-export const setStatus = (status: ResponseStatusType) => ({type: 'SET-STATUS', status} as const)
-export const setError = (error: string | null) => ({type: 'SET-ERROR', error} as const)
+export const setAppStatus = (status: ResponseStatusType) => ({type: 'SET-STATUS', status} as const)
+export const setAppError = (error: string | null) => ({type: 'SET-ERROR', error} as const)
 
 //* ====== Types =====================================================================================================>>
 export type ResponseStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 export type AppReducerStateType = typeof initialState
 
-type AppReducerActionsType = ReturnType<typeof setError>
-    | ReturnType<typeof setStatus>
+type AppReducerActionsType = ReturnType<typeof setAppError>
+    | ReturnType<typeof setAppStatus>
