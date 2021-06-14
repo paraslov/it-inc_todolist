@@ -7,7 +7,7 @@ import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography}
 import {Menu} from '@material-ui/icons';
 import {FilterValuesType, TodoListDomainType} from '../../features/TodoLists/todolists_reducer';
 import {TaskPriorities, TaskStatuses, TaskType} from '../../api/tasks_api';
-import {TasksType} from '../../features/TodoLists/TodoList/tasks_reducer';
+import {TaskDomainType, TasksType} from '../../features/TodoLists/TodoList/tasks_reducer';
 
 
 function App() {
@@ -43,63 +43,63 @@ function App() {
         [todolist1]: [
             {
                 id: v1(), title: 'HTML&CSS', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'JavaScript', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'ReactJS', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'Rest API', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'GraphQL', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
         ],
         [todolist2]: [
             {
                 id: v1(), title: 'CD', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'HF:JavaScript', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'Clean code', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'Algorithms', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
         ],
         [todolist3]: [
             {
                 id: v1(), title: 'Create Todolist', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'Create tasks func', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'Create mult TL', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'Add TL func-ty', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'Add API', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
         ],
     })
@@ -111,11 +111,11 @@ function App() {
     }
 
     function addNewTask(newTaskTitle: string, todolistId: string) {
-        const newTask = {
+        const newTask: TaskDomainType = {
             id: v1(),
             title: newTaskTitle,
             status: TaskStatuses.New, priority: TaskPriorities.Middle,
-            addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+            addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
         }
         tasks[todolistId] = [newTask, ...tasks[todolistId]]
         setTasks({...tasks})

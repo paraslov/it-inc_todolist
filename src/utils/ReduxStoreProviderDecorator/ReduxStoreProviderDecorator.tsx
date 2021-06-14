@@ -26,30 +26,84 @@ const initialGlobalState: AppStateType = {
     tasks: {
         ['todolistId1']: [
             {
-                id: v1(), title: 'HTML&CSS', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: 'todolistId1', description: 'desc'
+                id: v1(),
+                title: 'HTML&CSS',
+                status: TaskStatuses.Completed,
+                priority: TaskPriorities.Middle,
+                addedDate: '',
+                order: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: 'todolistId1',
+                description: 'desc',
+                taskStatus: 'idle'
             },
             {
-                id: v1(), title: 'JS', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: 'todolistId1', description: 'desc'
+                id: v1(),
+                title: 'JS',
+                status: TaskStatuses.Completed,
+                priority: TaskPriorities.Middle,
+                addedDate: '',
+                order: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: 'todolistId1',
+                description: 'desc',
+                taskStatus: 'idle'
             },
             {
-                id: v1(), title: 'Angular', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: 'todolistId1', description: 'desc'
+                id: v1(),
+                title: 'Angular',
+                status: TaskStatuses.New,
+                priority: TaskPriorities.Middle,
+                addedDate: '',
+                order: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: 'todolistId1',
+                description: 'desc',
+                taskStatus: 'idle'
             },
         ],
         ['todolistId2']: [
             {
-                id: v1(), title: 'Milk', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: 'todolistId2', description: 'desc'
+                id: v1(),
+                title: 'Milk',
+                status: TaskStatuses.Completed,
+                priority: TaskPriorities.Middle,
+                addedDate: '',
+                order: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: 'todolistId2',
+                description: 'desc',
+                taskStatus: 'idle'
             },
             {
-                id: v1(), title: 'React Book', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: 'todolistId2', description: 'desc'
+                id: v1(),
+                title: 'React Book',
+                status: TaskStatuses.Completed,
+                priority: TaskPriorities.Middle,
+                addedDate: '',
+                order: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: 'todolistId2',
+                description: 'desc',
+                taskStatus: 'idle'
             },
             {
-                id: v1(), title: 'Angular Book', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: 'todolistId2', description: 'desc'
+                id: v1(),
+                title: 'Angular Book',
+                status: TaskStatuses.New,
+                priority: TaskPriorities.Middle,
+                addedDate: '',
+                order: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: 'todolistId2',
+                description: 'desc',
+                taskStatus: 'idle'
             },
         ]
     },

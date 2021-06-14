@@ -6,7 +6,7 @@ export default {
     title: 'API/tasks'
 } as Meta
 
-const initTodoListId = '2e340f98-dcb9-4e5f-b2d7-f0e842512bbb'
+const initTodoListId = '2dd62990-2cc7-4885-b989-08753003b617'
 
 export const GetTasks = () => {
     const [state, setState] = useState<TaskType[] | null>(null)

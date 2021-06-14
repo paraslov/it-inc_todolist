@@ -50,63 +50,63 @@ export function AppWithReducers() {
         [todolist1]: [
             {
                 id: v1(), title: 'HTML&CSS', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'JavaScript', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'ReactJS', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'Rest API', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'GraphQL', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
         ],
         [todolist2]: [
             {
                 id: v1(), title: 'CD', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'HF:JavaScript', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'Clean code', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'Algorithms', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
         ],
         [todolist3]: [
             {
                 id: v1(), title: 'Create Todolist', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'Create tasks func', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'Create multiple TL', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'Add TL func-ty', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
             {
                 id: v1(), title: 'Add API', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc'
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
             },
         ],
     })

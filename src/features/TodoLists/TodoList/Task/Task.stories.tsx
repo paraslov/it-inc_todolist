@@ -27,7 +27,7 @@ TaskDoneBaseExample.args = {
     ...baseArgs,
     task: {
         id: '101', title: 'HTML', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-        addedDate: '', order: 0, startDate: '', deadline: '', todoListId: 'todolist1', description: 'desc'
+        addedDate: '', order: 0, startDate: '', deadline: '', todoListId: 'todolist1', description: 'desc', taskStatus: 'idle'
     }
 }
 
@@ -36,6 +36,6 @@ TaskNotDoneBaseExample.args = {
     ...baseArgs,
     task: {
         id: '102', title: 'Angular', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-        addedDate: '', order: 0, startDate: '', deadline: '', todoListId: 'todolist2', description: 'desc'
+        addedDate: '', order: 0, startDate: '', deadline: '', todoListId: 'todolist2', description: 'desc', taskStatus: 'idle'
     }
 }

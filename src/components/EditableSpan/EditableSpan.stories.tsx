@@ -14,6 +14,10 @@ export default {
         title: {
             description: 'editable span start title',
             defaultValue: 'ReactJS'
+        },
+        disabled: {
+            description: 'editable span active or disabled toggle',
+            defaultValue: false
         }
     }
 } as Meta
@@ -24,5 +28,11 @@ const Template: Story<EditableSpanPropsType> = (args) => <EditableSpan {...args}
 
 export const EditableSpanBaseExample = Template.bind({})
 EditableSpanBaseExample.args = {
-    onChange: onChangeCallback
+    onChange: onChangeCallback,
+}
+
+export const EditableSpanDisabledExample = Template.bind({})
+EditableSpanDisabledExample.args = {
+    onChange: onChangeCallback,
+    disabled: true
 }

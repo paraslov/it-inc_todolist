@@ -7,13 +7,13 @@ import {Task} from './Task/Task';
 import {FilterValuesType, TodoListDomainType} from '../todolists_reducer';
 import {TaskStatuses, TaskType} from '../../../api/tasks_api';
 import {useDispatch} from 'react-redux';
-import {fetchTasks} from './tasks_reducer';
+import {fetchTasks, TaskDomainType} from './tasks_reducer';
 
 //* Types declaration ================================================================================================>>
 export type TodolistPropsType = {
     demo?: boolean
     todoList: TodoListDomainType
-    tasks: Array<TaskType>
+    tasks: Array<TaskDomainType>
     removeTask: (id: string, todolistId: string) => void
     filterTasks: (id: string, filterCondition: FilterValuesType) => void
     addNewTask: (newTaskTitle: string, todolistId: string) => void
@@ -63,6 +63,7 @@ const Todolist = React.memo(({demo = false, ...props}: TodolistPropsType) => {
     const tasksElements = tasksForTodolist
         .map(task => <Task key={task.id}
                            task={task}
+                           disabled={task.taskStatus === 'loading'}
                            changeTaskIsDone={props.changeTaskIsDone}
                            changeTaskTitle={props.changeTaskTitle}
                            removeTask={props.removeTask}
