@@ -1,13 +1,13 @@
-import {todoListsAPI, TodoListType} from '../../api/todoLists_api';
-import {BaseThunkType} from '../../app/store';
-import {ResponseStatusType, setAppError, setAppStatus} from '../../app/app_reducer';
+import {todoListsAPI, TTodoList} from '../../api/todoLists_api';
+import {TBaseThunk} from '../../app/store';
+import {TResponseStatus, setAppError, setAppStatus} from '../../app/app_reducer';
 import {thunkServerCatchError, thunkServerResponseError} from '../../utils/thunk-helpers/thunk-errors-handle';
 
 //* ====== Reducer ===================================================================================================>>
-const initState: Array<TodoListDomainType> = []
+const initState: Array<TTodoListDomain> = []
 
 export const todoListsReducer =
-    (state: Array<TodoListDomainType> = initState, action: TodoListActionsType): Array<TodoListDomainType> => {
+    (state: Array<TTodoListDomain> = initState, action: TTodoListActions): Array<TTodoListDomain> => {
         switch (action.type) {
             case 'para-slov/todoListReducer/REMOVE-TODOLIST':
                 return state.filter(tl => tl.id !== action.id)
@@ -32,19 +32,19 @@ export const todoListsReducer =
 //* ====== Action Creators ===========================================================================================>>
 export const _removeTodoList = (todoListId: string) =>
     ({type: 'para-slov/todoListReducer/REMOVE-TODOLIST', id: todoListId} as const)
-export const _addTodoList = (todoList: TodoListType) =>
+export const _addTodoList = (todoList: TTodoList) =>
     ({type: 'para-slov/todoListReducer/ADD-TODOLIST', todoList} as const)
 export const _changeTodoListTitle = (todoListId: string, title: string) =>
     ({type: 'para-slov/todoListReducer/CHANGE-TODOLIST-TITLE', id: todoListId, title: title} as const)
-export const _changeTodoListFilter = (todoListId: string, filter: FilterValuesType) =>
+export const _changeTodoListFilter = (todoListId: string, filter: TFilterValues) =>
     ({type: 'para-slov/todoListReducer/CHANGE-TODOLIST-FILTER', id: todoListId, filter} as const)
-export const _fetchTodoLists = (todoLists: TodoListType[]) =>
+export const _fetchTodoLists = (todoLists: TTodoList[]) =>
     ({type: 'para-slov/todoListReducer/SET-TODOLISTS', todolists: todoLists} as const)
-export const _setTodoListStatus = (todoListId: string, todoListStatus: ResponseStatusType) =>
+export const _setTodoListStatus = (todoListId: string, todoListStatus: TResponseStatus) =>
     ({type: 'para-slov/todoListReducer/SET-TODOLISTS-STATUS', todoListId, todoListStatus} as const)
 
 //* ====== Thunk Creators ============================================================================================>>
-export const fetchTodoListsTC = (): ThunkType => dispatch => {
+export const fetchTodoListsTC = (): TThunk => dispatch => {
     dispatch(setAppStatus('loading'))
     todoListsAPI.fetchTodoLists()
         .then(data => {
@@ -55,7 +55,7 @@ export const fetchTodoListsTC = (): ThunkType => dispatch => {
             thunkServerCatchError(error, dispatch)
         })
 }
-export const addTodoList = (title: string): ThunkType => dispatch => {
+export const addTodoList = (title: string): TThunk => dispatch => {
     dispatch(setAppStatus('loading'))
     todoListsAPI.addTodoList(title)
         .then(data => {
@@ -70,7 +70,7 @@ export const addTodoList = (title: string): ThunkType => dispatch => {
             thunkServerCatchError(error, dispatch)
         })
 }
-export const removeTodoList = (todoListId: string): ThunkType => dispatch => {
+export const removeTodoList = (todoListId: string): TThunk => dispatch => {
     dispatch(setAppStatus('loading'))
     dispatch(_setTodoListStatus(todoListId, 'loading'))
     todoListsAPI.removeTodoList(todoListId)
@@ -84,7 +84,7 @@ export const removeTodoList = (todoListId: string): ThunkType => dispatch => {
             thunkServerCatchError(error, dispatch)
         })
 }
-export const changeTodoListTitle = (todoListId: string, title: string): ThunkType => dispatch => {
+export const changeTodoListTitle = (todoListId: string, title: string): TThunk => dispatch => {
     dispatch(setAppStatus('loading'))
     dispatch(_setTodoListStatus(todoListId, 'loading'))
     todoListsAPI.updateTodoList(todoListId, title)
@@ -103,13 +103,13 @@ export const changeTodoListTitle = (todoListId: string, title: string): ThunkTyp
 }
 
 //* ====== Types =====================================================================================================>>
-export type FilterValuesType = 'all' | 'completed' | 'active'
-export type TodoListDomainType = TodoListType & {
-    filter: FilterValuesType
-    todoListStatus: ResponseStatusType
+export type TFilterValues = 'all' | 'completed' | 'active'
+export type TTodoListDomain = TTodoList & {
+    filter: TFilterValues
+    todoListStatus: TResponseStatus
 }
 
-export type TodoListActionsType = ReturnType<typeof _removeTodoList>
+export type TTodoListActions = ReturnType<typeof _removeTodoList>
     | ReturnType<typeof _addTodoList>
     | ReturnType<typeof _changeTodoListTitle>
     | ReturnType<typeof _changeTodoListFilter>
@@ -118,5 +118,5 @@ export type TodoListActionsType = ReturnType<typeof _removeTodoList>
     | ReturnType<typeof setAppStatus>
     | ReturnType<typeof setAppError>
 
-type ThunkType = BaseThunkType<TodoListActionsType>
+type TThunk = TBaseThunk<TTodoListActions>
 

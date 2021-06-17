@@ -6,7 +6,7 @@ import {
     _setTaskStatus,
     _updateTask,
     tasksReducer,
-    TasksType
+    TTasks
 } from './tasks_reducer';
 import {_addTodoList, _removeTodoList} from '../todolists_reducer';
 import {TaskPriorities, TaskStatuses} from '../../../api/tasks_api';
@@ -14,7 +14,7 @@ import {TaskPriorities, TaskStatuses} from '../../../api/tasks_api';
 const todolist1 = v1()
 const todolist2 = v1()
 
-let tasks: TasksType
+let tasks: TTasks
 
 beforeEach(() => {
     tasks = {
@@ -64,7 +64,7 @@ beforeEach(() => {
 test('should delete task #3 from todolist1', () => {
 
     const taskToRemoveId = tasks[todolist1][2].id
-    const newTasks: TasksType = tasksReducer(tasks, _removeTask(todolist1, taskToRemoveId))
+    const newTasks: TTasks = tasksReducer(tasks, _removeTask(todolist1, taskToRemoveId))
 
     expect(newTasks[todolist1].length).toBe(4)
     expect(newTasks[todolist1][2].title).toBe('Rest API')

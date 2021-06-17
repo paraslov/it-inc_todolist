@@ -4,21 +4,21 @@ import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
 import {Button, IconButton} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
 import {Task} from './Task/Task';
-import {FilterValuesType, TodoListDomainType} from '../todolists_reducer';
-import {TaskStatuses, TaskType} from '../../../api/tasks_api';
+import {TFilterValues, TTodoListDomain} from '../todolists_reducer';
+import {TaskStatuses, TTask} from '../../../api/tasks_api';
 import {useDispatch} from 'react-redux';
-import {fetchTasks, TaskDomainType} from './tasks_reducer';
+import {fetchTasks, TTaskDomain} from './tasks_reducer';
 
 //* Types declaration ================================================================================================>>
 export type TodolistPropsType = {
     demo?: boolean
-    todoList: TodoListDomainType
-    tasks: Array<TaskDomainType>
+    todoList: TTodoListDomain
+    tasks: Array<TTaskDomain>
     removeTask: (id: string, todolistId: string) => void
-    filterTasks: (id: string, filterCondition: FilterValuesType) => void
+    filterTasks: (id: string, filterCondition: TFilterValues) => void
     addNewTask: (newTaskTitle: string, todolistId: string) => void
-    changeTaskTitle: (todolistId: string, task: TaskType, newTaskTitle: string) => void
-    changeTaskIsDone: (todolistId: string, task: TaskType, status: TaskStatuses) => void
+    changeTaskTitle: (todolistId: string, task: TTask, newTaskTitle: string) => void
+    changeTaskIsDone: (todolistId: string, task: TTask, status: TaskStatuses) => void
     removeTodolist: (todolistId: string) => void
     changeTodolistTitle: (newTodolistTitle: string, todolistId: string) => void
 }
@@ -43,9 +43,9 @@ const Todolist = React.memo(({demo = false, ...props}: TodolistPropsType) => {
         props.filterTasks(props.todoList.id, 'completed'), [props.todoList.id, props.filterTasks])
     const setFilterActive = useCallback(() =>
         props.filterTasks(props.todoList.id, 'active'), [props.todoList.id, props.filterTasks])
-    const setFilterVariant = useCallback((filter: FilterValuesType) =>
+    const setFilterVariant = useCallback((filter: TFilterValues) =>
         props.todoList.filter === filter ? 'contained' : 'outlined', [props.todoList.filter])
-    const setFilterColor = useCallback((filter: FilterValuesType) =>
+    const setFilterColor = useCallback((filter: TFilterValues) =>
         props.todoList.filter === filter ? 'primary' : 'default', [props.todoList.filter])
     const changeTodolistTitle = useCallback((newTodolistTitle: string) =>
         props.changeTodolistTitle(newTodolistTitle, props.todoList.id), [props.changeTodolistTitle, props.todoList.id])

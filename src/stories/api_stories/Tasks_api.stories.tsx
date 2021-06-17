@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {Meta} from '@storybook/react';
-import {TaskPriorities, tasksAPI, TaskStatuses, TaskType, TaskUpdateModelType} from '../../api/tasks_api';
+import {TaskPriorities, tasksAPI, TaskStatuses, TTask, TTaskUpdateModel} from '../../api/tasks_api';
 
 export default {
     title: 'API/tasks'
@@ -9,7 +9,7 @@ export default {
 const initTodoListId = '2dd62990-2cc7-4885-b989-08753003b617'
 
 export const GetTasks = () => {
-    const [state, setState] = useState<TaskType[] | null>(null)
+    const [state, setState] = useState<TTask[] | null>(null)
     const [todoListId, setTodoListId] = useState(initTodoListId)
 
     const getTasks = (todoListId: string) => {
@@ -120,7 +120,7 @@ export const UpdateTask = () => {
     const [taskId, setTaskId] = useState('')
     const [updatedTitle, setUpdatedTitle] = useState('')
 
-    const updateTaskModel: TaskUpdateModelType = {
+    const updateTaskModel: TTaskUpdateModel = {
         title: updatedTitle,
         description: 'task, that I update in UpdateTask story',
         deadline: '',
@@ -129,7 +129,7 @@ export const UpdateTask = () => {
         startDate: '',
     }
 
-    const updateTask = (todoListId: string, taskId: string, model: TaskUpdateModelType) => {
+    const updateTask = (todoListId: string, taskId: string, model: TTaskUpdateModel) => {
         tasksAPI.updateTask(todoListId, taskId, model)
             .then(data => {
                 console.log(data)

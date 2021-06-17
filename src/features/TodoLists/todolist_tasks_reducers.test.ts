@@ -1,11 +1,11 @@
-import {_addTodoList, _fetchTodoLists, TodoListDomainType, todoListsReducer} from './todolists_reducer';
-import {tasksReducer, TasksType} from './TodoList/tasks_reducer';
+import {_addTodoList, _fetchTodoLists, TTodoListDomain, todoListsReducer} from './todolists_reducer';
+import {tasksReducer, TTasks} from './TodoList/tasks_reducer';
 import {v1} from 'uuid';
 
 
 test('ids should be equals', () => {
-    const startTasksState: TasksType = {};
-    const startTodoListsState: Array<TodoListDomainType> = [];
+    const startTasksState: TTasks = {};
+    const startTodoListsState: Array<TTodoListDomain> = [];
 
     const action = _addTodoList({id: v1(), title: 'new todolist', addedDate: '', order: 0});
 

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Meta} from '@storybook/react';
-import {todoListsAPI, TodoListType} from '../../api/todoLists_api';
+import {todoListsAPI, TTodoList} from '../../api/todoLists_api';
 
 export default {
     title: 'API/todo lists'
@@ -8,7 +8,7 @@ export default {
 
 
 export const GetTodoLists = () => {
-    const [state, setState] = useState<TodoListType[] | null>(null)
+    const [state, setState] = useState<TTodoList[] | null>(null)
 
     useEffect(() => {
         todoListsAPI.fetchTodoLists()

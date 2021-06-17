@@ -10,9 +10,15 @@ export const instance = axios.create({
 })
 
 //* common api types: ===========================================================================================>>
-export type CommonResponseType<D = {}> = {
+export type TOperationResult<D = {}> = {
     resultCode: number
     messages: string[]
     data: D
+}
+
+//* Result codes enum: ===========================================================================================>>
+export enum APIRequestsResultCodes {
+    Success = 0,
+    Error = 1
 }
 

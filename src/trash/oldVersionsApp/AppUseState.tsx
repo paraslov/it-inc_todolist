@@ -5,9 +5,9 @@ import {v1} from 'uuid';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
-import {FilterValuesType, TodoListDomainType} from '../../features/TodoLists/todolists_reducer';
-import {TaskPriorities, TaskStatuses, TaskType} from '../../api/tasks_api';
-import {TaskDomainType, TasksType} from '../../features/TodoLists/TodoList/tasks_reducer';
+import {TFilterValues, TTodoListDomain} from '../../features/TodoLists/todolists_reducer';
+import {TaskPriorities, TaskStatuses, TTask} from '../../api/tasks_api';
+import {TTaskDomain, TTasks} from '../../features/TodoLists/TodoList/tasks_reducer';
 
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
     const todolist2 = v1()
     const todolist3 = v1()
 
-    const [todolists, setTodolists] = useState<Array<TodoListDomainType>>([
+    const [todolists, setTodolists] = useState<Array<TTodoListDomain>>([
         {
             id: todolist1,
             title: 'What to learn',
@@ -39,7 +39,7 @@ function App() {
 
     //* Tasks data declaration section =====================================================================>
 
-    const [tasks, setTasks] = useState<TasksType>({
+    const [tasks, setTasks] = useState<TTasks>({
         [todolist1]: [
             {
                 id: v1(), title: 'HTML&CSS', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
@@ -111,7 +111,7 @@ function App() {
     }
 
     function addNewTask(newTaskTitle: string, todolistId: string) {
-        const newTask: TaskDomainType = {
+        const newTask: TTaskDomain = {
             id: v1(),
             title: newTaskTitle,
             status: TaskStatuses.New, priority: TaskPriorities.Middle,
@@ -121,7 +121,7 @@ function App() {
         setTasks({...tasks})
     }
 
-    function changeTaskIsDone(todolistId: string, task: TaskType, status: TaskStatuses) {
+    function changeTaskIsDone(todolistId: string, task: TTask, status: TaskStatuses) {
         const updatingTask = tasks[todolistId].find(t => t.id === task.id)
         if (updatingTask) {
             updatingTask.status = status
@@ -129,7 +129,7 @@ function App() {
         }
     }
 
-    function changeTaskTitle(todolistId: string, task: TaskType, newTaskTitle: string) {
+    function changeTaskTitle(todolistId: string, task: TTask, newTaskTitle: string) {
         const updatingTask = tasks[todolistId].find(t => t.id === task.id)
         if (updatingTask) {
             updatingTask.title = newTaskTitle
@@ -145,7 +145,7 @@ function App() {
     }
 
     function addNewTodolist(newTodolistTitle: string) {
-        const newTodolist: TodoListDomainType = {
+        const newTodolist: TTodoListDomain = {
             id: v1(),
             title: newTodolistTitle,
             filter: 'all',
@@ -160,7 +160,7 @@ function App() {
         })
     }
 
-    function filterTasks(id: string, filterCondition: FilterValuesType) {
+    function filterTasks(id: string, filterCondition: TFilterValues) {
         let todolist = todolists.find(tl => tl.id === id)
         if (todolist) {
             todolist.filter = filterCondition

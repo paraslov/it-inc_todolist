@@ -1,13 +1,13 @@
 import {_addTodoList, _fetchTodoLists, _removeTodoList} from '../todolists_reducer';
-import {TaskPriorities, tasksAPI, TaskStatuses, TaskType, TaskUpdateModelType} from '../../../api/tasks_api';
-import {BaseThunkType} from '../../../app/store';
-import {ResponseStatusType, setAppError, setAppStatus} from '../../../app/app_reducer';
+import {TaskPriorities, tasksAPI, TaskStatuses, TTask, TTaskUpdateModel} from '../../../api/tasks_api';
+import {TBaseThunk} from '../../../app/store';
+import {TResponseStatus, setAppError, setAppStatus} from '../../../app/app_reducer';
 import {thunkServerCatchError, thunkServerResponseError} from '../../../utils/thunk-helpers/thunk-errors-handle';
 
-const initState: TasksType = {}
+const initState: TTasks = {}
 
 //* ======================================================================================================= Reducer ==>>
-export const tasksReducer = (state: TasksType = initState, action: TasksActionsType): TasksType => {
+export const tasksReducer = (state: TTasks = initState, action: TTasksActions): TTasks => {
     switch (action.type) {
         case 'para-slov/tasksReducer/FETCH-TASKS':
             return {...state, [action.todolistId]: action.tasks.map(task => ({...task, taskStatus: 'idle'}))}
@@ -39,17 +39,17 @@ export const tasksReducer = (state: TasksType = initState, action: TasksActionsT
 //* ================================================================================================ Action Creators ==>>
 export const _removeTask = (todoListId: string, taskId: string) =>
     ({type: 'para-slov/tasksReducer/REMOVE-TASK', todolistId: todoListId, taskId} as const)
-export const _addTask = (todoListId: string, task: TaskType) =>
+export const _addTask = (todoListId: string, task: TTask) =>
     ({type: 'para-slov/tasksReducer/ADD-TASK', todolistId: todoListId, task} as const)
-export const _updateTask = (todoListId: string, taskId: string, model: TaskUpdateModelType) =>
+export const _updateTask = (todoListId: string, taskId: string, model: TTaskUpdateModel) =>
     ({type: 'para-slov/tasksReducer/UPDATE-TASK', todolistId: todoListId, taskId, model} as const)
-export const _fetchTasks = (todoListId: string, tasks: TaskType[]) =>
+export const _fetchTasks = (todoListId: string, tasks: TTask[]) =>
     ({type: 'para-slov/tasksReducer/FETCH-TASKS', todolistId: todoListId, tasks} as const)
-export const _setTaskStatus = (todoListId: string, taskId: string, taskStatus: ResponseStatusType) =>
+export const _setTaskStatus = (todoListId: string, taskId: string, taskStatus: TResponseStatus) =>
     ({type: 'para-slov/tasksReducer/SET-TASK-STATUS', todoListId, taskId, taskStatus} as const)
 
 //* ============================================================================================== Thunk Creators ====>>
-export const fetchTasks = (todoListId: string): ThunkType => dispatch => {
+export const fetchTasks = (todoListId: string): TThunk => dispatch => {
     dispatch(setAppStatus('loading'))
     tasksAPI.fetchTasks(todoListId)
         .then(data => {
@@ -60,7 +60,7 @@ export const fetchTasks = (todoListId: string): ThunkType => dispatch => {
             thunkServerCatchError(error, dispatch)
         })
 }
-export const addTask = (todoListId: string, title: string): ThunkType => dispatch => {
+export const addTask = (todoListId: string, title: string): TThunk => dispatch => {
     dispatch(setAppStatus('loading'))
     tasksAPI.addTask(todoListId, title)
         .then(data => {
@@ -75,7 +75,7 @@ export const addTask = (todoListId: string, title: string): ThunkType => dispatc
             thunkServerCatchError(error, dispatch)
         })
 }
-export const removeTask = (todoListId: string, taskId: string): ThunkType => dispatch => {
+export const removeTask = (todoListId: string, taskId: string): TThunk => dispatch => {
     dispatch(setAppStatus('loading'))
     dispatch(_setTaskStatus(todoListId, taskId, 'loading'))
     tasksAPI.removeTask(todoListId, taskId)
@@ -90,11 +90,11 @@ export const removeTask = (todoListId: string, taskId: string): ThunkType => dis
             dispatch(_setTaskStatus(todoListId, taskId, 'failed'))
         })
 }
-export const updateTask = (todoListId: string, task: TaskType, model: TaskUpdateDomainModelType): ThunkType =>
+export const updateTask = (todoListId: string, task: TTask, model: TTaskUpdateDomainModel): TThunk =>
     dispatch => {
         dispatch(setAppStatus('loading'))
         dispatch(_setTaskStatus(todoListId, task.id, 'loading'))
-        const updatedTaskModel: TaskUpdateModelType = {
+        const updatedTaskModel: TTaskUpdateModel = {
             title: task.title,
             startDate: task.startDate,
             priority: task.priority,
@@ -121,11 +121,11 @@ export const updateTask = (todoListId: string, task: TaskType, model: TaskUpdate
     }
 
 //* ======================================================================================================== Types ===>>
-export type TaskDomainType = TaskType & { taskStatus: ResponseStatusType }
-export type TasksType = {
-    [key: string]: Array<TaskDomainType>
+export type TTaskDomain = TTask & { taskStatus: TResponseStatus }
+export type TTasks = {
+    [key: string]: Array<TTaskDomain>
 }
-export type TasksActionsType = ReturnType<typeof _removeTask>
+export type TTasksActions = ReturnType<typeof _removeTask>
     | ReturnType<typeof _addTask>
     | ReturnType<typeof _updateTask>
     | ReturnType<typeof _fetchTasks>
@@ -136,9 +136,9 @@ export type TasksActionsType = ReturnType<typeof _removeTask>
     | ReturnType<typeof setAppStatus>
     | ReturnType<typeof setAppError>
 
-type ThunkType = BaseThunkType<TasksActionsType>
+type TThunk = TBaseThunk<TTasksActions>
 // type for updateTask thunk realization to use only those props user wants to update
-export type TaskUpdateDomainModelType = {
+export type TTaskUpdateDomainModel = {
     title?: string
     description?: string
     status?: TaskStatuses

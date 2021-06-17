@@ -5,12 +5,12 @@ import {
     addTodoList,
     changeTodoListTitle,
     fetchTodoListsTC,
-    FilterValuesType,
+    TFilterValues,
     removeTodoList
 } from './todolists_reducer';
 import {selectTasks, selectTodoLists} from '../../utils/selectors/selectors';
 import {addTask, removeTask, updateTask} from './TodoList/tasks_reducer';
-import {TaskStatuses, TaskType} from '../../api/tasks_api';
+import {TaskStatuses, TTask} from '../../api/tasks_api';
 import {Grid, Paper} from '@material-ui/core';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import Todolist from './TodoList/Todolist';
@@ -41,10 +41,10 @@ export function TodoLists({demo = false}: PropsType) {
     const addNewTask = useCallback((todolistId: string, newTaskTitle: string) => {
         dispatch(addTask(todolistId, newTaskTitle))
     }, [dispatch])
-    const changeTaskIsDone = useCallback((todolistId: string, task: TaskType, status: TaskStatuses) => {
+    const changeTaskIsDone = useCallback((todolistId: string, task: TTask, status: TaskStatuses) => {
         dispatch(updateTask(todolistId, task, {status}))
     }, [dispatch])
-    const changeTaskTitle = useCallback((todolistId: string, task: TaskType, newTaskTitle: string) => {
+    const changeTaskTitle = useCallback((todolistId: string, task: TTask, newTaskTitle: string) => {
         dispatch(updateTask(todolistId, task, {title: newTaskTitle}))
     }, [dispatch])
 
@@ -55,7 +55,7 @@ export function TodoLists({demo = false}: PropsType) {
     const addNewTodolist = useCallback((newTodolistTitle: string) => {
         dispatch(addTodoList(newTodolistTitle))
     }, [dispatch])
-    const filterTasks = useCallback((id: string, filterCondition: FilterValuesType) => {
+    const filterTasks = useCallback((id: string, filterCondition: TFilterValues) => {
         dispatch(_changeTodoListFilter(id, filterCondition))
     }, [dispatch])
     const changeTodoListTitleCallback = useCallback((newTodolistTitle: string, todolistId: string) => {

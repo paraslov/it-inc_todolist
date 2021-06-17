@@ -3,16 +3,16 @@ import {
     _changeTodoListFilter,
     _changeTodoListTitle,
     _removeTodoList, _setTodoListStatus,
-    FilterValuesType,
-    TodoListDomainType,
+    TFilterValues,
+    TTodoListDomain,
     todoListsReducer
 } from './todolists_reducer';
 import {v1} from 'uuid';
-import {ResponseStatusType} from '../../app/app_reducer';
+import {TResponseStatus} from '../../app/app_reducer';
 
 const todolistId1 = v1()
 const todolistId2 = v1()
-let startState: Array<TodoListDomainType>
+let startState: Array<TTodoListDomain>
 
 beforeEach(() => {
     startState = [
@@ -55,7 +55,7 @@ test('correct todolist should change its name', () => {
 });
 
 test('correct filter of todolist should be changed', () => {
-    let newFilter: FilterValuesType = 'completed';
+    let newFilter: TFilterValues = 'completed';
     const action = _changeTodoListFilter(todolistId2, newFilter);
     const endState = todoListsReducer(startState, action);
 
@@ -64,7 +64,7 @@ test('correct filter of todolist should be changed', () => {
 });
 
 test('correct status of todolist should be settled', () => {
-    let newStatus: ResponseStatusType = 'loading';
+    let newStatus: TResponseStatus = 'loading';
     const action = _setTodoListStatus(todolistId2, newStatus);
     const endState = todoListsReducer(startState, action);
 

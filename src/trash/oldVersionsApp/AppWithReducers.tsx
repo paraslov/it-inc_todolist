@@ -10,12 +10,12 @@ import {
     _changeTodoListFilter,
     _changeTodoListTitle,
     _removeTodoList,
-    FilterValuesType,
-    TodoListDomainType,
+    TFilterValues,
+    TTodoListDomain,
     todoListsReducer
 } from '../../features/TodoLists/todolists_reducer';
 import {_addTask, _removeTask, _updateTask, tasksReducer} from '../../features/TodoLists/TodoList/tasks_reducer';
-import {TaskPriorities, TaskStatuses, TaskType} from '../../api/tasks_api';
+import {TaskPriorities, TaskStatuses, TTask} from '../../api/tasks_api';
 
 
 export function AppWithReducers() {
@@ -123,11 +123,11 @@ export function AppWithReducers() {
         }))
     }
 
-    function changeTaskIsDone(todolistId: string, task: TaskType, status: TaskStatuses) {
+    function changeTaskIsDone(todolistId: string, task: TTask, status: TaskStatuses) {
         dispatchToTasksReducer(_updateTask(todolistId, task.id, {...task, status}))
     }
 
-    function changeTaskTitle(todolistId: string, task: TaskType, newTaskTitle: string) {
+    function changeTaskTitle(todolistId: string, task: TTask, newTaskTitle: string) {
         dispatchToTasksReducer(_updateTask(todolistId, task.id, {...task, title: newTaskTitle}))
     }
 
@@ -143,7 +143,7 @@ export function AppWithReducers() {
         dispatchToTasksReducer(action)
     }
 
-    function filterTasks(id: string, filterCondition: FilterValuesType) {
+    function filterTasks(id: string, filterCondition: TFilterValues) {
         dispatchToTodoListsReducer(_changeTodoListFilter(id, filterCondition))
     }
 
@@ -170,14 +170,14 @@ export function AppWithReducers() {
                 </Grid>
 
                 <Grid container spacing={2}>
-                    {todoLists.map((tl: TodoListDomainType) => {
+                    {todoLists.map((tl: TTodoListDomain) => {
                             //* Todolist filters logic ==============================================================>
                             let tasksForTodolist = tasks[tl.id]
                             if (tl.filter === 'completed') {
-                                tasksForTodolist = tasks[tl.id].filter((t: TaskType) => t.status === TaskStatuses.Completed)
+                                tasksForTodolist = tasks[tl.id].filter((t: TTask) => t.status === TaskStatuses.Completed)
                             }
                             if (tl.filter === 'active') {
-                                tasksForTodolist = tasks[tl.id].filter((t: TaskType) => t.status === TaskStatuses.New)
+                                tasksForTodolist = tasks[tl.id].filter((t: TTask) => t.status === TaskStatuses.New)
                             }
                             return <Grid item key={tl.id}>
                                 <Paper style={{padding: '10px'}}>

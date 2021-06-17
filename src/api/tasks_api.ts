@@ -1,7 +1,7 @@
-import {CommonResponseType, instance} from './api';
+import {TOperationResult, instance} from './api';
 
 
-export type TaskType = {
+export type TTask = {
     description: string
     title: string
     status: number
@@ -14,7 +14,7 @@ export type TaskType = {
     addedDate: string
 }
 type GetTasksResponseType = {
-    items: TaskType[]
+    items: TTask[]
     error: string
     totalCount: number
 }
@@ -34,7 +34,7 @@ export enum TaskPriorities {
     Later = 4
 }
 
-export type TaskUpdateModelType = {
+export type TTaskUpdateModel = {
     title: string
     description: string
     status: TaskStatuses
@@ -48,14 +48,14 @@ export const tasksAPI = {
         return instance.get<GetTasksResponseType>(`todo-lists/${todoListId}/tasks`).then(res => res.data)
     },
     addTask(todoListId: string, title: string) {
-        return instance.post<CommonResponseType<{ item: TaskType }>>(`todo-lists/${todoListId}/tasks`, {title: title})
+        return instance.post<TOperationResult<{ item: TTask }>>(`todo-lists/${todoListId}/tasks`, {title: title})
             .then(res => res.data)
     },
     removeTask(todoListId: string, taskId: string) {
-        return instance.delete<CommonResponseType>(`todo-lists/${todoListId}/tasks/${taskId}`).then(res => res.data)
+        return instance.delete<TOperationResult>(`todo-lists/${todoListId}/tasks/${taskId}`).then(res => res.data)
     },
-    updateTask(todoListId: string, taskId: string, model: TaskUpdateModelType) {
-        return instance.put<CommonResponseType<{ item: TaskType }>>
+    updateTask(todoListId: string, taskId: string, model: TTaskUpdateModel) {
+        return instance.put<TOperationResult<{ item: TTask }>>
         (`todo-lists/${todoListId}/tasks/${taskId}`, model).then(res => res.data)
     }
 }

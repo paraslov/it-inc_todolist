@@ -1,9 +1,9 @@
 import {Dispatch} from 'redux';
 import {setAppError, setAppStatus} from '../../app/app_reducer';
-import {CommonResponseType} from '../../api/api';
+import {TOperationResult} from '../../api/api';
 
 
-export const thunkServerResponseError = <D>(data: CommonResponseType<D>, dispatch: ThunkErrorsHandleDispatchType) => {
+export const thunkServerResponseError = <D>(data: TOperationResult<D>, dispatch: ThunkErrorsHandleDispatchType) => {
     dispatch(setAppError(data.messages.length ? data.messages[0] : 'some error occurred'))
     dispatch(setAppStatus('failed'))
 }

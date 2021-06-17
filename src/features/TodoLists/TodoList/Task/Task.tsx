@@ -2,15 +2,15 @@ import React from 'react';
 import {Checkbox, IconButton} from '@material-ui/core';
 import {EditableSpan} from '../../../../components/EditableSpan/EditableSpan';
 import {Delete} from '@material-ui/icons';
-import {TaskStatuses, TaskType} from '../../../../api/tasks_api';
-import {TaskDomainType} from '../tasks_reducer';
+import {TaskStatuses, TTask} from '../../../../api/tasks_api';
+import {TTaskDomain} from '../tasks_reducer';
 
 //* Types declaration ================================================================================================>>
 export type TaskPropsType = {
-    task: TaskDomainType
+    task: TTaskDomain
     disabled?: boolean
-    changeTaskIsDone: (todolistId: string, task: TaskType, status: TaskStatuses) => void
-    changeTaskTitle: (todolistId: string, task: TaskType, newTaskTitle: string) => void
+    changeTaskIsDone: (todolistId: string, task: TTask, status: TaskStatuses) => void
+    changeTaskTitle: (todolistId: string, task: TTask, newTaskTitle: string) => void
     removeTask: (todolistId: string, taskId: string) => void
 }
 
