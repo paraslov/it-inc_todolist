@@ -3,12 +3,14 @@ import {TTasksActions, tasksReducer} from '../features/TodoLists/TodoList/tasks_
 import {TTodoListActions, todoListsReducer} from '../features/TodoLists/todolists_reducer';
 import thunkMW, {ThunkAction} from 'redux-thunk'
 import {appReducer} from './app_reducer';
+import {authReducer} from '../features/Login/auth_reducer';
 
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
     todoLists: todoListsReducer,
-    app: appReducer
+    app: appReducer,
+    auth: authReducer,
 })
 
 export type TAppState = ReturnType<typeof rootReducer>

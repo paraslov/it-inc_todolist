@@ -111,6 +111,9 @@ const initialGlobalState: TAppState = {
         status: 'idle',
         error: null,
         isAppInitialized: false
+    },
+    auth: {
+        isAuth: false
     }
 };
 

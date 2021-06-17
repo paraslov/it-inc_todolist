@@ -8,12 +8,13 @@ import {
     TFilterValues,
     removeTodoList
 } from './todolists_reducer';
-import {selectTasks, selectTodoLists} from '../../utils/selectors/selectors';
+import {selectIsAuth, selectTasks, selectTodoLists} from '../../utils/selectors/selectors';
 import {addTask, removeTask, updateTask} from './TodoList/tasks_reducer';
 import {TaskStatuses, TTask} from '../../api/tasks_api';
 import {Grid, Paper} from '@material-ui/core';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import Todolist from './TodoList/Todolist';
+import {Redirect} from 'react-router-dom';
 
 type PropsType = {
     demo?: boolean
@@ -22,9 +23,10 @@ export function TodoLists({demo = false}: PropsType) {
     console.log('TodoLists R')
 
     const dispatch = useDispatch()
+    const isAuth = useSelector(selectIsAuth)
 
     useEffect(() => {
-        if(demo) return
+        if(demo || !isAuth) return
         dispatch(fetchTodoListsTC())
     }, [])
 
@@ -61,6 +63,8 @@ export function TodoLists({demo = false}: PropsType) {
     const changeTodoListTitleCallback = useCallback((newTodolistTitle: string, todolistId: string) => {
         dispatch(changeTodoListTitle(todolistId, newTodolistTitle))
     }, [dispatch])
+
+    if(!isAuth) return <Redirect to={'/login'} />
 
     return (
         <>

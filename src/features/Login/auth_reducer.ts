@@ -8,7 +8,7 @@ import {thunkServerCatchError, thunkServerResponseError} from '../../utils/thunk
 const initState = {
     isAuth: false
 }
-export const authReducer = (state: TAuthReducerStateType, action: TAuthActions) => {
+export const authReducer = (state: TAuthReducerStateType = initState, action: TAuthActions) => {
     switch (action.type) {
         case 'para-slov/authReducer/SET-IS-AUTH':
             return {...state, isAuth: action.isAuth}

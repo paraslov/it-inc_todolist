@@ -38,6 +38,7 @@ export const initializeApp = (): TThunk => dispatch => {
             if(data.resultCode === OperationResultCodes.Success) {
                 dispatch(setIsAuth(true))
                 dispatch(setAppInitialized(true))
+                dispatch(setAppStatus('succeeded'))
             } else {
                 thunkServerResponseError(data, dispatch)
                 dispatch(setAppInitialized(true))
