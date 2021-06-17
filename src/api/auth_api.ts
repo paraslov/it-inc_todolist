@@ -14,12 +14,12 @@ type TAuthMeResponse = {
 }
 export const authAPI = {
     login(data: TLoginParams) {
-        instance.post<TOperationResult<{userId: number}>>('auth/login', data).then(res => res.data)
+        return instance.post<TOperationResult<{userId: number}>>('auth/login', data).then(res => res.data)
     },
     logout() {
-        instance.delete<TOperationResult>('auth/login').then(res => res.data)
+        return instance.delete<TOperationResult>('auth/login').then(res => res.data)
     },
     authMe() {
-        instance.get<TOperationResult<TAuthMeResponse>>('auth/me').then(res => res.data)
+        return instance.get<TOperationResult<TAuthMeResponse>>('auth/me').then(res => res.data)
     }
 }

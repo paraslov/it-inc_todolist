@@ -17,7 +17,7 @@ export type TOperationResult<D = {}> = {
 }
 
 //* Result codes enum: ===========================================================================================>>
-export enum APIRequestsResultCodes {
+export enum OperationResultCodes {
     Success = 0,
     Error = 1
 }

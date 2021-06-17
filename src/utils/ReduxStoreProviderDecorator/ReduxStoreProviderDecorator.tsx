@@ -110,6 +110,7 @@ const initialGlobalState: TAppState = {
     app: {
         status: 'idle',
         error: null,
+        isAppInitialized: false
     }
 };
 

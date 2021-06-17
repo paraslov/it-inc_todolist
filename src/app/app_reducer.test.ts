@@ -1,11 +1,12 @@
-import {appReducer, AppReducerStateType, setAppError, setAppStatus} from './app_reducer';
+import {appReducer, TAppReducerState, setAppError, setAppInitialized, setAppStatus} from './app_reducer';
 
-let startState: AppReducerStateType
+let startState: TAppReducerState
 
 beforeEach(() => {
     startState = {
         error: null,
-        status: 'idle'
+        status: 'idle',
+        isAppInitialized: false
     }
 })
 
@@ -19,4 +20,10 @@ test('correct status should be set', () => {
     const endState = appReducer(startState, setAppStatus('loading'))
 
     expect(endState.status).toBe('loading')
+})
+
+test('isAppInitialized should be changed to true', () => {
+    const endState = appReducer(startState, setAppInitialized(true))
+
+    expect(endState.isAppInitialized).toBeTruthy()
 })
