@@ -1,29 +1,57 @@
 import React from 'react'
-import {Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, TextField, Button, Grid} from '@material-ui/core'
-import {useFormik} from 'formik';
-import {TLoginParams} from '../../api/auth_api';
-import {useDispatch, useSelector} from 'react-redux';
-import {login} from './auth_reducer';
-import {selectIsAuth} from '../../utils/selectors/selectors';
-import {Redirect} from 'react-router-dom';
+import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from '@material-ui/core'
+import {useFormik} from 'formik'
+import {TLoginParams} from '../../api/auth_api'
+import {useDispatch, useSelector} from 'react-redux'
+import {login} from './auth_reducer'
+import {selectIsAuth} from '../../utils/selectors/selectors'
+import {Redirect} from 'react-router-dom'
 
 export const Login = () => {
 
     const dispatch = useDispatch()
     const isAuth = useSelector(selectIsAuth)
 
+    //* ======================================================================================== Validation ==========>>
+    type FormikErrorType = {
+        email?: string
+        password?: string
+        rememberMe?: string
+    }
+    const validate = (values: TLoginParams) => {
+        const errors: FormikErrorType = {}
+        if (!values.email) {
+            errors.email = 'Required'
+        } else if (values.email.length > 20 || values.email.length < 7) {
+            errors.email = 'Must be 6-20 characters'
+        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+            errors.email = 'Invalid email address'
+        }
+
+        if (!values.password) {
+            errors.password = 'Required'
+        } else if (values.password.length > 20 || values.password.length < 7) {
+            errors.password = 'Must be 6-20 characters'
+        }
+        return errors;
+    };
+
+    //* ======================================================================================== Formik ==============>>
     const formik = useFormik<TLoginParams>({
         initialValues: {
             email: '',
             password: '',
             rememberMe: false,
         },
+        validate,
         onSubmit: values => {
             dispatch(login(values))
+            formik.resetForm()
         },
     });
 
-    if(isAuth) return <Redirect to={'/'} />
+    // if user authorized - redirect to main page
+    if (isAuth) return <Redirect to={'/'}/>
 
     return <Grid container justify="center">
         <Grid item xs={4}>
@@ -41,25 +69,23 @@ export const Login = () => {
                     </FormLabel>
                     <FormGroup>
                         <TextField
-                            label="Email"
-                            margin="normal"
-                            name={'email'}
-                            onChange={formik.handleChange}
-                            value={formik.values.email}
+                            label={'Email'}
+                            margin={'normal'}
+                            {...formik.getFieldProps('email')}
                         />
+                        {formik.errors.email && formik.touched.email ?
+                            <div style={{color: 'red'}}>{formik.errors.email}</div> : null}
                         <TextField
-                            type="password"
-                            label="Password"
-                            margin="normal"
-                            name={'password'}
-                            onChange={formik.handleChange}
-                            value={formik.values.password}
+                            type={'password'}
+                            label={'Password'}
+                            margin={'normal'}
+                            {...formik.getFieldProps('password')}
                         />
+                        {formik.errors.password && formik.touched.password ?
+                            <div style={{color: 'red'}}>{formik.errors.password}</div> : null}
                         <FormControlLabel
                             label={'Remember me'}
-                            control={<Checkbox name={'rememberMe'}
-                                               onChange={formik.handleChange}
-                                               checked={formik.values.rememberMe}/>}
+                            control={<Checkbox {...formik.getFieldProps('rememberMe')}/>}
                         />
                         <Button type={'submit'} variant={'contained'} color={'primary'}>Login</Button>
                     </FormGroup>

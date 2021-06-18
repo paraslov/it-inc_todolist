@@ -21,11 +21,11 @@ export const authReducer = (state: TAuthReducerStateType = initState, action: TA
 export const setIsAuth = (isAuth: boolean) => ({type: 'para-slov/authReducer/SET-IS-AUTH', isAuth} as const)
 
 //* ============================================================================================ Thunk Creators ======>>
-export const login = (data: TLoginParams): TThunk  => dispatch => {
+export const login = (data: TLoginParams): TThunk => dispatch => {
     dispatch(setAppStatus('loading'))
     authAPI.login(data)
         .then(data => {
-            if(data.resultCode === OperationResultCodes.Success) {
+            if (data.resultCode === OperationResultCodes.Success) {
                 dispatch(setIsAuth(true))
                 dispatch(setAppStatus('succeeded'))
             } else {
@@ -40,7 +40,7 @@ export const logout = (): TThunk => dispatch => {
     dispatch(setAppStatus('loading'))
     authAPI.logout()
         .then(data => {
-            if(data.resultCode === OperationResultCodes.Success) {
+            if (data.resultCode === OperationResultCodes.Success) {
                 dispatch(setIsAuth(false))
                 dispatch(setAppStatus('succeeded'))
             } else {
@@ -51,7 +51,6 @@ export const logout = (): TThunk => dispatch => {
             thunkServerCatchError(error, dispatch)
         })
 }
-
 
 
 //* ====================================================================================================== Types =====>>

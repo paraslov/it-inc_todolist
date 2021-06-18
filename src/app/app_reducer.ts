@@ -1,7 +1,7 @@
 //* ================================================================================================= Reducer ========>>
 import {authAPI} from '../api/auth_api';
 import {OperationResultCodes} from '../api/api';
-import {thunkServerCatchError, thunkServerResponseError} from '../utils/thunk-helpers/thunk-errors-handle';
+import {thunkServerCatchError} from '../utils/thunk-helpers/thunk-errors-handle';
 import {setIsAuth} from '../features/Login/auth_reducer';
 import {TBaseThunk} from './store';
 
@@ -35,12 +35,12 @@ export const initializeApp = (): TThunk => dispatch => {
     dispatch(setAppStatus('loading'))
     authAPI.authMe()
         .then(data => {
-            if(data.resultCode === OperationResultCodes.Success) {
+            if (data.resultCode === OperationResultCodes.Success) {
                 dispatch(setIsAuth(true))
                 dispatch(setAppInitialized(true))
                 dispatch(setAppStatus('succeeded'))
             } else {
-                thunkServerResponseError(data, dispatch)
+                dispatch(setAppStatus('failed'))
                 dispatch(setAppInitialized(true))
             }
         })
