@@ -26,12 +26,12 @@ export const {setIsAuth} = slice.actions
 
 //* ============================================================================================ Thunk Creators ======>>
 export const login = (data: TLoginParams) => (dispatch: Dispatch) => {
-    dispatch(setAppStatus('loading'))
+    dispatch(setAppStatus({status: 'loading'}))
     authAPI.login(data)
         .then(data => {
             if (data.resultCode === OperationResultCodes.Success) {
                 dispatch(setIsAuth({isAuth: true}))
-                dispatch(setAppStatus('succeeded'))
+                dispatch(setAppStatus({status: 'succeeded'}))
             } else {
                 thunkServerResponseError(data, dispatch)
             }
@@ -41,12 +41,12 @@ export const login = (data: TLoginParams) => (dispatch: Dispatch) => {
         })
 }
 export const logout = () => (dispatch: Dispatch) => {
-    dispatch(setAppStatus('loading'))
+    dispatch(setAppStatus({status: 'loading'}))
     authAPI.logout()
         .then(data => {
             if (data.resultCode === OperationResultCodes.Success) {
                 dispatch(setIsAuth({isAuth: false}))
-                dispatch(setAppStatus('succeeded'))
+                dispatch(setAppStatus({status: 'succeeded'}))
             } else {
                 thunkServerResponseError(data, dispatch)
             }

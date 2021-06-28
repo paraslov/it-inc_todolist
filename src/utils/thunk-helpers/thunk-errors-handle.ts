@@ -4,13 +4,13 @@ import {TOperationResult} from '../../api/api';
 
 
 export const thunkServerResponseError = <D>(data: TOperationResult<D>, dispatch: ThunkErrorsHandleDispatchType) => {
-    dispatch(setAppError(data.messages.length ? data.messages[0] : 'some error occurred'))
-    dispatch(setAppStatus('failed'))
+    dispatch(setAppError({error: data.messages.length ? data.messages[0] : 'some error occurred'}))
+    dispatch(setAppStatus({status: 'failed'}))
 }
 
 export const thunkServerCatchError = (error: any, dispatch: ThunkErrorsHandleDispatchType) => {
     dispatch(setAppError(error.message.length ? error.message : 'some error occurred'))
-    dispatch(setAppStatus('failed'))
+    dispatch(setAppStatus({status: 'failed'}))
 }
 
 type ThunkErrorsHandleDispatchType = Dispatch<ReturnType<typeof setAppError> | ReturnType<typeof setAppStatus>>

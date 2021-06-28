@@ -1,7 +1,7 @@
-import {todoListsAPI, TTodoList} from '../../api/todoLists_api';
-import {TBaseThunk} from '../../app/store';
-import {TResponseStatus, setAppError, setAppStatus} from '../../app/app_reducer';
-import {thunkServerCatchError, thunkServerResponseError} from '../../utils/thunk-helpers/thunk-errors-handle';
+import {todoListsAPI, TTodoList} from '../../api/todoLists_api'
+import {setAppStatus, TResponseStatus} from '../../app/app_reducer'
+import {thunkServerCatchError, thunkServerResponseError} from '../../utils/thunk-helpers/thunk-errors-handle'
+import {Dispatch} from 'redux'
 
 //* ====== Reducer ===================================================================================================>>
 const initState: Array<TTodoListDomain> = []
@@ -44,24 +44,24 @@ export const _setTodoListStatus = (todoListId: string, todoListStatus: TResponse
     ({type: 'para-slov/todoListReducer/SET-TODOLISTS-STATUS', todoListId, todoListStatus} as const)
 
 //* ====== Thunk Creators ============================================================================================>>
-export const fetchTodoListsTC = (): TThunk => dispatch => {
-    dispatch(setAppStatus('loading'))
+export const fetchTodoListsTC = () => (dispatch: Dispatch) => {
+    dispatch(setAppStatus({status: 'loading'}))
     todoListsAPI.fetchTodoLists()
         .then(data => {
             dispatch(_fetchTodoLists(data))
-            dispatch(setAppStatus('succeeded'))
+            dispatch(setAppStatus({status: 'succeeded'}))
         })
         .catch(error => {
             thunkServerCatchError(error, dispatch)
         })
 }
-export const addTodoList = (title: string): TThunk => dispatch => {
-    dispatch(setAppStatus('loading'))
+export const addTodoList = (title: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatus({status: 'loading'}))
     todoListsAPI.addTodoList(title)
         .then(data => {
             if (data.resultCode === 0) {
                 dispatch(_addTodoList(data.data.item))
-                dispatch(setAppStatus('succeeded'))
+                dispatch(setAppStatus({status: 'succeeded'}))
             } else {
                 thunkServerResponseError(data, dispatch)
             }
@@ -70,28 +70,28 @@ export const addTodoList = (title: string): TThunk => dispatch => {
             thunkServerCatchError(error, dispatch)
         })
 }
-export const removeTodoList = (todoListId: string): TThunk => dispatch => {
-    dispatch(setAppStatus('loading'))
+export const removeTodoList = (todoListId: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatus({status: 'loading'}))
     dispatch(_setTodoListStatus(todoListId, 'loading'))
     todoListsAPI.removeTodoList(todoListId)
         .then(data => {
             if (data.resultCode === 0) {
                 dispatch(_removeTodoList(todoListId))
             }
-            dispatch(setAppStatus('succeeded'))
+            dispatch(setAppStatus({status: 'succeeded'}))
         })
         .catch(error => {
             thunkServerCatchError(error, dispatch)
         })
 }
-export const changeTodoListTitle = (todoListId: string, title: string): TThunk => dispatch => {
-    dispatch(setAppStatus('loading'))
+export const changeTodoListTitle = (todoListId: string, title: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatus({status: 'loading'}))
     dispatch(_setTodoListStatus(todoListId, 'loading'))
     todoListsAPI.updateTodoList(todoListId, title)
         .then(data => {
             if (data.resultCode === 0) {
                 dispatch(_changeTodoListTitle(todoListId, title))
-                dispatch(setAppStatus('succeeded'))
+                dispatch(setAppStatus({status: 'succeeded'}))
                 dispatch(_setTodoListStatus(todoListId, 'succeeded'))
             } else {
                 thunkServerResponseError(data, dispatch)
@@ -115,8 +115,6 @@ export type TTodoListActions = ReturnType<typeof _removeTodoList>
     | ReturnType<typeof _changeTodoListFilter>
     | ReturnType<typeof _fetchTodoLists>
     | ReturnType<typeof _setTodoListStatus>
-    | ReturnType<typeof setAppStatus>
-    | ReturnType<typeof setAppError>
 
-type TThunk = TBaseThunk<TTodoListActions>
+
 

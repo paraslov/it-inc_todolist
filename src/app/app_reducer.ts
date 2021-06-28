@@ -1,10 +1,9 @@
 //* ================================================================================================= Reducer ========>>
-import {authAPI} from '../api/auth_api';
-import {OperationResultCodes} from '../api/api';
-import {thunkServerCatchError} from '../utils/thunk-helpers/thunk-errors-handle';
-import {setIsAuth} from '../features/Login/auth_reducer';
-import {TBaseThunk} from './store';
-import {createSlice} from '@reduxjs/toolkit'
+import {authAPI} from '../api/auth_api'
+import {OperationResultCodes} from '../api/api'
+import {thunkServerCatchError} from '../utils/thunk-helpers/thunk-errors-handle'
+import {setIsAuth} from '../features/Login/auth_reducer'
+import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {Dispatch} from 'redux'
 
 const initialState = {
@@ -17,41 +16,33 @@ const slice = createSlice({
     name: 'app',
     initialState: initialState,
     reducers: {
-
+        setAppError(state, action: PayloadAction<{error: string | null}>) {
+            state.error = action.payload.error
+        },
+        setAppStatus(state, action: PayloadAction<{status: TResponseStatus}>) {
+            state.status = action.payload.status
+        },
+        setAppInitialized(state, action: PayloadAction<{isAppInitialized: boolean}>) {
+            state.isAppInitialized = action.payload.isAppInitialized
+        }
     }
 })
 
-export const appReducer = (state: TAppReducerState = initialState, action: TAppActions): TAppReducerState => {
-    switch (action.type) {
-        case 'para-slov/appReducer/SET-ERROR':
-            return {...state, error: action.error}
-        case 'para-slov/appReducer/SET-STATUS':
-            return {...state, status: action.status}
-        case 'para-slov/appReducer/SET-APP-INITIALIZED':
-            return {...state, isAppInitialized: action.isAppInitialized}
-        default:
-            return state
-    }
-}
-
-//* ============================================================================================= Action Creators ====>>
-export const setAppStatus = (status: TResponseStatus) => ({type: 'para-slov/appReducer/SET-STATUS', status} as const)
-export const setAppError = (error: string | null) => ({type: 'para-slov/appReducer/SET-ERROR', error} as const)
-export const setAppInitialized = (isAppInitialized: boolean) =>
-    ({type: 'para-slov/appReducer/SET-APP-INITIALIZED', isAppInitialized} as const)
+export const appReducer = slice.reducer
+export const {setAppStatus, setAppError, setAppInitialized} = slice.actions
 
 //* ============================================================================================ Thunk Creators ======>>
 export const initializeApp = () => (dispatch: Dispatch) => {
-    dispatch(setAppStatus('loading'))
+    dispatch(setAppStatus({status: 'loading'}))
     authAPI.authMe()
         .then(data => {
             if (data.resultCode === OperationResultCodes.Success) {
                 dispatch(setIsAuth({isAuth: true}))
-                dispatch(setAppInitialized(true))
-                dispatch(setAppStatus('succeeded'))
+                dispatch(setAppInitialized({isAppInitialized: true}))
+                dispatch(setAppStatus({status: 'succeeded'}))
             } else {
-                dispatch(setAppStatus('failed'))
-                dispatch(setAppInitialized(true))
+                dispatch(setAppStatus({status: 'failed'}))
+                dispatch(setAppInitialized({isAppInitialized: true}))
             }
         })
         .catch(error => {
@@ -61,9 +52,3 @@ export const initializeApp = () => (dispatch: Dispatch) => {
 
 //* ======================================================================================================== Types ===>>
 export type TResponseStatus = 'idle' | 'loading' | 'succeeded' | 'failed'
-
-export type TAppReducerState = typeof initialState
-
-type TAppActions = ReturnType<typeof setAppError>
-    | ReturnType<typeof setAppStatus>
-    | ReturnType<typeof setAppInitialized>
