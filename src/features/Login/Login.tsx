@@ -1,6 +1,6 @@
 import React from 'react'
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from '@material-ui/core'
-import {useFormik} from 'formik'
+import {FormikErrors, useFormik} from 'formik'
 import {TLoginParams} from '../../api/auth_api'
 import {useDispatch, useSelector} from 'react-redux'
 import {login} from './auth_reducer'
@@ -8,6 +8,7 @@ import {selectIsAuth} from '../../utils/selectors/selectors'
 import {Redirect} from 'react-router-dom'
 
 export const Login = () => {
+    console.log('LOGIN rendered')
 
     const dispatch = useDispatch()
     const isAuth = useSelector(selectIsAuth)
@@ -19,7 +20,7 @@ export const Login = () => {
         rememberMe?: string
     }
     const validate = (values: TLoginParams) => {
-        const errors: FormikErrorType = {}
+        const errors: FormikErrors<FormikErrorType> = {}
         if (!values.email) {
             errors.email = 'Required'
         } else if (values.email.length > 20 || values.email.length < 7) {
