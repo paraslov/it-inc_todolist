@@ -16,13 +16,13 @@ const slice = createSlice({
     name: 'app',
     initialState: initialState,
     reducers: {
-        setAppError(state, action: PayloadAction<{error: string | null}>) {
+        setAppError(state, action: PayloadAction<{ error: string | null }>) {
             state.error = action.payload.error
         },
-        setAppStatus(state, action: PayloadAction<{status: TResponseStatus}>) {
+        setAppStatus(state, action: PayloadAction<{ status: TResponseStatus }>) {
             state.status = action.payload.status
         },
-        setAppInitialized(state, action: PayloadAction<{isAppInitialized: boolean}>) {
+        setAppInitialized(state, action: PayloadAction<{ isAppInitialized: boolean }>) {
             state.isAppInitialized = action.payload.isAppInitialized
         }
     }
