@@ -7,29 +7,33 @@ import {Dispatch} from 'redux'
 const initState: TTasks = {}
 
 //* ======================================================================================================= Reducer ==>>
-export const tasksReducer = (state: TTasks = initState, action: TTasksActions): TTasks => {
+export const tasksReducer = (state: TTasks = initState, action: any): TTasks => {
     switch (action.type) {
         case 'para-slov/tasksReducer/FETCH-TASKS':
-            return {...state, [action.todolistId]: action.tasks.map(task => ({...task, taskStatus: 'idle'}))}
+            return {...state, [action.todolistId]: action.tasks.map((task: any) => ({...task, taskStatus: 'idle'}))}
         case 'para-slov/tasksReducer/REMOVE-TASK':
             return {...state, [action.todolistId]: state[action.todolistId].filter(task => task.id !== action.taskId)}
         case 'para-slov/tasksReducer/ADD-TASK':
             return {...state, [action.todolistId]: [{...action.task, taskStatus: 'idle'}, ...state[action.todolistId]]}
         case 'para-slov/tasksReducer/UPDATE-TASK':
-            return {...state, [action.todolistId]: state[action.todolistId]
-                    .map(task => task.id === action.taskId ? {...task, ...action.model} : task)}
+            return {
+                ...state, [action.todolistId]: state[action.todolistId]
+                    .map(task => task.id === action.taskId ? {...task, ...action.model} : task)
+            }
         case 'para-slov/tasksReducer/SET-TASK-STATUS':
-            return {...state, [action.todoListId]: state[action.todoListId]
-                    .map(task => task.id === action.taskId ? {...task, taskStatus: action.taskStatus} : task)}
-        case 'para-slov/todoListReducer/ADD-TODOLIST':
-            return {...state, [action.todoList.id]: []}
-        case 'para-slov/todoListReducer/REMOVE-TODOLIST':
+            return {
+                ...state, [action.todoListId]: state[action.todoListId]
+                    .map(task => task.id === action.taskId ? {...task, taskStatus: action.taskStatus} : task)
+            }
+        case _addTodoList.type:
+            return {...state, [action.payload.todoList.id]: []}
+        case _removeTodoList.type:
             let stateCopy = {...state}
-            delete stateCopy[action.id]
+            delete stateCopy[action.payload.todoListId]
             return stateCopy
-        case 'para-slov/todoListReducer/SET-TODOLISTS':
+        case _fetchTodoLists.type:
             const StateCopy = {...state}
-            action.todolists.forEach(tl => StateCopy[tl.id] = [])
+            action.payload.todoLists.forEach((tl: any) => StateCopy[tl.id] = [])
             return StateCopy
         default:
             return state
@@ -91,33 +95,33 @@ export const removeTask = (todoListId: string, taskId: string) => (dispatch: Dis
         })
 }
 export const updateTask = (todoListId: string, task: TTask, model: TTaskUpdateDomainModel) => (dispatch: Dispatch) => {
-        dispatch(setAppStatus({status: 'loading'}))
-        dispatch(_setTaskStatus(todoListId, task.id, 'loading'))
-        const updatedTaskModel: TTaskUpdateModel = {
-            title: task.title,
-            startDate: task.startDate,
-            priority: task.priority,
-            deadline: task.deadline,
-            description: task.description,
-            status: task.status,
-            ...model
-        }
-        tasksAPI.updateTask(todoListId, task.id, updatedTaskModel)
-            .then(data => {
-                if (data.resultCode === 0) {
-                    dispatch(_updateTask(todoListId, task.id, updatedTaskModel))
-                    dispatch(setAppStatus({status: 'succeeded'}))
-                    dispatch(_setTaskStatus(todoListId, task.id, 'succeeded'))
-                } else {
-                    thunkServerResponseError(data, dispatch)
-                    dispatch(_setTaskStatus(todoListId, task.id, 'failed'))
-                }
-            })
-            .catch(error => {
-                thunkServerCatchError(error, dispatch)
-                dispatch(_setTaskStatus(todoListId, task.id, 'failed'))
-            })
+    dispatch(setAppStatus({status: 'loading'}))
+    dispatch(_setTaskStatus(todoListId, task.id, 'loading'))
+    const updatedTaskModel: TTaskUpdateModel = {
+        title: task.title,
+        startDate: task.startDate,
+        priority: task.priority,
+        deadline: task.deadline,
+        description: task.description,
+        status: task.status,
+        ...model
     }
+    tasksAPI.updateTask(todoListId, task.id, updatedTaskModel)
+        .then(data => {
+            if (data.resultCode === 0) {
+                dispatch(_updateTask(todoListId, task.id, updatedTaskModel))
+                dispatch(setAppStatus({status: 'succeeded'}))
+                dispatch(_setTaskStatus(todoListId, task.id, 'succeeded'))
+            } else {
+                thunkServerResponseError(data, dispatch)
+                dispatch(_setTaskStatus(todoListId, task.id, 'failed'))
+            }
+        })
+        .catch(error => {
+            thunkServerCatchError(error, dispatch)
+            dispatch(_setTaskStatus(todoListId, task.id, 'failed'))
+        })
+}
 
 //* ======================================================================================================== Types ===>>
 export type TTaskDomain = TTask & { taskStatus: TResponseStatus }
@@ -129,9 +133,6 @@ export type TTasksActions = ReturnType<typeof _removeTask>
     | ReturnType<typeof _updateTask>
     | ReturnType<typeof _fetchTasks>
     | ReturnType<typeof _setTaskStatus>
-    | ReturnType<typeof _addTodoList>
-    | ReturnType<typeof _removeTodoList>
-    | ReturnType<typeof _fetchTodoLists>
 
 // type for updateTask thunk realization to use only those props user wants to update
 export type TTaskUpdateDomainModel = {

@@ -1,7 +1,7 @@
-import {Action, combineReducers} from 'redux'
-import {tasksReducer, TTasksActions} from '../features/TodoLists/TodoList/tasks_reducer'
-import {todoListsReducer, TTodoListActions} from '../features/TodoLists/todolists_reducer'
-import thunkMW, {ThunkAction} from 'redux-thunk'
+import {combineReducers} from 'redux'
+import {tasksReducer} from '../features/TodoLists/TodoList/tasks_reducer'
+import {todoListsReducer} from '../features/TodoLists/todolists_reducer'
+import thunkMW from 'redux-thunk'
 import {appReducer} from './app_reducer'
 import {authReducer} from '../features/Login/auth_reducer'
 import {configureStore} from '@reduxjs/toolkit'
@@ -20,8 +20,3 @@ export const store = configureStore({
 })
 
 export type TAppState = ReturnType<typeof rootReducer>
-export type TAppActions = TTasksActions | TTodoListActions
-//* Common thunk types ===============================================================================================>>
-export type TBaseThunk<A extends Action = TAppActions, R = void> = ThunkAction<R, TAppState, unknown, A>
-
-// export const store = createStore(rootReducer, applyMiddleware(thunkMW))

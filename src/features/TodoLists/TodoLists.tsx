@@ -58,7 +58,7 @@ export function TodoLists({demo = false}: PropsType) {
         dispatch(addTodoList(newTodolistTitle))
     }, [dispatch])
     const filterTasks = useCallback((id: string, filterCondition: TFilterValues) => {
-        dispatch(_changeTodoListFilter(id, filterCondition))
+        dispatch(_changeTodoListFilter({todoListId: id, filter: filterCondition}))
     }, [dispatch])
     const changeTodoListTitleCallback = useCallback((newTodolistTitle: string, todolistId: string) => {
         dispatch(changeTodoListTitle(todolistId, newTodolistTitle))
