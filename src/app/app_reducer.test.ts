@@ -1,6 +1,6 @@
-import {appReducer, TAppReducerState, setAppError, setAppInitialized, setAppStatus} from './app_reducer';
+import {appReducer, setAppError, setAppInitialized, setAppStatus} from './app_reducer'
 
-let startState: TAppReducerState
+let startState: any
 
 beforeEach(() => {
     startState = {
@@ -11,19 +11,19 @@ beforeEach(() => {
 })
 
 test('correct error message should be set', () => {
-    const endState = appReducer(startState, setAppError('some type of error occurred'))
+    const endState = appReducer(startState, setAppError({error: 'some type of error occurred'}))
 
     expect(endState.error).toBe('some type of error occurred')
 })
 
 test('correct status should be set', () => {
-    const endState = appReducer(startState, setAppStatus('loading'))
+    const endState = appReducer(startState, setAppStatus({status: 'loading'}))
 
     expect(endState.status).toBe('loading')
 })
 
 test('isAppInitialized should be changed to true', () => {
-    const endState = appReducer(startState, setAppInitialized(true))
+    const endState = appReducer(startState, setAppInitialized({isAppInitialized: true}))
 
     expect(endState.isAppInitialized).toBeTruthy()
 })

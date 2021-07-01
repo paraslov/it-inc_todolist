@@ -1,15 +1,7 @@
-import {v1} from 'uuid';
-import {
-    _addTask,
-    _fetchTasks,
-    _removeTask,
-    _setTaskStatus,
-    _updateTask,
-    tasksReducer,
-    TTasks
-} from './tasks_reducer';
-import {_addTodoList, _removeTodoList} from '../todolists_reducer';
-import {TaskPriorities, TaskStatuses} from '../../../api/tasks_api';
+import {v1} from 'uuid'
+import {_addTask, _fetchTasks, _removeTask, _setTaskStatus, _updateTask, tasksReducer, TTasks} from './tasks_reducer'
+import {_addTodoList, _removeTodoList} from '../todolists_reducer'
+import {TaskPriorities, TaskStatuses} from '../../../api/tasks_api'
 
 const todolist1 = v1()
 const todolist2 = v1()
@@ -20,42 +12,123 @@ beforeEach(() => {
     tasks = {
         [todolist1]: [
             {
-                id: v1(), title: 'HTML&CSS', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
+                id: v1(),
+                title: 'HTML&CSS',
+                status: TaskStatuses.Completed,
+                priority: TaskPriorities.Middle,
+                addedDate: '',
+                order: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: todolist1,
+                description: 'desc',
+                taskStatus: 'idle'
             },
             {
-                id: v1(), title: 'JavaScript', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
+                id: v1(),
+                title: 'JavaScript',
+                status: TaskStatuses.Completed,
+                priority: TaskPriorities.Middle,
+                addedDate: '',
+                order: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: todolist1,
+                description: 'desc',
+                taskStatus: 'idle'
             },
             {
-                id: v1(), title: 'ReactJS', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
+                id: v1(),
+                title: 'ReactJS',
+                status: TaskStatuses.New,
+                priority: TaskPriorities.Middle,
+                addedDate: '',
+                order: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: todolist1,
+                description: 'desc',
+                taskStatus: 'idle'
             },
             {
-                id: v1(), title: 'Rest API', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
+                id: v1(),
+                title: 'Rest API',
+                status: TaskStatuses.New,
+                priority: TaskPriorities.Middle,
+                addedDate: '',
+                order: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: todolist1,
+                description: 'desc',
+                taskStatus: 'idle'
             },
             {
-                id: v1(), title: 'GraphQL', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist1, description: 'desc', taskStatus: 'idle'
+                id: v1(),
+                title: 'GraphQL',
+                status: TaskStatuses.New,
+                priority: TaskPriorities.Middle,
+                addedDate: '',
+                order: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: todolist1,
+                description: 'desc',
+                taskStatus: 'idle'
             },
         ],
         [todolist2]: [
             {
-                id: v1(), title: 'CD', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist2, description: 'desc', taskStatus: 'idle'
+                id: v1(),
+                title: 'CD',
+                status: TaskStatuses.New,
+                priority: TaskPriorities.Middle,
+                addedDate: '',
+                order: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: todolist2,
+                description: 'desc',
+                taskStatus: 'idle'
             },
             {
-                id: v1(), title: 'HF:JavaScript', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist2, description: 'desc', taskStatus: 'idle'
+                id: v1(),
+                title: 'HF:JavaScript',
+                status: TaskStatuses.Completed,
+                priority: TaskPriorities.Middle,
+                addedDate: '',
+                order: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: todolist2,
+                description: 'desc',
+                taskStatus: 'idle'
             },
             {
-                id: v1(), title: 'Clean code', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist2, description: 'desc', taskStatus: 'idle'
+                id: v1(),
+                title: 'Clean code',
+                status: TaskStatuses.Completed,
+                priority: TaskPriorities.Middle,
+                addedDate: '',
+                order: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: todolist2,
+                description: 'desc',
+                taskStatus: 'idle'
             },
             {
-                id: v1(), title: 'Algorithms', status: TaskStatuses.Draft, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist2, description: 'desc', taskStatus: 'idle'
+                id: v1(),
+                title: 'Algorithms',
+                status: TaskStatuses.Draft,
+                priority: TaskPriorities.Middle,
+                addedDate: '',
+                order: 0,
+                startDate: '',
+                deadline: '',
+                todoListId: todolist2,
+                description: 'desc',
+                taskStatus: 'idle'
             },
         ],
     }
@@ -64,7 +137,7 @@ beforeEach(() => {
 test('should delete task #3 from todolist1', () => {
 
     const taskToRemoveId = tasks[todolist1][2].id
-    const newTasks: TTasks = tasksReducer(tasks, _removeTask(todolist1, taskToRemoveId))
+    const newTasks: TTasks = tasksReducer(tasks, _removeTask({todoListId: todolist1, taskId: taskToRemoveId}))
 
     expect(newTasks[todolist1].length).toBe(4)
     expect(newTasks[todolist1][2].title).toBe('Rest API')
@@ -78,9 +151,11 @@ test('should delete task #3 from todolist1', () => {
 test('should add task to todolist2', () => {
 
     const newTaskTitle = 'WebStorm'
-    const newTasks = tasksReducer(tasks, _addTask(todolist2, {
-        id: '101', title: newTaskTitle, status: TaskStatuses.New, priority: TaskPriorities.Middle,
-        addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist2, description: 'desc'
+    const newTasks = tasksReducer(tasks, _addTask({
+        task: {
+            id: '101', title: newTaskTitle, status: TaskStatuses.New, priority: TaskPriorities.Middle,
+            addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist2, description: 'desc'
+        }
     }))
 
     expect(newTasks[todolist2].length).toBe(5)
@@ -95,13 +170,15 @@ test('should change task title "HTML&CSS" to "Layout"', () => {
 
     const newTaskTitle = 'Layout'
     const taskId = tasks[todolist1][0].id
-    const newTasks = tasksReducer(tasks, _updateTask(todolist1, taskId, {
-        title: newTaskTitle,
-        status: TaskStatuses.New,
-        priority: TaskPriorities.Middle,
-        startDate: '',
-        deadline: '',
-        description: 'desc'
+    const newTasks = tasksReducer(tasks, _updateTask({
+        todoListId: todolist1, taskId, model: {
+            title: newTaskTitle,
+            status: TaskStatuses.New,
+            priority: TaskPriorities.Middle,
+            startDate: '',
+            deadline: '',
+            description: 'desc'
+        }
     }))
 
     expect(newTasks[todolist1].length).toBe(5)
@@ -112,13 +189,13 @@ test('should change task title "HTML&CSS" to "Layout"', () => {
 
 test('should toggle todolist2 4th task isDone', () => {
     const taskId = tasks[todolist2][3].id
-    const newTasks = tasksReducer(tasks, _updateTask(todolist2, taskId, {
-        title: 'Algorithms',
-        status: TaskStatuses.New,
-        priority: TaskPriorities.Middle,
-        startDate: '',
-        deadline: '',
-        description: 'desc'
+    const newTasks = tasksReducer(tasks, _updateTask({
+        todoListId: todolist2,
+        taskId,
+        model: {
+            title: 'Algorithms', status: TaskStatuses.New, priority: TaskPriorities.Middle,
+            startDate: '', deadline: '', description: 'desc'
+        }
     }))
 
     expect(newTasks).not.toBe(tasks)
@@ -128,7 +205,7 @@ test('should toggle todolist2 4th task isDone', () => {
 
 test('when removing todolist, array of tasks should be removed', () => {
 
-    const newTasks = tasksReducer(tasks, _removeTodoList(todolist2))
+    const newTasks = tasksReducer(tasks, _removeTodoList({todoListId: todolist2}))
     const keys = Object.keys(newTasks)
 
     expect(keys.length).toBe(1)
@@ -139,10 +216,12 @@ test('when removing todolist, array of tasks should be removed', () => {
 test('when adding todolist, array of tasks should be added', () => {
 
     const newTasks = tasksReducer(tasks, _addTodoList({
-        id: v1(),
-        title: 'todolist data has no matter',
-        addedDate: '',
-        order: 0
+        todoList: {
+            id: v1(),
+            title: 'todolist data has no matter',
+            addedDate: '',
+            order: 0
+        }
     }))
     const keys = Object.keys(newTasks)
     const newKey = keys.find(k => k !== todolist1 && k !== todolist2)
@@ -158,7 +237,7 @@ test('when adding todolist, array of tasks should be added', () => {
 
 test('tasks should be settled to todo list', () => {
 
-    const newTasks = tasksReducer({}, _fetchTasks('newTodoListId', tasks[todolist2]))
+    const newTasks = tasksReducer({}, _fetchTasks({todoListId: 'newTodoListId', tasks: tasks[todolist2]}))
 
     expect(newTasks['newTodoListId'].length).toBe(4)
     expect(newTasks['newTodoListId'][1].title).toBe('HF:JavaScript')
@@ -168,7 +247,7 @@ test('should change task status from "idle" to "loading"', () => {
 
     const newTaskStatus = 'loading'
     const taskId = tasks[todolist1][0].id
-    const newTasks = tasksReducer(tasks, _setTaskStatus(todolist1, taskId, 'loading'))
+    const newTasks = tasksReducer(tasks, _setTaskStatus({todoListId: todolist1, taskId, taskStatus: 'loading'}))
 
     expect(newTasks[todolist1].length).toBe(5)
     expect(newTasks[todolist1][0].taskStatus).toBe(newTaskStatus)

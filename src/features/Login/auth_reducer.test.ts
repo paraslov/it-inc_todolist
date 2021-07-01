@@ -1,6 +1,6 @@
-import {authReducer, setIsAuth, TAuthReducerStateType} from './auth_reducer';
+import {authReducer, setIsAuth} from './auth_reducer'
 
-let startState: TAuthReducerStateType
+let startState: any
 beforeEach(() => {
     startState = {
         isAuth: false,
@@ -8,7 +8,7 @@ beforeEach(() => {
 })
 
 test('should change isAuth prop', () => {
-    const endState = authReducer(startState, setIsAuth(true))
+    const endState = authReducer(startState, setIsAuth({isAuth: true}))
 
     expect(endState.isAuth).toBeTruthy()
     expect(startState.isAuth).toBeFalsy()
