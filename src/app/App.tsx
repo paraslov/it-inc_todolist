@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect} from 'react';
-import './App.css';
+import React, {useCallback, useEffect} from 'react'
+import './App.css'
 import {
     AppBar,
     Button,
@@ -9,16 +9,16 @@ import {
     LinearProgress,
     Toolbar,
     Typography
-} from '@material-ui/core';
-import {Menu} from '@material-ui/icons';
-import {TodoLists} from '../features/TodoLists/TodoLists';
-import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
-import {useDispatch, useSelector} from 'react-redux';
-import {selectAppStatus, selectIsAppInitialized} from '../utils/selectors/selectors';
-import { Switch, BrowserRouter, Route, Redirect} from 'react-router-dom';
-import {Login} from '../features/Login/Login';
-import {logout} from '../features/Login/auth_reducer';
-import {initializeApp} from './app_reducer';
+} from '@material-ui/core'
+import {Menu} from '@material-ui/icons'
+import {TodoLists} from '../features/TodoLists/TodoLists'
+import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
+import {useDispatch, useSelector} from 'react-redux'
+import {selectAppStatus, selectIsAppInitialized} from '../utils/selectors/selectors'
+import {Redirect, Route, Switch} from 'react-router-dom'
+import {Login} from '../features/Login/Login'
+import {logout} from '../features/Login/auth_reducer'
+import {initializeApp} from './app_reducer'
 
 type PropsType = {
     demo?: boolean
@@ -31,7 +31,7 @@ function App({demo = false}: PropsType) {
     const isAppInitialized = useSelector(selectIsAppInitialized)
 
     useEffect(() => {
-        dispatch(initializeApp())
+        if(!demo) dispatch(initializeApp())
     }, [])
 
     const handleLogout = useCallback(() => {
@@ -44,7 +44,6 @@ function App({demo = false}: PropsType) {
 
     return (
         <div className="App">
-            <BrowserRouter>
                 <AppBar position="static">
                     <Toolbar>
                         <IconButton edge="start" color="inherit" aria-label="menu">
@@ -68,8 +67,6 @@ function App({demo = false}: PropsType) {
                     </Switch>
                 </Container>
                 <ErrorSnackbar/>
-            </BrowserRouter>
-
         </div>
     )
 }

@@ -1,13 +1,16 @@
 import React from 'react'
-import App from './App';
-import {Meta, Story} from '@storybook/react';
-import {ReduxStoreProviderDecorator} from '../utils/ReduxStoreProviderDecorator/ReduxStoreProviderDecorator';
+import App from './App'
+import {Meta, Story} from '@storybook/react'
+import {
+    HashRouterDecorator,
+    ReduxStoreProviderDecorator
+} from '../utils/ReduxStoreProviderDecorator/ReduxStoreProviderDecorator'
 
 
 export default {
     title: 'App',
     component: App,
-    decorators: [ReduxStoreProviderDecorator]
+    decorators: [ReduxStoreProviderDecorator, HashRouterDecorator]
 } as Meta
 
 const Template: Story = (args) => <App {...args}/>

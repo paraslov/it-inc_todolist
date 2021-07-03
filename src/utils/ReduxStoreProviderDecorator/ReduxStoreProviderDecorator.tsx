@@ -1,20 +1,24 @@
 import React from 'react'
 import {Provider} from 'react-redux'
-import {TAppState} from '../../app/store'
+import {TAppState, TRootReducer} from '../../app/store'
 import {StoryFnReactReturnType} from '@storybook/react/dist/ts3.9/client/preview/types'
-import {applyMiddleware, combineReducers, createStore} from 'redux'
+import {combineReducers} from 'redux'
 import {tasksReducer} from '../../features/TodoLists/TodoList/tasks_reducer'
 import {todoListsReducer} from '../../features/TodoLists/todolists_reducer'
 import {v1} from 'uuid'
-import {TaskPriorities, TaskStatuses} from '../../api/tasks_api';
-import {appReducer} from '../../app/app_reducer';
-import thunkMW from 'redux-thunk';
+import {TaskPriorities, TaskStatuses} from '../../api/tasks_api'
+import {appReducer} from '../../app/app_reducer'
+import thunkMW from 'redux-thunk'
+import {HashRouter} from 'react-router-dom'
+import {authReducer} from '../../features/Login/auth_reducer'
+import {configureStore} from '@reduxjs/toolkit'
 
 
-const rootReducer = combineReducers({
+const rootReducer: TRootReducer = combineReducers({
     tasks: tasksReducer,
     todoLists: todoListsReducer,
-    app: appReducer
+    app: appReducer,
+    auth: authReducer
 })
 
 //* initial state for storybook tests only ============================================================================>>
@@ -108,19 +112,28 @@ const initialGlobalState: TAppState = {
         ]
     },
     app: {
-        status: 'idle',
+        status: 'succeeded',
         error: null,
-        isAppInitialized: false
+        isAppInitialized: true
     },
     auth: {
-        isAuth: false
+        isAuth: true
     }
-};
+}
 
-//* Store for storybook tests only ====================================================================================>>
-const storyBookStore = createStore(rootReducer, initialGlobalState, applyMiddleware(thunkMW))
+//* Store for storybook tests only ===================================================================================>>
+const storyBookStore = configureStore({
+    reducer: rootReducer,
+    preloadedState: initialGlobalState,
+    middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(thunkMW)
+})
 
-//* Provider decoration for storybook tests ===========================================================================>>
+//* Provider decoration for storybook tests ==========================================================================>>
 export const ReduxStoreProviderDecorator = (storyFn: () => StoryFnReactReturnType) => {
     return <Provider store={storyBookStore}>{storyFn()}</Provider>
+}
+
+//* HashRouter decoration for storybook tests ========================================================================>>
+export const HashRouterDecorator = (storyFn: () => StoryFnReactReturnType) => {
+    return <HashRouter>{storyFn()}</HashRouter>
 }

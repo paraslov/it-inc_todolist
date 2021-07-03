@@ -14,9 +14,11 @@ const rootReducer = combineReducers({
     auth: authReducer,
 })
 
+export type TRootReducer = typeof rootReducer
+
 export const store = configureStore({
     reducer: rootReducer,
     middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(thunkMW)
 })
 
-export type TAppState = ReturnType<typeof rootReducer>
+export type TAppState = ReturnType<TRootReducer>
