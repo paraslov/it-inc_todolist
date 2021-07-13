@@ -10,8 +10,14 @@ export const instance = axios.create({
 })
 
 //* common api types: ===========================================================================================>>
+
+export type TFieldError = {
+    field: string
+    error: string
+}
 export type TOperationResult<D = {}> = {
     resultCode: number
+    fieldsErrors?: TFieldError[]
     messages: string[]
     data: D
 }

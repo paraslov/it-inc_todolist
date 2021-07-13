@@ -5,6 +5,7 @@ import thunkMW from 'redux-thunk'
 import {appReducer} from './app_reducer'
 import {authReducer} from '../features/Login/auth_reducer'
 import {configureStore} from '@reduxjs/toolkit'
+import {useDispatch} from 'react-redux'
 
 
 const rootReducer = combineReducers({
@@ -14,11 +15,14 @@ const rootReducer = combineReducers({
     auth: authReducer,
 })
 
-export type TRootReducer = typeof rootReducer
-
 export const store = configureStore({
     reducer: rootReducer,
     middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(thunkMW)
 })
 
+export const useAppDispatch = () => useDispatch<TAppDispatch>()
+
+export type TRootReducer = typeof rootReducer
 export type TAppState = ReturnType<TRootReducer>
+export type TAppDispatch = typeof store.dispatch
+

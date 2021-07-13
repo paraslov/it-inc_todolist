@@ -4,10 +4,10 @@ import {
     _changeTodoListFilter,
     addTodoList,
     changeTodoListTitle,
-    fetchTodoListsTC,
+    fetchTodoLists,
     TFilterValues,
-    removeTodoList
-} from './todolists_reducer';
+    removeTodoList, TTodoListDomain
+} from './todolists_reducer'
 import {selectIsAuth, selectTasks, selectTodoLists} from '../../utils/selectors/selectors';
 import {addTask, removeTask, updateTask} from './TodoList/tasks_reducer';
 import {TaskStatuses, TTask} from '../../api/tasks_api';
@@ -27,7 +27,7 @@ export function TodoLists({demo = false}: PropsType) {
 
     useEffect(() => {
         if(demo || !isAuth) return
-        dispatch(fetchTodoListsTC())
+        dispatch(fetchTodoLists())
     }, [])
 
     //* TodoLists data declaration section  =============================================================>
@@ -73,7 +73,7 @@ export function TodoLists({demo = false}: PropsType) {
             </Grid>
 
             <Grid container spacing={2}>
-                {todoLists.map((tl: any) => {
+                {todoLists.map((tl: TTodoListDomain) => {
                         return <Grid item key={tl.id}>
                             <Paper style={{padding: '10px'}}>
                                 <Todolist
