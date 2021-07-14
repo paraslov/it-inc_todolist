@@ -1,6 +1,6 @@
 import {v1} from 'uuid'
 import {_addTask, _fetchTasks, _removeTask, _setTaskStatus, _updateTask, tasksReducer, TTasks} from './tasks_reducer'
-import {_addTodoList, _removeTodoList} from '../todolists_reducer'
+import {addTodoList, removeTodoList} from '../todolists_reducer'
 import {TaskPriorities, TaskStatuses} from '../../../api/tasks_api'
 
 const todolist1 = v1()
@@ -205,7 +205,7 @@ test('should toggle todolist2 4th task isDone', () => {
 
 test('when removing todolist, array of tasks should be removed', () => {
 
-    const newTasks = tasksReducer(tasks, _removeTodoList({todoListId: todolist2}))
+    const newTasks = tasksReducer(tasks, removeTodoList.fulfilled({todoListId: todolist2}, 'requestId', {todoListId: todolist2}))
     const keys = Object.keys(newTasks)
 
     expect(keys.length).toBe(1)
@@ -215,14 +215,14 @@ test('when removing todolist, array of tasks should be removed', () => {
 
 test('when adding todolist, array of tasks should be added', () => {
 
-    const newTasks = tasksReducer(tasks, _addTodoList({
+    const newTasks = tasksReducer(tasks, addTodoList.fulfilled({
         todoList: {
             id: v1(),
             title: 'todolist data has no matter',
             addedDate: '',
             order: 0
         }
-    }))
+    }, 'requestId', {title: 'todolist data has no matter'}))
     const keys = Object.keys(newTasks)
     const newKey = keys.find(k => k !== todolist1 && k !== todolist2)
 

@@ -1,4 +1,4 @@
-import {_addTodoList, fetchTodoLists, todoListsReducer, TTodoListDomain} from './todolists_reducer'
+import {addTodoList, fetchTodoLists, todoListsReducer, TTodoListDomain} from './todolists_reducer'
 import {tasksReducer, TTasks} from './TodoList/tasks_reducer'
 import {v1} from 'uuid'
 
@@ -7,7 +7,8 @@ test('ids should be equals', () => {
     const startTasksState: TTasks = {}
     const startTodoListsState: Array<TTodoListDomain> = []
 
-    const action = _addTodoList({todoList: {id: v1(), title: 'new todolist', addedDate: '', order: 0}})
+    const action = addTodoList.fulfilled({todoList: {id: v1(), title: 'new todolist', addedDate: '', order: 0}},
+        'requestId', {title: 'new todolist'})
 
     const endTasksState = tasksReducer(startTasksState, action)
     const endTodoListsState = todoListsReducer(startTodoListsState, action)
