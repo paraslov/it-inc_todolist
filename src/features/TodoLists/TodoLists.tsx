@@ -51,17 +51,17 @@ export function TodoLists({demo = false}: PropsType) {
     }, [dispatch])
 
     //* Callbacks for TodoLists management  ====================================================================>
-    const removeTodolistCallback = useCallback((todolistId: string) => {
-        dispatch(removeTodoList(todolistId))
+    const removeTodolistCallback = useCallback((todoListId: string) => {
+        dispatch(removeTodoList({todoListId}))
     }, [dispatch])
     const addNewTodolist = useCallback((newTodolistTitle: string) => {
-        dispatch(addTodoList(newTodolistTitle))
+        dispatch(addTodoList({title: newTodolistTitle}))
     }, [dispatch])
     const filterTasks = useCallback((id: string, filterCondition: TFilterValues) => {
         dispatch(_changeTodoListFilter({todoListId: id, filter: filterCondition}))
     }, [dispatch])
     const changeTodoListTitleCallback = useCallback((newTodolistTitle: string, todolistId: string) => {
-        dispatch(changeTodoListTitle(todolistId, newTodolistTitle))
+        dispatch(changeTodoListTitle({todoListId: todolistId, title: newTodolistTitle}))
     }, [dispatch])
 
     if(!isAuth) return <Redirect to={'/login'} />
