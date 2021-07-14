@@ -37,17 +37,17 @@ export function TodoLists({demo = false}: PropsType) {
     const tasks = useSelector(selectTasks)
 
     //* Callbacks for Tasks management  ==================================================================>
-    const removeTaskCallback = useCallback((todolistId: string, taskId: string) => {
-        dispatch(removeTask(todolistId, taskId))
+    const removeTaskCallback = useCallback((todoListId: string, taskId: string) => {
+        dispatch(removeTask({todoListId, taskId}))
     }, [dispatch])
-    const addNewTask = useCallback((todolistId: string, newTaskTitle: string) => {
-        dispatch(addTask(todolistId, newTaskTitle))
+    const addNewTask = useCallback((todoListId: string, newTaskTitle: string) => {
+        dispatch(addTask({todoListId, title: newTaskTitle}))
     }, [dispatch])
-    const changeTaskIsDone = useCallback((todolistId: string, task: TTask, status: TaskStatuses) => {
-        dispatch(updateTask(todolistId, task, {status}))
+    const changeTaskIsDone = useCallback((todoListId: string, task: TTask, status: TaskStatuses) => {
+        dispatch(updateTask({todoListId, task, model: {status}}))
     }, [dispatch])
-    const changeTaskTitle = useCallback((todolistId: string, task: TTask, newTaskTitle: string) => {
-        dispatch(updateTask(todolistId, task, {title: newTaskTitle}))
+    const changeTaskTitle = useCallback((todoListId: string, task: TTask, newTaskTitle: string) => {
+        dispatch(updateTask({todoListId, task, model: {title: newTaskTitle}}))
     }, [dispatch])
 
     //* Callbacks for TodoLists management  ====================================================================>
