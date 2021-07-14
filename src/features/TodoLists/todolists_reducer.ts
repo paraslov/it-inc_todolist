@@ -15,6 +15,7 @@ export const fetchTodoLists = createAsyncThunk('todoListReducer/fetchTodoLists',
         return {todoLists: data}
     } catch (error) {
         thunkServerCatchError(error, thunkAPI.dispatch)
+        return thunkAPI.rejectWithValue({errors: error.message.length ? error.message : 'some error occurred'})
     }
 })
 
@@ -37,9 +38,6 @@ export const slice = createSlice({
             const index = state.findIndex(tl => tl.id === action.payload.todoListId)
             state[index].filter = action.payload.filter
         },
-        _fetchTodoLists(state, action: PayloadAction<{ todoLists: TTodoList[] }>) {
-            return action.payload.todoLists.map(tl => ({...tl, filter: 'all', todoListStatus: 'idle'}))
-        },
         _setTodoListStatus(state, action: PayloadAction<{ todoListId: string, todoListStatus: TResponseStatus }>) {
             const index = state.findIndex(tl => tl.id === action.payload.todoListId)
             state[index].todoListStatus = action.payload.todoListStatus
@@ -47,16 +45,13 @@ export const slice = createSlice({
     },
     extraReducers: builder => {
         builder.addCase(fetchTodoLists.fulfilled, (state, action) => {
-            return action.payload?.todoLists.map(tl => ({...tl, filter: 'all', todoListStatus: 'idle'}))
+            return action.payload.todoLists.map(tl => ({...tl, filter: 'all', todoListStatus: 'idle'}))
         })
     }
 })
 
 export const todoListsReducer = slice.reducer
-export const {
-    _removeTodoList, _addTodoList, _changeTodoListTitle, _changeTodoListFilter, _fetchTodoLists,
-    _setTodoListStatus
-} = slice.actions
+export const {_removeTodoList, _addTodoList, _changeTodoListTitle, _changeTodoListFilter, _setTodoListStatus} = slice.actions
 //* ====== Thunk Creators ============================================================================================>>
 export const addTodoList = (title: string) => (dispatch: TAppDispatch) => {
     dispatch(setAppStatus({status: 'loading'}))

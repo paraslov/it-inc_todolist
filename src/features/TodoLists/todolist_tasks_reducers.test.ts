@@ -1,4 +1,4 @@
-import {_addTodoList, _fetchTodoLists, todoListsReducer, TTodoListDomain} from './todolists_reducer'
+import {_addTodoList, fetchTodoLists, todoListsReducer, TTodoListDomain} from './todolists_reducer'
 import {tasksReducer, TTasks} from './TodoList/tasks_reducer'
 import {v1} from 'uuid'
 
@@ -26,7 +26,7 @@ test('todo lists should be settled to the state and an empty array should be cre
         {id: 'todolistId2', title: 'What to buy', filter: 'all', addedDate: '', order: 0}
     ]
 
-    const action = _fetchTodoLists({todoLists: startState})
+    const action = fetchTodoLists.fulfilled( {todoLists: startState}, 'requestId0')
 
     const endTasksState = tasksReducer({}, action)
     const endTodoListsState = todoListsReducer([], action)

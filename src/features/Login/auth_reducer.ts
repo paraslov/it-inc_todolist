@@ -31,13 +31,15 @@ export const logout = createAsyncThunk('auth/logout', async (payload, thunkAPI) 
         thunkAPI.dispatch(setAppStatus({status: 'loading'}))
         let data = await authAPI.logout()
         if (data.resultCode === OperationResultCodes.Success) {
-            thunkAPI.dispatch(setIsAuth({isAuth: false}))
             thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
+            return {isAuth: false}
         } else {
             thunkServerResponseError(data, thunkAPI.dispatch)
+            return thunkAPI.rejectWithValue({errors: data.messages.length ? data.messages[0] : 'some error occurred'})
         }
     } catch (error) {
         thunkServerCatchError(error, thunkAPI.dispatch)
+        return thunkAPI.rejectWithValue({errors: error.message.length ? error.message : 'some error occurred'})
     }
 })
 
@@ -56,6 +58,9 @@ const slice = createSlice({
     },
     extraReducers: builder => {
         builder.addCase(login.fulfilled, (state, action) => {
+            state.isAuth = action.payload.isAuth
+        });
+        builder.addCase(logout.fulfilled, (state, action) => {
             state.isAuth = action.payload.isAuth
         })
     }
