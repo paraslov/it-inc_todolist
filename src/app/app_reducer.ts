@@ -20,19 +20,20 @@ export const initializeApp = createAsyncThunk('app/initializeApp', async (payloa
         }
     } catch (error) {
         thunkServerCatchError(error, thunkAPI.dispatch)
+        return thunkAPI.rejectWithValue({errors: error.message.length ? error.message : 'some error occurred'})
     }
 })
 
 //* ================================================================================================= Reducer ========>>
-const initialState = {
-    error: null as string | null,
-    status: 'idle' as TResponseStatus,
-    isAppInitialized: false,
-}
+
 
 const slice = createSlice({
     name: 'app',
-    initialState: initialState,
+    initialState: {
+        error: null as string | null,
+        status: 'idle' as TResponseStatus,
+        isAppInitialized: false,
+    },
     reducers: {
         setAppError(state, action: PayloadAction<{ error: string | null }>) {
             state.error = action.payload.error
@@ -43,9 +44,7 @@ const slice = createSlice({
     },
     extraReducers: builder => {
         builder.addCase(initializeApp.fulfilled, (state, action) => {
-            if(action.payload) {
-                state.isAppInitialized = action.payload.isAppInitialized
-            }
+            state.isAppInitialized = action.payload.isAppInitialized
         })
     }
 })

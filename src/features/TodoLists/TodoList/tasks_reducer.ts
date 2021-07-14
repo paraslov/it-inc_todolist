@@ -36,84 +36,52 @@ export const addTask = createAsyncThunk('tasksReducer/addTask',
         }
     })
 export const removeTask = createAsyncThunk('tasksReducer/removeTask',
-    async (payload: { todoListId: string, taskId: string }, thunkAPI) => {
+    async ({todoListId, taskId}: { todoListId: string, taskId: string }, thunkAPI) => {
         try {
             thunkAPI.dispatch(setAppStatus({status: 'loading'}))
-            thunkAPI.dispatch(_setTaskStatus({
-                todoListId: payload.todoListId,
-                taskId: payload.taskId,
-                taskStatus: 'loading'
-            }))
-            const data = await tasksAPI.removeTask(payload.todoListId, payload.taskId)
+            thunkAPI.dispatch(_setTaskStatus({todoListId, taskId, taskStatus: 'loading'}))
+            const data = await tasksAPI.removeTask(todoListId, taskId)
             if (data.resultCode === 0) {
                 thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
-                thunkAPI.dispatch(_setTaskStatus({
-                    todoListId: payload.todoListId,
-                    taskId: payload.taskId,
-                    taskStatus: 'succeeded'
-                }))
-                return payload
+                thunkAPI.dispatch(_setTaskStatus({todoListId, taskId, taskStatus: 'succeeded'}))
+                return {todoListId, taskId}
             } else {
-                thunkAPI.dispatch(_setTaskStatus({
-                    todoListId: payload.todoListId,
-                    taskId: payload.taskId,
-                    taskStatus: 'failed'
-                }))
+                thunkAPI.dispatch(_setTaskStatus({todoListId, taskId, taskStatus: 'failed'}))
                 return thunkAPI.rejectWithValue({errors: data.messages.length ? data.messages[0] : 'some error occurred'})
             }
         } catch (error) {
             thunkServerCatchError(error, thunkAPI.dispatch)
-            thunkAPI.dispatch(_setTaskStatus({
-                todoListId: payload.todoListId,
-                taskId: payload.taskId,
-                taskStatus: 'failed'
-            }))
+            thunkAPI.dispatch(_setTaskStatus({todoListId, taskId, taskStatus: 'failed'}))
             return thunkAPI.rejectWithValue({errors: error.message.length ? error.message : 'some error occurred'})
         }
     })
 export const updateTask = createAsyncThunk('tasksReducer/updateTask',
-    async (payload: { todoListId: string, task: TTask, model: TTaskUpdateDomainModel }, thunkAPI) => {
+    async ({todoListId, task, model}: { todoListId: string, task: TTask, model: TTaskUpdateDomainModel }, thunkAPI) => {
         try {
             thunkAPI.dispatch(setAppStatus({status: 'loading'}))
-            thunkAPI.dispatch(_setTaskStatus({
-                todoListId: payload.todoListId,
-                taskId: payload.task.id,
-                taskStatus: 'loading'
-            }))
+            thunkAPI.dispatch(_setTaskStatus({todoListId, taskId: task.id, taskStatus: 'loading'}))
             const updatedTaskModel: TTaskUpdateModel = {
-                title: payload.task.title,
-                startDate: payload.task.startDate,
-                priority: payload.task.priority,
-                deadline: payload.task.deadline,
-                description: payload.task.description,
-                status: payload.task.status,
-                ...payload.model
+                title: task.title,
+                startDate: task.startDate,
+                priority: task.priority,
+                deadline: task.deadline,
+                description: task.description,
+                status: task.status,
+                ...model
             }
-            const data = await tasksAPI.updateTask(payload.todoListId, payload.task.id, updatedTaskModel)
+            const data = await tasksAPI.updateTask(todoListId, task.id, updatedTaskModel)
             if (data.resultCode === 0) {
                 thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
-                thunkAPI.dispatch(_setTaskStatus({
-                    todoListId: payload.todoListId,
-                    taskId: payload.task.id,
-                    taskStatus: 'succeeded'
-                }))
-                return {todoListId: payload.todoListId, taskId: payload.task.id, model: updatedTaskModel}
+                thunkAPI.dispatch(_setTaskStatus({todoListId, taskId: task.id, taskStatus: 'succeeded'}))
+                return {todoListId, taskId: task.id, model: updatedTaskModel}
             } else {
                 thunkServerResponseError(data, thunkAPI.dispatch)
-                thunkAPI.dispatch(_setTaskStatus({
-                    todoListId: payload.todoListId,
-                    taskId: payload.task.id,
-                    taskStatus: 'failed'
-                }))
+                thunkAPI.dispatch(_setTaskStatus({todoListId, taskId: task.id, taskStatus: 'failed'}))
                 return thunkAPI.rejectWithValue({errors: data.messages.length ? data.messages[0] : 'some error occurred'})
             }
         } catch (error) {
             thunkServerCatchError(error, thunkAPI.dispatch)
-            thunkAPI.dispatch(_setTaskStatus({
-                todoListId: payload.todoListId,
-                taskId: payload.task.id,
-                taskStatus: 'failed'
-            }))
+            thunkAPI.dispatch(_setTaskStatus({todoListId, taskId: task.id, taskStatus: 'failed'}))
             return thunkAPI.rejectWithValue({errors: error.message.length ? error.message : 'some error occurred'})
         }
     })
@@ -122,9 +90,6 @@ const slice = createSlice({
     name: 'tasksReducer',
     initialState: initState,
     reducers: {
-        _fetchTasks(state, action: PayloadAction<{ todoListId: string, tasks: TTask[] }>) {
-            state[action.payload.todoListId] = action.payload.tasks.map(task => ({...task, taskStatus: 'idle'}))
-        },
         _setTaskStatus(state, action: PayloadAction<{ todoListId: string, taskId: string, taskStatus: TResponseStatus }>) {
             const index = state[action.payload.todoListId].findIndex(task => task.id === action.payload.taskId)
             state[action.payload.todoListId][index].taskStatus = action.payload.taskStatus
@@ -163,7 +128,7 @@ const slice = createSlice({
 })
 
 export const tasksReducer = slice.reducer
-export const {_fetchTasks, _setTaskStatus} = slice.actions
+export const {_setTaskStatus} = slice.actions
 
 //* ============================================================================================== Thunk Creators ====>>
 

@@ -1,14 +1,15 @@
 import {
-    _addTodoList,
     _changeTodoListFilter,
-    _changeTodoListTitle,
-    _removeTodoList, _setTodoListStatus,
+    _setTodoListStatus,
+    addTodoList,
+    changeTodoListTitle,
+    removeTodoList,
     TFilterValues,
-    TTodoListDomain,
-    todoListsReducer
-} from './todolists_reducer';
-import {v1} from 'uuid';
-import {TResponseStatus} from '../../app/app_reducer';
+    todoListsReducer,
+    TTodoListDomain
+} from './todolists_reducer'
+import {v1} from 'uuid'
+import {TResponseStatus} from '../../app/app_reducer'
 
 const todolistId1 = v1()
 const todolistId2 = v1()
@@ -23,7 +24,8 @@ beforeEach(() => {
 
 test('correct todolist should be removed', () => {
 
-    const endState = todoListsReducer(startState, _removeTodoList({todoListId: todolistId1}))
+    let payload = {todoListId: todolistId1}
+    const endState = todoListsReducer(startState, removeTodoList.fulfilled(payload, 'requestId', payload))
 
     expect(endState.length).toBe(1);
     expect(endState[0].id).toBe(todolistId2);
@@ -32,10 +34,10 @@ test('correct todolist should be removed', () => {
 test('correct todolist should be added', () => {
 
     let newTodolistTitle = 'New Todolist';
-    const endState = todoListsReducer(startState, _addTodoList({
+    const endState = todoListsReducer(startState, addTodoList.fulfilled({
         todoList:
             {id: v1(), title: newTodolistTitle, addedDate: '', order: 0}
-    }))
+    }, 'requestId', {title: newTodolistTitle}))
 
     expect(endState.length).toBe(3);
     expect(startState[0].title).toBe('What to learn')
@@ -44,7 +46,8 @@ test('correct todolist should be added', () => {
 
 test('correct todolist should change its name', () => {
     let newTodolistTitle = 'New Todolist';
-    const action = _changeTodoListTitle({todoListId: todolistId2, title: newTodolistTitle});
+    let payload = {todoListId: todolistId2, title: newTodolistTitle}
+    const action = changeTodoListTitle.fulfilled(payload, 'requestId', payload);
 
     const endState = todoListsReducer(startState, action);
 

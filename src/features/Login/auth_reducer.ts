@@ -6,7 +6,7 @@ import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {AxiosError} from 'axios'
 
 //* ============================================================================================ Thunk Creators ======>>
-export const login = createAsyncThunk<{isAuth: boolean}, {data: TLoginParams}, {
+export const login = createAsyncThunk<undefined, {data: TLoginParams}, {
     rejectValue: {errors: string[], fieldsErrors?: TFieldError[]}
 }>('auth/login', async (payload , thunkAPI) => {
     try {
@@ -14,7 +14,7 @@ export const login = createAsyncThunk<{isAuth: boolean}, {data: TLoginParams}, {
         let data = await authAPI.login(payload.data)
         if (data.resultCode === OperationResultCodes.Success) {
             thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
-            return {isAuth: true}
+            return
         } else {
             thunkServerResponseError(data, thunkAPI.dispatch)
             return thunkAPI.rejectWithValue({errors: data.messages, fieldsErrors: data.fieldsErrors})
@@ -32,7 +32,7 @@ export const logout = createAsyncThunk('auth/logout', async (payload, thunkAPI) 
         let data = await authAPI.logout()
         if (data.resultCode === OperationResultCodes.Success) {
             thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
-            return {isAuth: false}
+            return
         } else {
             thunkServerResponseError(data, thunkAPI.dispatch)
             return thunkAPI.rejectWithValue({errors: data.messages.length ? data.messages[0] : 'some error occurred'})
@@ -44,24 +44,23 @@ export const logout = createAsyncThunk('auth/logout', async (payload, thunkAPI) 
 })
 
 //* ====== Reducer ===================================================================================================>>
-const initState = {
-    isAuth: false
-}
 
 const slice = createSlice({
     name: 'auth',
-    initialState: initState,
+    initialState: {
+        isAuth: false
+    },
     reducers: {
         setIsAuth(state, action: PayloadAction<{ isAuth: boolean }>) {
             state.isAuth = action.payload.isAuth
         }
     },
     extraReducers: builder => {
-        builder.addCase(login.fulfilled, (state, action) => {
-            state.isAuth = action.payload.isAuth
+        builder.addCase(login.fulfilled, (state) => {
+            state.isAuth = true
         });
-        builder.addCase(logout.fulfilled, (state, action) => {
-            state.isAuth = action.payload.isAuth
+        builder.addCase(logout.fulfilled, (state) => {
+            state.isAuth = false
         })
     }
 })

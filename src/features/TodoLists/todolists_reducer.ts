@@ -82,17 +82,6 @@ export const slice = createSlice({
     name: 'todoListReducer',
     initialState: initState,
     reducers: {
-        _removeTodoList(state, action: PayloadAction<{ todoListId: string }>) {
-            const index = state.findIndex(tl => tl.id === action.payload.todoListId)
-            if (index > -1) state.splice(index, 1)
-        },
-        _addTodoList(state, action: PayloadAction<{ todoList: TTodoList }>) {
-            state.unshift({...action.payload.todoList, filter: 'all', todoListStatus: 'idle'})
-        },
-        _changeTodoListTitle(state, action: PayloadAction<{ todoListId: string, title: string }>) {
-            const index = state.findIndex(tl => tl.id === action.payload.todoListId)
-            state[index].title = action.payload.title
-        },
         _changeTodoListFilter(state, action: PayloadAction<{ todoListId: string, filter: TFilterValues }>) {
             const index = state.findIndex(tl => tl.id === action.payload.todoListId)
             state[index].filter = action.payload.filter
@@ -121,13 +110,7 @@ export const slice = createSlice({
 })
 
 export const todoListsReducer = slice.reducer
-export const {
-    _removeTodoList,
-    _addTodoList,
-    _changeTodoListTitle,
-    _changeTodoListFilter,
-    _setTodoListStatus
-} = slice.actions
+export const {_changeTodoListFilter, _setTodoListStatus} = slice.actions
 
 //* ====== Types =====================================================================================================>>
 export type TFilterValues = 'all' | 'completed' | 'active'
