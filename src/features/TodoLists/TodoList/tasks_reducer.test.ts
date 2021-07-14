@@ -1,5 +1,5 @@
 import {v1} from 'uuid'
-import {_addTask, _fetchTasks, _removeTask, _setTaskStatus, _updateTask, tasksReducer, TTasks} from './tasks_reducer'
+import {_fetchTasks, _setTaskStatus, addTask, removeTask, tasksReducer, TTasks, updateTask} from './tasks_reducer'
 import {addTodoList, removeTodoList} from '../todolists_reducer'
 import {TaskPriorities, TaskStatuses} from '../../../api/tasks_api'
 
@@ -137,7 +137,8 @@ beforeEach(() => {
 test('should delete task #3 from todolist1', () => {
 
     const taskToRemoveId = tasks[todolist1][2].id
-    const newTasks: TTasks = tasksReducer(tasks, _removeTask({todoListId: todolist1, taskId: taskToRemoveId}))
+    const newTasks: TTasks = tasksReducer(tasks, removeTask.fulfilled({todoListId: todolist1, taskId: taskToRemoveId},
+        'requestId', {todoListId: todolist1, taskId: taskToRemoveId}))
 
     expect(newTasks[todolist1].length).toBe(4)
     expect(newTasks[todolist1][2].title).toBe('Rest API')
@@ -151,12 +152,12 @@ test('should delete task #3 from todolist1', () => {
 test('should add task to todolist2', () => {
 
     const newTaskTitle = 'WebStorm'
-    const newTasks = tasksReducer(tasks, _addTask({
+    const newTasks = tasksReducer(tasks, addTask.fulfilled({
         task: {
             id: '101', title: newTaskTitle, status: TaskStatuses.New, priority: TaskPriorities.Middle,
             addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolist2, description: 'desc'
         }
-    }))
+    }, 'requestId', {todoListId: todolist2, title: newTaskTitle}))
 
     expect(newTasks[todolist2].length).toBe(5)
     expect(newTasks[todolist2][0].title).toBe(newTaskTitle)
@@ -170,8 +171,17 @@ test('should change task title "HTML&CSS" to "Layout"', () => {
 
     const newTaskTitle = 'Layout'
     const taskId = tasks[todolist1][0].id
-    const newTasks = tasksReducer(tasks, _updateTask({
+    const newTasks = tasksReducer(tasks, updateTask.fulfilled({
         todoListId: todolist1, taskId, model: {
+            title: newTaskTitle,
+            status: TaskStatuses.New,
+            priority: TaskPriorities.Middle,
+            startDate: '',
+            deadline: '',
+            description: 'desc'
+        }
+    }, 'requestId', {
+        todoListId: todolist1, task: tasks[todolist1][0], model: {
             title: newTaskTitle,
             status: TaskStatuses.New,
             priority: TaskPriorities.Middle,
@@ -189,10 +199,15 @@ test('should change task title "HTML&CSS" to "Layout"', () => {
 
 test('should toggle todolist2 4th task isDone', () => {
     const taskId = tasks[todolist2][3].id
-    const newTasks = tasksReducer(tasks, _updateTask({
+    const newTasks = tasksReducer(tasks, updateTask.fulfilled({
         todoListId: todolist2,
         taskId,
         model: {
+            title: 'Algorithms', status: TaskStatuses.New, priority: TaskPriorities.Middle,
+            startDate: '', deadline: '', description: 'desc'
+        }
+    }, 'requestId', {
+        todoListId: todolist2, task: tasks[todolist2][3], model: {
             title: 'Algorithms', status: TaskStatuses.New, priority: TaskPriorities.Middle,
             startDate: '', deadline: '', description: 'desc'
         }
