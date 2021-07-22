@@ -74,6 +74,8 @@ export const changeTodoListTitle = createAsyncThunk('todoListReducer/changeTodoL
         }
     })
 
+export const todoListsAsyncActions = {fetchTodoLists, addTodoList, removeTodoList, changeTodoListTitle}
+
 //* ====== Reducer ===================================================================================================>>
 
 const initState: Array<TTodoListDomain> = []

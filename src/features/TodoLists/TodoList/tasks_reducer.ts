@@ -4,9 +4,8 @@ import {setAppStatus, TResponseStatus} from '../../../app/app_reducer'
 import {thunkServerCatchError, thunkServerResponseError} from '../../../utils/thunk-helpers/thunk-errors-handle'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 
-const initState: TTasks = {}
 
-
+//* ============================================================================================== Thunk Creators ====>>
 export const fetchTasks = createAsyncThunk('tasksReducer/fetchTasks',
     async (payload: { todoListId: string }, thunkAPI) => {
         try {
@@ -86,7 +85,12 @@ export const updateTask = createAsyncThunk('tasksReducer/updateTask',
         }
     })
 
-const slice = createSlice({
+export const tasksAsyncActions = {fetchTasks, addTask, removeTask, updateTask}
+
+//* ====== Reducer ===================================================================================================>>
+const initState: TTasks = {}
+
+export const slice = createSlice({
     name: 'tasksReducer',
     initialState: initState,
     reducers: {
@@ -129,9 +133,6 @@ const slice = createSlice({
 
 export const tasksReducer = slice.reducer
 export const {_setTaskStatus} = slice.actions
-
-//* ============================================================================================== Thunk Creators ====>>
-
 
 //* ======================================================================================================== Types ===>>
 export type TTaskDomain = TTask & { taskStatus: TResponseStatus }
