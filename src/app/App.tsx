@@ -14,11 +14,11 @@ import {Menu} from '@material-ui/icons'
 import {TodoLists} from '../features/TodoLists/TodoLists'
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
 import {useDispatch, useSelector} from 'react-redux'
-import {selectAppStatus, selectIsAppInitialized} from '../utils/selectors/selectors'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import {Login} from '../features/Login/Login'
 import {logout} from '../features/Login/auth_reducer'
 import {initializeApp} from './app_reducer'
+import {selectAppStatus, selectIsAppInitialized} from './selectors'
 
 type PropsType = {
     demo?: boolean

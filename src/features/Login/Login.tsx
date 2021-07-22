@@ -4,9 +4,9 @@ import {FormikErrors, useFormik} from 'formik'
 import {TLoginParams} from '../../api/auth_api'
 import {useSelector} from 'react-redux'
 import {login} from './auth_reducer'
-import {selectIsAuth} from '../../utils/selectors/selectors'
 import {Redirect} from 'react-router-dom'
 import {useAppDispatch} from '../../app/store'
+import {selectIsAuth} from './selectors'
 
 export const Login = () => {
     console.log('LOGIN rendered')
