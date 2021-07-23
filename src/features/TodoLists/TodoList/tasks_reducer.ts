@@ -1,4 +1,4 @@
-import {addTodoList, fetchTodoLists, removeTodoList} from '../todolists_reducer'
+import {todoListsAsyncActions} from '../todolists_reducer'
 import {TaskPriorities, tasksAPI, TaskStatuses, TTask, TTaskUpdateModel} from '../../../api/tasks_api'
 import {setAppStatus, TResponseStatus} from '../../../app/app_reducer'
 import {thunkServerCatchError, thunkServerResponseError} from '../../../utils/thunk-helpers/thunk-errors-handle'
@@ -100,13 +100,13 @@ export const slice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(addTodoList.fulfilled, (state, action) => {
+        builder.addCase(todoListsAsyncActions.addTodoList.fulfilled, (state, action) => {
             state[action.payload.todoList.id] = []
         })
-        builder.addCase(removeTodoList.fulfilled, (state, action) => {
+        builder.addCase(todoListsAsyncActions.removeTodoList.fulfilled, (state, action) => {
             delete state[action.payload.todoListId]
         })
-        builder.addCase(fetchTodoLists.fulfilled, (state, action) => {
+        builder.addCase(todoListsAsyncActions.fetchTodoLists.fulfilled, (state, action) => {
             action.payload?.todoLists.forEach(tl => state[tl.id] = [])
         })
         builder.addCase(fetchTasks.fulfilled, (state, action) => {
