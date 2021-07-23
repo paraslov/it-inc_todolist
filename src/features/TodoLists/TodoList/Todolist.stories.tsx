@@ -1,5 +1,5 @@
 import React from 'react';
-import Todolist, {TodolistPropsType} from './Todolist';
+import {TodoList, TodolistPropsType} from './TodoList';
 import {Meta, Story} from '@storybook/react';
 import {action} from '@storybook/addon-actions';
 import {v1} from 'uuid';
@@ -8,8 +8,8 @@ import {ReduxStoreProviderDecorator} from '../../../utils/ReduxStoreProviderDeco
 
 
 export default {
-    title: 'Todo List/Todolist component',
-    component: Todolist,
+    title: 'Todo List/TodoList component',
+    component: TodoList,
     decorators: [ReduxStoreProviderDecorator],
     argTypes: {
         title: {
@@ -39,7 +39,7 @@ const baseArgs = {
     changeTodolistTitle: action('todolist wants to change its title')
 }
 
-const Template: Story<TodolistPropsType> = (args) => <Todolist {...args}/>
+const Template: Story<TodolistPropsType> = (args) => <TodoList {...args}/>
 
 export const TodolistBaseExample = Template.bind({})
 TodolistBaseExample.args = {

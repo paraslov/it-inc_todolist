@@ -1,4 +1,4 @@
-describe('Todolist.tsx', () => {
+describe('TodoList.tsx', () => {
     it('base example, visually looks correct', async () => {
         // APIs from jest-puppeteer
         await page.goto('http://localhost:9009/iframe.html?id=todo-list-todolist-component--todolist-base-example&viewMode=story');

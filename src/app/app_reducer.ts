@@ -24,10 +24,12 @@ export const initializeApp = createAsyncThunk('app/initializeApp', async (payloa
     }
 })
 
+export const appAsyncActions = {initializeApp}
+
 //* ================================================================================================= Reducer ========>>
 
 
-const slice = createSlice({
+export const slice = createSlice({
     name: 'app',
     initialState: {
         error: null as string | null,

@@ -33,7 +33,7 @@ test('correct todolist should be removed', () => {
 
 test('correct todolist should be added', () => {
 
-    let newTodolistTitle = 'New Todolist';
+    let newTodolistTitle = 'New TodoList';
     const endState = todoListsReducer(startState, addTodoList.fulfilled({
         todoList:
             {id: v1(), title: newTodolistTitle, addedDate: '', order: 0}
@@ -45,7 +45,7 @@ test('correct todolist should be added', () => {
 });
 
 test('correct todolist should change its name', () => {
-    let newTodolistTitle = 'New Todolist';
+    let newTodolistTitle = 'New TodoList';
     let payload = {todoListId: todolistId2, title: newTodolistTitle}
     const action = changeTodoListTitle.fulfilled(payload, 'requestId', payload);
 
