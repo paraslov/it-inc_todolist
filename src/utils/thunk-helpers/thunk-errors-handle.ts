@@ -3,13 +3,13 @@ import {setAppError, setAppStatus} from '../../app/app_reducer';
 import {TOperationResult} from '../../api/api';
 
 
-export const thunkServerResponseError = <D>(data: TOperationResult<D>, dispatch: ThunkErrorsHandleDispatchType) => {
-    dispatch(setAppError({error: data.messages.length ? data.messages[0] : 'some error occurred'}))
+export const thunkServerResponseError = <D>(data: TOperationResult<D>, dispatch: ThunkErrorsHandleDispatchType, showError = true) => {
+    showError && dispatch(setAppError({error: data.messages.length ? data.messages[0] : 'some error occurred'}))
     dispatch(setAppStatus({status: 'failed'}))
 }
 
-export const thunkServerCatchError = (error: any, dispatch: ThunkErrorsHandleDispatchType) => {
-    dispatch(setAppError(error.message.length ? error.message : 'some error occurred'))
+export const thunkServerCatchError = (error: any, dispatch: ThunkErrorsHandleDispatchType, showError = true) => {
+    showError && dispatch(setAppError(error.message.length ? error.message : 'some error occurred'))
     dispatch(setAppStatus({status: 'failed'}))
 }
 

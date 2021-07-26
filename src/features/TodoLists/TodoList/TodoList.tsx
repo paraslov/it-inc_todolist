@@ -6,9 +6,10 @@ import {Task, tasksActions, todoListsActions} from '../index'
 import {TFilterValues, TTodoListDomain} from '../todolists_reducer'
 import {TaskStatuses} from '../../../api/tasks_api'
 import {TTaskDomain} from './tasks_reducer'
-import {useActions} from '../../../app/store'
+import {useActions, useAppDispatch} from '../../../app/store'
 import {useSelector} from 'react-redux'
 import {authSelectors} from '../../Login'
+import {TAddItemFormHelpers} from '../../../components/AddItemForm/AddItemForm'
 
 //* Types declaration ================================================================================================>>
 export type TodolistPropsType = {
@@ -20,19 +21,33 @@ export type TodolistPropsType = {
 export const TodoList = React.memo(({demo = false, ...props}: TodolistPropsType) => {
     console.log('TL R')
     const isAuth = useSelector(authSelectors.selectIsAuth)
-    const {fetchTasks, addTask} = useActions(tasksActions)
+    const {fetchTasks} = useActions(tasksActions)
     const {removeTodoList, _changeTodoListFilter, changeTodoListTitle} = useActions(todoListsActions)
+
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         if(demo) return
-        debugger
         fetchTasks({todoListId: props.todoList.id})
     }, [])
 
     //* Callbacks for EditableSpan, AddItemForm and Buttons callbacks  ===============================================>>
 
-    const addNewTask = useCallback((newTaskTitle: string) =>
-        addTask({todoListId: props.todoList.id, title: newTaskTitle}), [props.todoList.id])
+    const addNewTask = useCallback(async (newTaskTitle: string, helpers: TAddItemFormHelpers) => {
+        let res = await dispatch(tasksActions.addTask({todoListId: props.todoList.id, title: newTaskTitle}))
+
+        if(tasksActions.addTask.rejected.match(res)) {
+            if(res.payload?.errors?.length) {
+                const error = res.payload.errors[0]
+                helpers.setError(error)
+            } else {
+                helpers.setError('Some error occurred')
+            }
+        } else {
+            helpers.setNewTaskTitle('')
+        }
+
+    }, [props.todoList.id])
     const removeTodolist = useCallback(() =>
         removeTodoList({todoListId: props.todoList.id}), [props.todoList.id])
     const changeTodolistTitle = useCallback((newTodolistTitle: string) =>
@@ -73,7 +88,7 @@ export const TodoList = React.memo(({demo = false, ...props}: TodolistPropsType)
             </h3>
             <AddItemForm label={'Add task'} addNewItem={addNewTask} disabled = {props.todoList.todoListStatus === 'loading'}/>
             <div>
-                {tasksElements}
+                {tasksElements.length ? tasksElements : <div style={{padding: '10px', opacity: '0.5'}}>No tasks</div>}
             </div>
             <div>
                 {renderTodoListButton('all', 'All')}

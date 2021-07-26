@@ -35,7 +35,9 @@ export const EditableSpan = React.memo(({onChange, title, disabled = false}: Edi
                     onBlur={onInputBlur}
                     onChange={onInputChange}
                     autoFocus/> :
-                <span onDoubleClick={onSpanDblClick} style={{opacity: disabled ? '0.5' : undefined}}>{title}</span>
+                <span onDoubleClick={onSpanDblClick} style={{opacity: disabled ? '0.5' : undefined, wordBreak: 'break-word'}}>
+                    {title}
+                </span>
             }
         </>
     )

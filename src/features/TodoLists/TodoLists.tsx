@@ -7,20 +7,21 @@ import {TodoList, todoListsActions} from './index'
 import {Redirect} from 'react-router-dom'
 import {selectTasks, selectTodoLists} from './selectors'
 import {authSelectors} from '../Login'
-import {useActions} from '../../app/store'
+import {useActions, useAppDispatch} from '../../app/store'
+import {TAddItemFormHelpers} from '../../components/AddItemForm/AddItemForm'
 
 type PropsType = {
     demo?: boolean
 }
 export function TodoLists({demo = false}: PropsType) {
     console.log('TodoLists R')
+    const dispatch = useAppDispatch()
     const isAuth = useSelector(authSelectors.selectIsAuth)
 
-    const {fetchTodoLists, addTodoList} = useActions(todoListsActions)
+    const {fetchTodoLists} = useActions(todoListsActions)
 
     useEffect(() => {
         if(demo || !isAuth) return
-        debugger
         fetchTodoLists()
     }, [])
 
@@ -32,8 +33,20 @@ export function TodoLists({demo = false}: PropsType) {
 
     //* Callbacks for TodoLists management  ====================================================================>
 
-    const addNewTodolist = useCallback((newTodolistTitle: string) => {
-        addTodoList({title: newTodolistTitle})
+    const addNewTodolist = useCallback(async (newTodolistTitle: string, helpers: TAddItemFormHelpers) => {
+        let res = await dispatch(todoListsActions.addTodoList({title: newTodolistTitle}))
+
+        if(todoListsActions.addTodoList.rejected.match(res)) {
+            if(res.payload?.errors?.length) {
+                const error = res.payload.errors[0]
+                helpers.setError(error)
+            } else {
+                helpers.setError('Some error occurred')
+            }
+        } else {
+            helpers.setNewTaskTitle('')
+        }
+
     }, [])
 
     if(!isAuth) return <Redirect to={'/login'} />

@@ -1,4 +1,4 @@
-import {AddItemForm, AddItemFormPropsType} from './AddItemForm';
+import {AddItemForm, TAddItemFormProps} from './AddItemForm';
 import {Meta, Story} from '@storybook/react';
 import React from 'react';
 import {action} from '@storybook/addon-actions';
@@ -20,7 +20,7 @@ export default {
 
 const callback = action('Item form wants to be added')
 
-const Template: Story<AddItemFormPropsType> = (args) => <AddItemForm {...args}/>
+const Template: Story<TAddItemFormProps> = (args) => <AddItemForm {...args}/>
 
 export const AddItemFormBaseExample = Template.bind({})
 AddItemFormBaseExample.args = {

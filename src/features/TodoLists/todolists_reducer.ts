@@ -3,6 +3,8 @@ import {setAppStatus, TResponseStatus} from '../../app/app_reducer'
 import {thunkServerCatchError, thunkServerResponseError} from '../../utils/thunk-helpers/thunk-errors-handle'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {authAsyncActions} from '../Login/auth_reducer'
+import {TFieldError} from '../../api/api'
+import {AxiosError} from 'axios'
 
 
 //* ====== Thunk Creators ============================================================================================>>
@@ -19,8 +21,10 @@ export const fetchTodoLists = createAsyncThunk('todoListReducer/fetchTodoLists',
             return thunkAPI.rejectWithValue({errors: error.message.length ? error.message : 'some error occurred'})
         }
     })
-export const addTodoList = createAsyncThunk('todoListReducer/addTodoList',
-    async (payload: { title: string }, thunkAPI) => {
+export const addTodoList = createAsyncThunk<{todoList: TTodoList}, { title: string }, {
+    rejectValue: { errors: string[], fieldsErrors?: TFieldError[] }
+}>('todoListReducer/addTodoList',
+    async (payload, thunkAPI) => {
         try {
             thunkAPI.dispatch(setAppStatus({status: 'loading'}))
             const data = await todoListsAPI.addTodoList(payload.title)
@@ -28,12 +32,13 @@ export const addTodoList = createAsyncThunk('todoListReducer/addTodoList',
                 thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
                 return {todoList: data.data.item}
             } else {
-                thunkServerResponseError(data, thunkAPI.dispatch)
-                return thunkAPI.rejectWithValue({errors: data.messages.length ? data.messages[0] : 'some error occurred'})
+                thunkServerResponseError(data, thunkAPI.dispatch, false)
+                return thunkAPI.rejectWithValue({errors: data.messages, fieldsErrors: data.fieldsErrors})
             }
-        } catch (error) {
-            thunkServerCatchError(error, thunkAPI.dispatch)
-            return thunkAPI.rejectWithValue({errors: error.message.length ? error.message : 'some error occurred'})
+        } catch (err) {
+            const error: AxiosError = err
+            thunkServerCatchError(error, thunkAPI.dispatch, false)
+            return thunkAPI.rejectWithValue({errors: [error.message], fieldsErrors: undefined})
         }
     })
 

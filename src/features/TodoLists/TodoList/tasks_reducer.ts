@@ -4,6 +4,8 @@ import {setAppStatus, TResponseStatus} from '../../../app/app_reducer'
 import {thunkServerCatchError, thunkServerResponseError} from '../../../utils/thunk-helpers/thunk-errors-handle'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {authAsyncActions} from '../../Login/auth_reducer'
+import {TFieldError} from '../../../api/api'
+import {AxiosError} from 'axios'
 
 
 //* ============================================================================================== Thunk Creators ====>>
@@ -18,8 +20,10 @@ export const fetchTasks = createAsyncThunk('tasksReducer/fetchTasks',
             thunkServerCatchError(error, thunkAPI.dispatch)
         }
     })
-export const addTask = createAsyncThunk('tasksReducer/addTask',
-    async (payload: { todoListId: string, title: string }, thunkAPI) => {
+export const addTask = createAsyncThunk<{ task: TTask }, { todoListId: string, title: string }, {
+    rejectValue: { errors: string[], fieldsErrors?: TFieldError[] }
+}>('tasksReducer/addTask',
+    async (payload, thunkAPI) => {
         try {
             thunkAPI.dispatch(setAppStatus({status: 'loading'}))
             const data = await tasksAPI.addTask(payload.todoListId, payload.title)
@@ -27,12 +31,13 @@ export const addTask = createAsyncThunk('tasksReducer/addTask',
                 thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
                 return {task: data.data.item}
             } else {
-                thunkServerResponseError(data, thunkAPI.dispatch)
-                return thunkAPI.rejectWithValue({errors: data.messages.length ? data.messages[0] : 'some error occurred'})
+                thunkServerResponseError(data, thunkAPI.dispatch, false)
+                return thunkAPI.rejectWithValue({errors: data.messages, fieldsErrors: data.fieldsErrors})
             }
-        } catch (error) {
-            thunkServerCatchError(error, thunkAPI.dispatch)
-            return thunkAPI.rejectWithValue({errors: error.message.length ? error.message : 'some error occurred'})
+        } catch (err) {
+            const error: AxiosError = err
+            thunkServerCatchError(error, thunkAPI.dispatch, false)
+            return thunkAPI.rejectWithValue({errors: [error.message], fieldsErrors: undefined})
         }
     })
 export const removeTask = createAsyncThunk('tasksReducer/removeTask',
