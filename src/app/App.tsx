@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import './App.css'
 import {
     AppBar,
@@ -12,13 +12,13 @@ import {
 } from '@material-ui/core'
 import {Menu} from '@material-ui/icons'
 import {TodoLists} from '../features/TodoLists'
-import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
-import {useDispatch, useSelector} from 'react-redux'
+import {ErrorSnackbar} from '../components'
+import {useSelector} from 'react-redux'
 import {Redirect, Route, Switch} from 'react-router-dom'
-import {Login} from '../features/Login'
-import {logout} from '../features/Login/auth_reducer'
-import {initializeApp} from './app_reducer'
+import {authActions, Login} from '../features/Login'
 import {selectAppStatus, selectIsAppInitialized} from './selectors'
+import {useActions} from './store'
+import {appActions} from './index'
 
 type PropsType = {
     demo?: boolean
@@ -27,16 +27,14 @@ type PropsType = {
 function App({demo = false}: PropsType) {
     console.log('APP R')
     const appStatus = useSelector(selectAppStatus)
-    const dispatch = useDispatch()
     const isAppInitialized = useSelector(selectIsAppInitialized)
 
-    useEffect(() => {
-        if(!demo) dispatch(initializeApp())
-    }, [])
+    const {logout} = useActions(authActions)
+    const {initializeApp} = useActions(appActions)
 
-    const handleLogout = useCallback(() => {
-        dispatch(logout())
-    }, [dispatch])
+    useEffect(() => {
+        if(!demo) initializeApp()
+    }, [isAppInitialized])
 
     if(!isAppInitialized) return <div style={{position: 'fixed', top: '40%', left: '40%'}}>
         <CircularProgress style={{width: '100px'}} />
@@ -52,7 +50,7 @@ function App({demo = false}: PropsType) {
                         <Typography variant="h6">
                             News
                         </Typography>
-                        <Button color="inherit" onClick={() => handleLogout()}>Log out</Button>
+                        <Button color="inherit" onClick={() => logout()}>Log out</Button>
                     </Toolbar>
                 </AppBar>
                 <div style={{height: '5px'}}>

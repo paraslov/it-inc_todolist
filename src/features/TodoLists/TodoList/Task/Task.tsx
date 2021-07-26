@@ -30,14 +30,17 @@ export const Task = React.memo((props: TaskPropsType) => {
     }, [props.task.todoListId, props.task])
 
     return (
-        <div style={{opacity: props.task.status === TaskStatuses.Completed ? 0.5 : 1}} key={props.task.id}>
+        <div style={{opacity: props.task.status === TaskStatuses.Completed ? 0.5 : 1, position: 'relative'}}
+             key={props.task.id}>
             <Checkbox onChange={changeTaskIsDone}
                       disabled={props.disabled}
                       color={'primary'}
                       checked={props.task.status === TaskStatuses.Completed}/>
             <EditableSpan title={props.task.title} onChange={changeTaskTitle} disabled={props.disabled}/>
-            <IconButton onClick={removeTaskCallback} disabled={props.disabled}>
-                <Delete/>
+            <IconButton onClick={removeTaskCallback}
+                        style = {{position: 'absolute', top: '0', right: '-17px'}}
+                        disabled={props.disabled}>
+                <Delete fontSize={'small'}/>
             </IconButton>
         </div>
     )

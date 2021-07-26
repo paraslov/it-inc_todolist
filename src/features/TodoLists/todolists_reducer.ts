@@ -2,6 +2,7 @@ import {todoListsAPI, TTodoList} from '../../api/todoLists_api'
 import {setAppStatus, TResponseStatus} from '../../app/app_reducer'
 import {thunkServerCatchError, thunkServerResponseError} from '../../utils/thunk-helpers/thunk-errors-handle'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {authAsyncActions} from '../Login/auth_reducer'
 
 
 //* ====== Thunk Creators ============================================================================================>>
@@ -107,6 +108,9 @@ export const slice = createSlice({
         builder.addCase(changeTodoListTitle.fulfilled, (state, action) => {
             const index = state.findIndex(tl => tl.id === action.payload.todoListId)
             state[index].title = action.payload.title
+        })
+        builder.addCase(authAsyncActions.logout.fulfilled, (state) => {
+            // state.filter((tl) => false)
         })
     }
 })

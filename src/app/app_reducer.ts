@@ -1,8 +1,8 @@
 import {authAPI} from '../api/auth_api'
 import {OperationResultCodes} from '../api/api'
 import {thunkServerCatchError} from '../utils/thunk-helpers/thunk-errors-handle'
-import {setIsAuth} from '../features/Login/auth_reducer'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {setIsAuth} from '../features/Login/auth_reducer'
 
 //* ============================================================================================ Thunk Creators ======>>
 

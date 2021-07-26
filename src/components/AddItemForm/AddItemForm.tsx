@@ -41,7 +41,7 @@ export const AddItemForm = React.memo(({label, addNewItem, disabled = false}: Ad
                 helperText={error}
                 onChange={onTaskTitleChange}
                 onKeyPress={onTaskTitleKeyEnterPress}/>
-            <IconButton onClick={addNewItemCallback} disabled={disabled}>
+            <IconButton onClick={addNewItemCallback} disabled={disabled} style={{marginLeft: '5px'}}>
                 <AddCircle fontSize={'large'}/>
             </IconButton>
         </div>

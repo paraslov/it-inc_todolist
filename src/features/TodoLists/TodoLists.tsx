@@ -1,14 +1,13 @@
 import {useSelector} from 'react-redux'
 import React, {useCallback, useEffect} from 'react'
 import {TTodoListDomain} from './todolists_reducer'
-import {Grid, Paper} from '@material-ui/core'
+import {Grid} from '@material-ui/core'
 import {AddItemForm} from '../../components'
-import {TodoList} from './index'
+import {TodoList, todoListsActions} from './index'
 import {Redirect} from 'react-router-dom'
 import {selectTasks, selectTodoLists} from './selectors'
 import {authSelectors} from '../Login'
 import {useActions} from '../../app/store'
-import {todoListsActions} from './index'
 
 type PropsType = {
     demo?: boolean
@@ -21,6 +20,7 @@ export function TodoLists({demo = false}: PropsType) {
 
     useEffect(() => {
         if(demo || !isAuth) return
+        debugger
         fetchTodoLists()
     }, [])
 
@@ -44,16 +44,16 @@ export function TodoLists({demo = false}: PropsType) {
                 <AddItemForm label={'Add TODO list'} addNewItem={addNewTodolist}/>
             </Grid>
 
-            <Grid container spacing={2}>
+            <Grid container spacing={2} style = {{flexWrap: 'nowrap', overflowX: 'scroll'}}>
                 {todoLists.map((tl: TTodoListDomain) => {
                         return <Grid item key={tl.id}>
-                            <Paper style={{padding: '10px'}}>
+                            <div style={{width: '300px'}}>
                                 <TodoList
                                     demo = {demo}
                                     todoList={tl}
                                     tasks={tasks[tl.id]}
                                 />
-                            </Paper>
+                            </div>
                         </Grid>
                     }
                 )}

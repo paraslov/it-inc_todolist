@@ -3,6 +3,7 @@ import {TaskPriorities, tasksAPI, TaskStatuses, TTask, TTaskUpdateModel} from '.
 import {setAppStatus, TResponseStatus} from '../../../app/app_reducer'
 import {thunkServerCatchError, thunkServerResponseError} from '../../../utils/thunk-helpers/thunk-errors-handle'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {authAsyncActions} from '../../Login/auth_reducer'
 
 
 //* ============================================================================================== Thunk Creators ====>>
@@ -127,6 +128,9 @@ export const slice = createSlice({
                 state[action.payload.todoListId][index] =
                     {...state[action.payload.todoListId][index], ...action.payload.model}
             }
+        })
+        builder.addCase(authAsyncActions.logout.fulfilled, (state) => {
+            // Object.keys(state).map(taskId => delete state[taskId])
         })
     }
 })

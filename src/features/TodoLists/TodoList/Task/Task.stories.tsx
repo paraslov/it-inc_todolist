@@ -3,11 +3,13 @@ import {Task, TaskPropsType} from './Task';
 import {Meta, Story} from '@storybook/react';
 import {action} from '@storybook/addon-actions';
 import {TaskPriorities, TaskStatuses} from '../../../../api/tasks_api';
+import {ReduxStoreProviderDecorator} from '../../../../utils/ReduxStoreProviderDecorator/ReduxStoreProviderDecorator'
 
 
 export default {
     title: 'Todo List/Task',
-    component: Task
+    component: Task,
+    decorators: [ReduxStoreProviderDecorator]
 } as Meta
 
 const changeTaskIsDoneCallback = action('Task isDone wants to changes')
