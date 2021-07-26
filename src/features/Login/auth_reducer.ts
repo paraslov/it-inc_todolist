@@ -1,14 +1,16 @@
 import {authAPI, TLoginParams} from '../../api/auth_api'
 import {setAppStatus} from '../../app/app_reducer'
-import {OperationResultCodes, TFieldError} from '../../api/api'
-import {thunkServerCatchError, thunkServerResponseError} from '../../utils/thunk-helpers/thunk-errors-handle'
+import {OperationResultCodes} from '../../api/api'
+import {
+    thunkServerCatchError,
+    thunkServerResponseError
+} from '../../utils/thunk-helpers/thunk-errors-handle'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {AxiosError} from 'axios'
+import {TThunkApiConfigRejectedValue} from '../../app/store'
 
 //* ============================================================================================ Thunk Creators ======>>
-export const login = createAsyncThunk<undefined, {data: TLoginParams}, {
-    rejectValue: {errors: string[], fieldsErrors?: TFieldError[]}
-}>('auth/login', async (payload , thunkAPI) => {
+export const login = createAsyncThunk<undefined, {data: TLoginParams}, TThunkApiConfigRejectedValue>
+('auth/login', async (payload , thunkAPI) => {
     try {
         thunkAPI.dispatch(setAppStatus({status: 'loading'}))
         let data = await authAPI.login(payload.data)
@@ -19,10 +21,8 @@ export const login = createAsyncThunk<undefined, {data: TLoginParams}, {
             thunkServerResponseError(data, thunkAPI.dispatch)
             return thunkAPI.rejectWithValue({errors: data.messages, fieldsErrors: data.fieldsErrors})
         }
-    } catch (err) {
-        const error: AxiosError = err
-        thunkServerCatchError(error, thunkAPI.dispatch)
-        return thunkAPI.rejectWithValue({errors: [error.message], fieldsErrors: undefined})
+    } catch (error) {
+        return thunkServerCatchError(error, thunkAPI, false)
     }
 })
 
@@ -38,8 +38,7 @@ export const logout = createAsyncThunk('auth/logout', async (payload, thunkAPI) 
             return thunkAPI.rejectWithValue({errors: data.messages.length ? data.messages[0] : 'some error occurred'})
         }
     } catch (error) {
-        thunkServerCatchError(error, thunkAPI.dispatch)
-        return thunkAPI.rejectWithValue({errors: error.message.length ? error.message : 'some error occurred'})
+        return thunkServerCatchError(error, thunkAPI)
     }
 })
 

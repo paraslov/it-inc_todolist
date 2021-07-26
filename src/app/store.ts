@@ -7,6 +7,7 @@ import {authReducer} from '../features/Login/auth_reducer'
 import {configureStore} from '@reduxjs/toolkit'
 import {useDispatch} from 'react-redux'
 import {useMemo} from 'react'
+import {TFieldError} from '../api/api'
 
 
 const rootReducer = combineReducers({
@@ -23,9 +24,12 @@ export const store = configureStore({
 
 export const useAppDispatch = () => useDispatch<TAppDispatch>()
 
+//* Common App types ==============================================================================================>>
+
 export type TRootReducer = typeof rootReducer
 export type TAppState = ReturnType<TRootReducer>
 export type TAppDispatch = typeof store.dispatch
+export type TThunkApiConfigRejectedValue = { rejectValue: { errors: string[], fieldsErrors?: TFieldError[] } }
 
 // useActions hook to use actions without dispatch
 export function useActions<T extends ActionCreatorsMapObject<any>>(actions: T) {

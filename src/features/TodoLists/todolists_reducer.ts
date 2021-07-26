@@ -1,15 +1,17 @@
 import {todoListsAPI, TTodoList} from '../../api/todoLists_api'
 import {setAppStatus, TResponseStatus} from '../../app/app_reducer'
-import {thunkServerCatchError, thunkServerResponseError} from '../../utils/thunk-helpers/thunk-errors-handle'
+import {
+    thunkServerCatchError,
+    thunkServerResponseError
+} from '../../utils/thunk-helpers/thunk-errors-handle'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {authAsyncActions} from '../Login/auth_reducer'
-import {TFieldError} from '../../api/api'
-import {AxiosError} from 'axios'
+import {TThunkApiConfigRejectedValue} from '../../app/store'
 
 
 //* ====== Thunk Creators ============================================================================================>>
 
-export const fetchTodoLists = createAsyncThunk('todoListReducer/fetchTodoLists',
+export const fetchTodoLists = createAsyncThunk<{todoLists: TTodoList[]}, undefined, TThunkApiConfigRejectedValue>('todoListReducer/fetchTodoLists',
     async (payload, thunkAPI) => {
         try {
             thunkAPI.dispatch(setAppStatus({status: 'loading'}))
@@ -17,14 +19,11 @@ export const fetchTodoLists = createAsyncThunk('todoListReducer/fetchTodoLists',
             thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
             return {todoLists: data}
         } catch (error) {
-            thunkServerCatchError(error, thunkAPI.dispatch)
-            return thunkAPI.rejectWithValue({errors: error.message.length ? error.message : 'some error occurred'})
+            return thunkServerCatchError(error, thunkAPI)
         }
     })
-export const addTodoList = createAsyncThunk<{todoList: TTodoList}, { title: string }, {
-    rejectValue: { errors: string[], fieldsErrors?: TFieldError[] }
-}>('todoListReducer/addTodoList',
-    async (payload, thunkAPI) => {
+export const addTodoList = createAsyncThunk<{todoList: TTodoList}, { title: string }, TThunkApiConfigRejectedValue>
+('todoListReducer/addTodoList', async (payload, thunkAPI) => {
         try {
             thunkAPI.dispatch(setAppStatus({status: 'loading'}))
             const data = await todoListsAPI.addTodoList(payload.title)
@@ -35,10 +34,8 @@ export const addTodoList = createAsyncThunk<{todoList: TTodoList}, { title: stri
                 thunkServerResponseError(data, thunkAPI.dispatch, false)
                 return thunkAPI.rejectWithValue({errors: data.messages, fieldsErrors: data.fieldsErrors})
             }
-        } catch (err) {
-            const error: AxiosError = err
-            thunkServerCatchError(error, thunkAPI.dispatch, false)
-            return thunkAPI.rejectWithValue({errors: [error.message], fieldsErrors: undefined})
+        } catch (error) {
+            return thunkServerCatchError(error, thunkAPI, false)
         }
     })
 
@@ -56,8 +53,8 @@ export const removeTodoList = createAsyncThunk('todoListReducer/removeTodoList',
                 return thunkAPI.rejectWithValue({errors: data.messages.length ? data.messages[0] : 'some error occurred'})
             }
         } catch (error) {
-            thunkServerCatchError(error, thunkAPI.dispatch)
-            return thunkAPI.rejectWithValue({errors: error.message.length ? error.message : 'some error occurred'})
+            thunkAPI.dispatch(_setTodoListStatus({todoListId: payload.todoListId, todoListStatus: 'failed'}))
+            return thunkServerCatchError(error, thunkAPI)
         }
     })
 export const changeTodoListTitle = createAsyncThunk('todoListReducer/changeTodoListTitle',
@@ -75,8 +72,7 @@ export const changeTodoListTitle = createAsyncThunk('todoListReducer/changeTodoL
                 return thunkAPI.rejectWithValue({errors: data.messages.length ? data.messages[0] : 'some error occurred'})
             }
         } catch (error) {
-            thunkServerCatchError(error, thunkAPI.dispatch)
-            return thunkAPI.rejectWithValue({errors: error.message.length ? error.message : 'some error occurred'})
+            return thunkServerCatchError(error, thunkAPI)
         }
     })
 

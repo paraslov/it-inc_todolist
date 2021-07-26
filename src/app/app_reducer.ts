@@ -19,8 +19,7 @@ export const initializeApp = createAsyncThunk('app/initializeApp', async (payloa
             return {isAppInitialized: true}
         }
     } catch (error) {
-        thunkServerCatchError(error, thunkAPI.dispatch)
-        return thunkAPI.rejectWithValue({errors: error.message.length ? error.message : 'some error occurred'})
+        return thunkServerCatchError(error, thunkAPI)
     }
 })
 
