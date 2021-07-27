@@ -4,7 +4,7 @@ import {Meta, Story} from '@storybook/react'
 import {
     HashRouterDecorator,
     ReduxStoreProviderDecorator
-} from '../utils/ReduxStoreProviderDecorator/ReduxStoreProviderDecorator'
+} from '../utils/ReduxStoreProviderDecorator'
 
 
 export default {

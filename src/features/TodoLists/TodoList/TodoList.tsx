@@ -6,10 +6,10 @@ import {Task, tasksActions, todoListsActions} from '../index'
 import {TFilterValues, TTodoListDomain} from '../todolists_reducer'
 import {TaskStatuses} from '../../../api/tasks_api'
 import {TTaskDomain} from './tasks_reducer'
-import {useActions, useAppDispatch} from '../../../app/store'
 import {useSelector} from 'react-redux'
 import {authSelectors} from '../../Login'
 import {TAddItemFormHelpers} from '../../../components/AddItemForm/AddItemForm'
+import {useActions, useAppDispatch} from '../../../utils/redux-utils'
 
 //* Types declaration ================================================================================================>>
 export type TodolistPropsType = {

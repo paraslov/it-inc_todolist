@@ -7,8 +7,8 @@ import {TodoList, todoListsActions} from './index'
 import {Redirect} from 'react-router-dom'
 import {selectTasks, selectTodoLists} from './selectors'
 import {authSelectors} from '../Login'
-import {useActions, useAppDispatch} from '../../app/store'
 import {TAddItemFormHelpers} from '../../components/AddItemForm/AddItemForm'
+import {useActions, useAppDispatch} from '../../utils/redux-utils'
 
 type PropsType = {
     demo?: boolean

@@ -4,8 +4,8 @@ import {EditableSpan} from '../../../../components'
 import {Delete} from '@material-ui/icons'
 import {TaskStatuses} from '../../../../api/tasks_api'
 import {TTaskDomain} from '../tasks_reducer'
-import {useActions} from '../../../../app/store'
 import {tasksActions} from '../../index'
+import {useActions} from '../../../../utils/redux-utils'
 
 //* Types declaration ================================================================================================>>
 export type TaskPropsType = {

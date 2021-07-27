@@ -1,6 +1,5 @@
-import {Dispatch} from 'redux'
-import {setAppError, setAppStatus} from '../../app/app_reducer'
-import {TOperationResult} from '../../api/api'
+import {setAppError, setAppStatus} from '../app/app_reducer'
+import {TOperationResult} from '../api/api'
 import {AxiosError} from 'axios'
 
 // simplified type for thunkAPI from createAsyncThunk.ts types:

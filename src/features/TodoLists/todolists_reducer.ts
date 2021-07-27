@@ -3,7 +3,7 @@ import {setAppStatus, TResponseStatus} from '../../app/app_reducer'
 import {
     thunkServerCatchError,
     thunkServerResponseError
-} from '../../utils/thunk-helpers/thunk-errors-handle'
+} from '../../utils/thunk-errors-handle'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {authAsyncActions} from '../Login/auth_reducer'
 import {TThunkApiConfigRejectedValue} from '../../app/store'
@@ -11,67 +11,66 @@ import {TThunkApiConfigRejectedValue} from '../../app/store'
 
 //* ====== Thunk Creators ============================================================================================>>
 
-export const fetchTodoLists = createAsyncThunk<{todoLists: TTodoList[]}, undefined, TThunkApiConfigRejectedValue>('todoListReducer/fetchTodoLists',
-    async (payload, thunkAPI) => {
-        try {
-            thunkAPI.dispatch(setAppStatus({status: 'loading'}))
-            let data = await todoListsAPI.fetchTodoLists()
-            thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
-            return {todoLists: data}
-        } catch (error) {
-            return thunkServerCatchError(error, thunkAPI)
-        }
-    })
-export const addTodoList = createAsyncThunk<{todoList: TTodoList}, { title: string }, TThunkApiConfigRejectedValue>
+export const fetchTodoLists = createAsyncThunk<{ todoLists: TTodoList[] }, undefined, TThunkApiConfigRejectedValue>
+('todoListReducer/fetchTodoLists', async (payload, thunkAPI) => {
+    try {
+        thunkAPI.dispatch(setAppStatus({status: 'loading'}))
+        let data = await todoListsAPI.fetchTodoLists()
+        thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
+        return {todoLists: data}
+    } catch (error) {
+        return thunkServerCatchError(error, thunkAPI)
+    }
+})
+export const addTodoList = createAsyncThunk<{ todoList: TTodoList }, { title: string }, TThunkApiConfigRejectedValue>
 ('todoListReducer/addTodoList', async (payload, thunkAPI) => {
-        try {
-            thunkAPI.dispatch(setAppStatus({status: 'loading'}))
-            const data = await todoListsAPI.addTodoList(payload.title)
-            if (data.resultCode === 0) {
-                thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
-                return {todoList: data.data.item}
-            } else {
-                return thunkServerResponseError(data, thunkAPI, false)
-            }
-        } catch (error) {
-            return thunkServerCatchError(error, thunkAPI, false)
+    try {
+        thunkAPI.dispatch(setAppStatus({status: 'loading'}))
+        const data = await todoListsAPI.addTodoList(payload.title)
+        if (data.resultCode === 0) {
+            thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
+            return {todoList: data.data.item}
+        } else {
+            return thunkServerResponseError(data, thunkAPI, false)
         }
-    })
+    } catch (error) {
+        return thunkServerCatchError(error, thunkAPI, false)
+    }
+})
 
-export const removeTodoList = createAsyncThunk('todoListReducer/removeTodoList',
-    async (payload: { todoListId: string }, thunkAPI) => {
-        try {
-            thunkAPI.dispatch(setAppStatus({status: 'loading'}))
-            thunkAPI.dispatch(_setTodoListStatus({todoListId: payload.todoListId, todoListStatus: 'loading'}))
-            const data = await todoListsAPI.removeTodoList(payload.todoListId)
-            if (data.resultCode === 0) {
-                thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
-                return {todoListId: payload.todoListId}
-            } else {
-                return thunkServerResponseError(data, thunkAPI)
-            }
-        } catch (error) {
-            thunkAPI.dispatch(_setTodoListStatus({todoListId: payload.todoListId, todoListStatus: 'failed'}))
-            return thunkServerCatchError(error, thunkAPI)
+export const removeTodoList = createAsyncThunk<{ todoListId: string }, { todoListId: string }, TThunkApiConfigRejectedValue>
+('todoListReducer/removeTodoList', async (payload, thunkAPI) => {
+    try {
+        thunkAPI.dispatch(setAppStatus({status: 'loading'}))
+        thunkAPI.dispatch(_setTodoListStatus({todoListId: payload.todoListId, todoListStatus: 'loading'}))
+        const data = await todoListsAPI.removeTodoList(payload.todoListId)
+        if (data.resultCode === 0) {
+            thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
+            return {todoListId: payload.todoListId}
+        } else {
+            return thunkServerResponseError(data, thunkAPI)
         }
-    })
-export const changeTodoListTitle = createAsyncThunk('todoListReducer/changeTodoListTitle',
-    async (payload: { todoListId: string, title: string }, thunkAPI) => {
-        try {
-            thunkAPI.dispatch(setAppStatus({status: 'loading'}))
-            thunkAPI.dispatch(_setTodoListStatus({todoListId: payload.todoListId, todoListStatus: 'loading'}))
-            const data = await todoListsAPI.updateTodoList(payload.todoListId, payload.title)
-            if (data.resultCode === 0) {
-                thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
-                thunkAPI.dispatch(_setTodoListStatus({todoListId: payload.todoListId, todoListStatus: 'succeeded'}))
-                return payload
-            } else {
-                return thunkServerResponseError(data, thunkAPI)
-            }
-        } catch (error) {
-            return thunkServerCatchError(error, thunkAPI)
+    } catch (error) {
+        thunkAPI.dispatch(_setTodoListStatus({todoListId: payload.todoListId, todoListStatus: 'failed'}))
+        return thunkServerCatchError(error, thunkAPI)
+    }
+})
+export const changeTodoListTitle = createAsyncThunk<{ todoListId: string, title: string }, { todoListId: string, title: string }, TThunkApiConfigRejectedValue>('todoListReducer/changeTodoListTitle', async (payload, thunkAPI) => {
+    try {
+        thunkAPI.dispatch(setAppStatus({status: 'loading'}))
+        thunkAPI.dispatch(_setTodoListStatus({todoListId: payload.todoListId, todoListStatus: 'loading'}))
+        const data = await todoListsAPI.updateTodoList(payload.todoListId, payload.title)
+        if (data.resultCode === 0) {
+            thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
+            thunkAPI.dispatch(_setTodoListStatus({todoListId: payload.todoListId, todoListStatus: 'succeeded'}))
+            return payload
+        } else {
+            return thunkServerResponseError(data, thunkAPI)
         }
-    })
+    } catch (error) {
+        return thunkServerCatchError(error, thunkAPI)
+    }
+})
 
 export const todoListsAsyncActions = {fetchTodoLists, addTodoList, removeTodoList, changeTodoListTitle}
 

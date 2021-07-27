@@ -4,7 +4,7 @@ import {setAppStatus, TResponseStatus} from '../../../app/app_reducer'
 import {
     thunkServerCatchError,
     thunkServerResponseError
-} from '../../../utils/thunk-helpers/thunk-errors-handle'
+} from '../../../utils/thunk-errors-handle'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {authAsyncActions} from '../../Login/auth_reducer'
 import {TThunkApiConfigRejectedValue} from '../../../app/store'
@@ -12,8 +12,7 @@ import {TThunkApiConfigRejectedValue} from '../../../app/store'
 
 //* ============================================================================================== Thunk Creators ====>>
 export const fetchTasks = createAsyncThunk<{todoListId: string, tasks: TTask[]}, { todoListId: string }, TThunkApiConfigRejectedValue>
-('tasksReducer/fetchTasks',
-    async (payload, thunkAPI) => {
+('tasksReducer/fetchTasks', async (payload, thunkAPI) => {
         try {
             thunkAPI.dispatch(setAppStatus({status: 'loading'}))
             const data = await tasksAPI.fetchTasks(payload.todoListId)
@@ -38,8 +37,8 @@ export const addTask = createAsyncThunk<{ task: TTask }, { todoListId: string, t
             return thunkServerCatchError(error, thunkAPI, false)
         }
     })
-export const removeTask = createAsyncThunk('tasksReducer/removeTask',
-    async ({todoListId, taskId}: { todoListId: string, taskId: string }, thunkAPI) => {
+export const removeTask = createAsyncThunk<{ todoListId: string, taskId: string }, { todoListId: string, taskId: string }, TThunkApiConfigRejectedValue>
+('tasksReducer/removeTask', async ({todoListId, taskId}, thunkAPI) => {
         try {
             thunkAPI.dispatch(setAppStatus({status: 'loading'}))
             thunkAPI.dispatch(_setTaskStatus({todoListId, taskId, taskStatus: 'loading'}))
@@ -57,8 +56,9 @@ export const removeTask = createAsyncThunk('tasksReducer/removeTask',
             return thunkServerCatchError(error, thunkAPI)
         }
     })
-export const updateTask = createAsyncThunk('tasksReducer/updateTask',
-    async ({todoListId, task, model}: { todoListId: string, task: TTask, model: TTaskUpdateDomainModel }, thunkAPI) => {
+export const updateTask = createAsyncThunk<{todoListId: string, taskId: string, model: TTaskUpdateModel},
+    { todoListId: string, task: TTask, model: TTaskUpdateDomainModel }, TThunkApiConfigRejectedValue>
+('tasksReducer/updateTask', async ({todoListId, task, model}, thunkAPI) => {
         try {
             thunkAPI.dispatch(setAppStatus({status: 'loading'}))
             thunkAPI.dispatch(_setTaskStatus({todoListId, taskId: task.id, taskStatus: 'loading'}))

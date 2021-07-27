@@ -17,8 +17,8 @@ import {useSelector} from 'react-redux'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import {authActions, Login} from '../features/Login'
 import {selectAppStatus, selectIsAppInitialized} from './selectors'
-import {useActions} from './store'
 import {appActions} from './index'
+import {useActions} from '../utils/redux-utils'
 
 type PropsType = {
     demo?: boolean

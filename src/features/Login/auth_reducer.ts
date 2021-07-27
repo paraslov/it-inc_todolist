@@ -4,7 +4,7 @@ import {OperationResultCodes} from '../../api/api'
 import {
     thunkServerCatchError,
     thunkServerResponseError
-} from '../../utils/thunk-helpers/thunk-errors-handle'
+} from '../../utils/thunk-errors-handle'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {TThunkApiConfigRejectedValue} from '../../app/store'
 

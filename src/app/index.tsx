@@ -7,7 +7,10 @@ const appActions = {
     ...slice.actions
 }
 
+const appReducer = slice.reducer
+
 export {
+    appReducer,
     appSelectors,
     appActions
 }

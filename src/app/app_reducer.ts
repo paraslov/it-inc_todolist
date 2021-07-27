@@ -1,6 +1,6 @@
 import {authAPI} from '../api/auth_api'
 import {OperationResultCodes} from '../api/api'
-import {thunkServerCatchError} from '../utils/thunk-helpers/thunk-errors-handle'
+import {thunkServerCatchError} from '../utils/thunk-errors-handle'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {setIsAuth} from '../features/Login/auth_reducer'
 
@@ -50,7 +50,6 @@ export const slice = createSlice({
     }
 })
 
-export const appReducer = slice.reducer
 export const {setAppStatus, setAppError} = slice.actions
 
 
