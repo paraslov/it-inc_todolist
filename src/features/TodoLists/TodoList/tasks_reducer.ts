@@ -16,7 +16,7 @@ export const fetchTasks = createAsyncThunk<{todoListId: string, tasks: TTask[]},
     async (payload, thunkAPI) => {
         try {
             thunkAPI.dispatch(setAppStatus({status: 'loading'}))
-            let data = await tasksAPI.fetchTasks(payload.todoListId)
+            const data = await tasksAPI.fetchTasks(payload.todoListId)
             thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
             return {todoListId: payload.todoListId, tasks: data.items}
         } catch (error) {
@@ -32,8 +32,7 @@ export const addTask = createAsyncThunk<{ task: TTask }, { todoListId: string, t
                 thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
                 return {task: data.data.item}
             } else {
-                thunkServerResponseError(data, thunkAPI.dispatch, false)
-                return thunkAPI.rejectWithValue({errors: data.messages, fieldsErrors: data.fieldsErrors})
+                return thunkServerResponseError(data, thunkAPI, false)
             }
         } catch (error) {
             return thunkServerCatchError(error, thunkAPI, false)
@@ -51,7 +50,7 @@ export const removeTask = createAsyncThunk('tasksReducer/removeTask',
                 return {todoListId, taskId}
             } else {
                 thunkAPI.dispatch(_setTaskStatus({todoListId, taskId, taskStatus: 'failed'}))
-                return thunkAPI.rejectWithValue({errors: data.messages.length ? data.messages[0] : 'some error occurred'})
+                return thunkServerResponseError(data, thunkAPI)
             }
         } catch (error) {
             thunkAPI.dispatch(_setTaskStatus({todoListId, taskId, taskStatus: 'failed'}))
@@ -78,9 +77,8 @@ export const updateTask = createAsyncThunk('tasksReducer/updateTask',
                 thunkAPI.dispatch(_setTaskStatus({todoListId, taskId: task.id, taskStatus: 'succeeded'}))
                 return {todoListId, taskId: task.id, model: updatedTaskModel}
             } else {
-                thunkServerResponseError(data, thunkAPI.dispatch)
                 thunkAPI.dispatch(_setTaskStatus({todoListId, taskId: task.id, taskStatus: 'failed'}))
-                return thunkAPI.rejectWithValue({errors: data.messages.length ? data.messages[0] : 'some error occurred'})
+                return thunkServerResponseError(data, thunkAPI)
             }
         } catch (error) {
             thunkAPI.dispatch(_setTaskStatus({todoListId, taskId: task.id, taskStatus: 'failed'}))

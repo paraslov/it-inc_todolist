@@ -18,8 +18,7 @@ export const login = createAsyncThunk<undefined, {data: TLoginParams}, TThunkApi
             thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
             return
         } else {
-            thunkServerResponseError(data, thunkAPI.dispatch)
-            return thunkAPI.rejectWithValue({errors: data.messages, fieldsErrors: data.fieldsErrors})
+            return thunkServerResponseError(data, thunkAPI)
         }
     } catch (error) {
         return thunkServerCatchError(error, thunkAPI, false)
@@ -34,8 +33,7 @@ export const logout = createAsyncThunk('auth/logout', async (payload, thunkAPI) 
             thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
             return
         } else {
-            thunkServerResponseError(data, thunkAPI.dispatch)
-            return thunkAPI.rejectWithValue({errors: data.messages.length ? data.messages[0] : 'some error occurred'})
+            return thunkServerResponseError(data, thunkAPI)
         }
     } catch (error) {
         return thunkServerCatchError(error, thunkAPI)

@@ -31,8 +31,7 @@ export const addTodoList = createAsyncThunk<{todoList: TTodoList}, { title: stri
                 thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
                 return {todoList: data.data.item}
             } else {
-                thunkServerResponseError(data, thunkAPI.dispatch, false)
-                return thunkAPI.rejectWithValue({errors: data.messages, fieldsErrors: data.fieldsErrors})
+                return thunkServerResponseError(data, thunkAPI, false)
             }
         } catch (error) {
             return thunkServerCatchError(error, thunkAPI, false)
@@ -49,8 +48,7 @@ export const removeTodoList = createAsyncThunk('todoListReducer/removeTodoList',
                 thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
                 return {todoListId: payload.todoListId}
             } else {
-                thunkServerResponseError(data, thunkAPI.dispatch)
-                return thunkAPI.rejectWithValue({errors: data.messages.length ? data.messages[0] : 'some error occurred'})
+                return thunkServerResponseError(data, thunkAPI)
             }
         } catch (error) {
             thunkAPI.dispatch(_setTodoListStatus({todoListId: payload.todoListId, todoListStatus: 'failed'}))
@@ -68,8 +66,7 @@ export const changeTodoListTitle = createAsyncThunk('todoListReducer/changeTodoL
                 thunkAPI.dispatch(_setTodoListStatus({todoListId: payload.todoListId, todoListStatus: 'succeeded'}))
                 return payload
             } else {
-                thunkServerResponseError(data, thunkAPI.dispatch)
-                return thunkAPI.rejectWithValue({errors: data.messages.length ? data.messages[0] : 'some error occurred'})
+                return thunkServerResponseError(data, thunkAPI)
             }
         } catch (error) {
             return thunkServerCatchError(error, thunkAPI)

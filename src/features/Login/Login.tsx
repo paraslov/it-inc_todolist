@@ -29,7 +29,7 @@ export const Login = () => {
             errors.email = 'Must be 6-20 characters'
         }
         // } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        //     errors.email = 'Invalid email address'
+        //     errors.email = 'Enter valid email'
         // }
 
         if (!values.password) {
@@ -50,7 +50,6 @@ export const Login = () => {
         validate,
         onSubmit: async (values,formikHelpers) => {
             let res = await dispatch(login({data: values}))
-
             if(login.rejected.match(res)) {
                 if(res.payload?.fieldsErrors?.length) {
                     const error = res.payload.fieldsErrors[0]

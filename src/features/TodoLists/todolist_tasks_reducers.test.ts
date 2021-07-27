@@ -27,7 +27,7 @@ test('todo lists should be settled to the state and an empty array should be cre
         {id: 'todolistId2', title: 'What to buy', filter: 'all', addedDate: '', order: 0}
     ]
 
-    const action = fetchTodoLists.fulfilled( {todoLists: startState}, 'requestId0')
+    const action = fetchTodoLists.fulfilled( {todoLists: startState}, 'requestId0', undefined)
 
     const endTasksState = tasksReducer({}, action)
     const endTodoListsState = todoListsReducer([], action)
