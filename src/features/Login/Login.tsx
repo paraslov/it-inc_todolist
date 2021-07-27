@@ -3,17 +3,16 @@ import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, G
 import {FormikErrors, useFormik} from 'formik'
 import {TLoginParams} from '../../api/auth_api'
 import {useSelector} from 'react-redux'
-import {login} from './auth_reducer'
 import {Redirect} from 'react-router-dom'
 import {selectIsAuth} from './selectors'
 import {useAppDispatch} from '../../utils/redux-utils'
+import {authActions} from './index'
 
 export const Login = () => {
     console.log('LOGIN rendered')
 
     const dispatch = useAppDispatch()
     const isAuth = useSelector(selectIsAuth)
-
 
     //* ======================================================================================== Validation ==========>>
     type FormikErrorType = {
@@ -49,8 +48,8 @@ export const Login = () => {
         },
         validate,
         onSubmit: async (values,formikHelpers) => {
-            let res = await dispatch(login({data: values}))
-            if(login.rejected.match(res)) {
+            let res = await dispatch(authActions.login({data: values}))
+            if(authActions.login.rejected.match(res)) {
                 if(res.payload?.fieldsErrors?.length) {
                     const error = res.payload.fieldsErrors[0]
                     formikHelpers.setFieldError(error.field, error.error)

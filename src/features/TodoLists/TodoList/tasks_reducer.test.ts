@@ -1,7 +1,10 @@
 import {v1} from 'uuid'
-import {_setTaskStatus, addTask, fetchTasks, removeTask, tasksReducer, TTasks, updateTask} from './tasks_reducer'
-import {addTodoList, removeTodoList} from '../todolists_reducer'
+import {TTasks} from './tasks_reducer'
 import {TaskPriorities, TaskStatuses} from '../../../api/tasks_api'
+import {tasksActions, tasksReducer, todoListsActions} from '../index'
+
+const {addTodoList, removeTodoList} = todoListsActions
+const {addTask, fetchTasks, removeTask, updateTask, _setTaskStatus} = tasksActions
 
 const todolist1 = v1()
 const todolist2 = v1()
@@ -180,7 +183,7 @@ test('should change task title "HTML&CSS" to "Layout"', () => {
         description: 'desc'
     }
     const newTasks = tasksReducer(tasks, updateTask.fulfilled({todoListId: todolist1, taskId, model: updatedModel},
-        'requestId',  {todoListId: todolist1, task: tasks[todolist1][0], model: updatedModel}))
+        'requestId', {todoListId: todolist1, task: tasks[todolist1][0], model: updatedModel}))
 
     expect(newTasks[todolist1].length).toBe(5)
     expect(newTasks[todolist1][0].title).toBe(newTaskTitle)
@@ -194,7 +197,8 @@ test('should toggle todolist2 4th task isDone', () => {
         title: 'Algorithms', status: TaskStatuses.New, priority: TaskPriorities.Middle,
         startDate: '', deadline: '', description: 'desc'
     }
-    const newTasks = tasksReducer(tasks, updateTask.fulfilled({todoListId: todolist2, taskId, model: updatedModel
+    const newTasks = tasksReducer(tasks, updateTask.fulfilled({
+        todoListId: todolist2, taskId, model: updatedModel
     }, 'requestId', {todoListId: todolist2, task: tasks[todolist2][3], model: updatedModel}))
 
     expect(newTasks).not.toBe(tasks)

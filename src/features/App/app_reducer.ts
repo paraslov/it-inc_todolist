@@ -9,7 +9,7 @@ const {setAppStatus} = commonAppActions
 
 //* ============================================================================================ Thunk Creators ======>>
 
-export const initializeApp = createAsyncThunk('app/initializeApp', async (payload, thunkAPI) => {
+const initializeApp = createAsyncThunk('app/initializeApp', async (payload, thunkAPI) => {
     try {
         thunkAPI.dispatch(setAppStatus({status: 'loading'}))
         const data = await authAPI.authMe()

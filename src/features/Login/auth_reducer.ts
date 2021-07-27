@@ -1,9 +1,6 @@
 import {authAPI, TLoginParams} from '../../api/auth_api'
 import {OperationResultCodes} from '../../api/api'
-import {
-    thunkServerCatchError,
-    thunkServerResponseError
-} from '../../utils/thunk-errors-handle'
+import {thunkServerCatchError, thunkServerResponseError} from '../../utils/thunk-errors-handle'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {commonAppActions} from '../CommonActions/commonAppActions'
 import {TThunkApiConfigRejectedValue} from '../../store/types'
@@ -11,7 +8,7 @@ import {TThunkApiConfigRejectedValue} from '../../store/types'
 const {setAppStatus} = commonAppActions
 
 //* ============================================================================================ Thunk Creators ======>>
-export const login = createAsyncThunk<undefined, {data: TLoginParams}, TThunkApiConfigRejectedValue>
+const login = createAsyncThunk<undefined, {data: TLoginParams}, TThunkApiConfigRejectedValue>
 ('auth/login', async (payload , thunkAPI) => {
     try {
         thunkAPI.dispatch(setAppStatus({status: 'loading'}))
@@ -20,14 +17,14 @@ export const login = createAsyncThunk<undefined, {data: TLoginParams}, TThunkApi
             thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
             return
         } else {
-            return thunkServerResponseError(data, thunkAPI)
+            return thunkServerResponseError(data, thunkAPI, false)
         }
     } catch (error) {
         return thunkServerCatchError(error, thunkAPI, false)
     }
 })
 
-export const logout = createAsyncThunk('auth/logout', async (payload, thunkAPI) => {
+const logout = createAsyncThunk('auth/logout', async (payload, thunkAPI) => {
     try {
         thunkAPI.dispatch(setAppStatus({status: 'loading'}))
         let data = await authAPI.logout()

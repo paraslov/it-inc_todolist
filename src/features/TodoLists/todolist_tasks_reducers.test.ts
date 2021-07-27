@@ -1,7 +1,9 @@
-import {addTodoList, fetchTodoLists, todoListsReducer, TTodoListDomain} from './todolists_reducer'
-import {tasksReducer, TTasks} from './TodoList/tasks_reducer'
+import { TTodoListDomain} from './todolists_reducer'
+import {TTasks} from './TodoList/tasks_reducer'
 import {v1} from 'uuid'
+import {tasksReducer, todoListsActions, todoListsReducer} from './index'
 
+const {fetchTodoLists, addTodoList} = todoListsActions
 
 test('ids should be equals', () => {
     const startTasksState: TTasks = {}

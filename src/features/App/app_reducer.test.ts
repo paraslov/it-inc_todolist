@@ -1,9 +1,10 @@
-import {initializeApp} from './app_reducer'
-import {appReducer} from './index'
+import {appActions, appReducer} from './index'
 import {commonAppActions} from '../CommonActions/commonAppActions'
 
 
 const {setAppStatus, setAppError} = commonAppActions
+const {initializeApp} = appActions
+
 let startState: any
 
 beforeEach(() => {
