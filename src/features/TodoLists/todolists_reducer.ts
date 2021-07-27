@@ -1,14 +1,15 @@
 import {todoListsAPI, TTodoList} from '../../api/todoLists_api'
-import {setAppStatus, TResponseStatus} from '../../app/app_reducer'
+import {TResponseStatus} from '../App/app_reducer'
 import {
     thunkServerCatchError,
     thunkServerResponseError
 } from '../../utils/thunk-errors-handle'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {authAsyncActions} from '../Login/auth_reducer'
-import {TThunkApiConfigRejectedValue} from '../../app/store'
+import {commonAppActions} from '../CommonActions/commonAppActions'
+import {TThunkApiConfigRejectedValue} from '../../store/types'
 
-
+const {setAppStatus} = commonAppActions
 //* ====== Thunk Creators ============================================================================================>>
 
 export const fetchTodoLists = createAsyncThunk<{ todoLists: TTodoList[] }, undefined, TThunkApiConfigRejectedValue>

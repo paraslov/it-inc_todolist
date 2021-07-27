@@ -20,7 +20,8 @@ export type TodolistPropsType = {
 
 export const TodoList = React.memo(({demo = false, ...props}: TodolistPropsType) => {
     console.log('TL R')
-    const isAuth = useSelector(authSelectors.selectIsAuth)
+    const
+        isAuth = useSelector(authSelectors.selectIsAuth)
     const {fetchTasks} = useActions(tasksActions)
     const {removeTodoList, _changeTodoListFilter, changeTodoListTitle} = useActions(todoListsActions)
 

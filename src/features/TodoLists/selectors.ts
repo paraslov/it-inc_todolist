@@ -1,4 +1,4 @@
-import {TAppState} from '../../app/store'
+import {TAppState} from '../../store/types'
 
 
 export const selectTasks = (state: TAppState) => state.tasks

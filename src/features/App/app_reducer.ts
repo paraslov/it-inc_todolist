@@ -1,8 +1,11 @@
-import {authAPI} from '../api/auth_api'
-import {OperationResultCodes} from '../api/api'
-import {thunkServerCatchError} from '../utils/thunk-errors-handle'
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {setIsAuth} from '../features/Login/auth_reducer'
+import {authAPI} from '../../api/auth_api'
+import {OperationResultCodes} from '../../api/api'
+import {thunkServerCatchError} from '../../utils/thunk-errors-handle'
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
+import {setIsAuth} from '../Login/auth_reducer'
+import {commonAppActions} from '../CommonActions/commonAppActions'
+
+const {setAppStatus} = commonAppActions
 
 //* ============================================================================================ Thunk Creators ======>>
 
@@ -35,22 +38,20 @@ export const slice = createSlice({
         status: 'idle' as TResponseStatus,
         isAppInitialized: false,
     },
-    reducers: {
-        setAppError(state, action: PayloadAction<{ error: string | null }>) {
-            state.error = action.payload.error
-        },
-        setAppStatus(state, action: PayloadAction<{ status: TResponseStatus }>) {
-            state.status = action.payload.status
-        }
-    },
+    reducers: {},
     extraReducers: builder => {
-        builder.addCase(initializeApp.fulfilled, (state, action) => {
-            state.isAppInitialized = action.payload.isAppInitialized
-        })
+        builder
+            .addCase(initializeApp.fulfilled, (state, action) => {
+                state.isAppInitialized = action.payload.isAppInitialized
+            })
+            .addCase(commonAppActions.setAppError, (state, action) => {
+                state.error = action.payload.error
+            })
+            .addCase(commonAppActions.setAppStatus, (state, action) => {
+                state.status = action.payload.status
+            })
     }
 })
-
-export const {setAppStatus, setAppError} = slice.actions
 
 
 //* ======================================================================================================== Types ===>>

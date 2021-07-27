@@ -1,17 +1,17 @@
 import React from 'react'
 import {Provider} from 'react-redux'
-import {TAppState, TRootReducer} from '../app/store'
 import {StoryFnReactReturnType} from '@storybook/react/dist/ts3.9/client/preview/types'
 import {combineReducers} from 'redux'
 import {tasksReducer} from '../features/TodoLists'
 import {todoListsReducer} from '../features/TodoLists'
 import {v1} from 'uuid'
 import {TaskPriorities, TaskStatuses} from '../api/tasks_api'
-import {appReducer} from '../app'
+import {appReducer} from '../features/App'
 import thunkMW from 'redux-thunk'
 import {HashRouter} from 'react-router-dom'
 import {authReducer} from '../features/Login'
 import {configureStore} from '@reduxjs/toolkit'
+import {TAppState, TRootReducer} from '../store/types'
 
 
 const rootReducer: TRootReducer = combineReducers({

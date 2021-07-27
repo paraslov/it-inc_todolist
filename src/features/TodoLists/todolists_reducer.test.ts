@@ -9,7 +9,7 @@ import {
     TTodoListDomain
 } from './todolists_reducer'
 import {v1} from 'uuid'
-import {TResponseStatus} from '../../app/app_reducer'
+import {TResponseStatus} from '../App/app_reducer'
 
 const todolistId1 = v1()
 const todolistId2 = v1()

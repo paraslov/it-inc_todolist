@@ -1,12 +1,14 @@
 import {authAPI, TLoginParams} from '../../api/auth_api'
-import {setAppStatus} from '../../app/app_reducer'
 import {OperationResultCodes} from '../../api/api'
 import {
     thunkServerCatchError,
     thunkServerResponseError
 } from '../../utils/thunk-errors-handle'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {TThunkApiConfigRejectedValue} from '../../app/store'
+import {commonAppActions} from '../CommonActions/commonAppActions'
+import {TThunkApiConfigRejectedValue} from '../../store/types'
+
+const {setAppStatus} = commonAppActions
 
 //* ============================================================================================ Thunk Creators ======>>
 export const login = createAsyncThunk<undefined, {data: TLoginParams}, TThunkApiConfigRejectedValue>

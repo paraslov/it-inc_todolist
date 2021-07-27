@@ -1,6 +1,6 @@
-import {setAppError, setAppStatus} from '../app/app_reducer'
 import {TOperationResult} from '../api/api'
 import {AxiosError} from 'axios'
+import {commonAppActions} from '../features/CommonActions/commonAppActions'
 
 // simplified type for thunkAPI from createAsyncThunk.ts types:
 // BaseThunkAPI< S, E, D extends Dispatch = Dispatch, RejectedValue = undefined, RejectedMeta = unknown, FulfilledMeta = unknown>
@@ -13,6 +13,8 @@ type TSimplifiedThunkAPI = {
     rejectWithValue: Function
     fulfillWithValue: Function
 }
+
+const {setAppStatus, setAppError} = commonAppActions
 
 export const thunkServerResponseError = <D>(data: TOperationResult<D>, thunkAPI: TSimplifiedThunkAPI, showError = true) => {
     showError && thunkAPI.dispatch(setAppError({error: data.messages.length ? data.messages[0] : 'some error occurred'}))

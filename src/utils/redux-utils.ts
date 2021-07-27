@@ -1,7 +1,7 @@
 import {useDispatch} from 'react-redux'
 import {ActionCreatorsMapObject, bindActionCreators} from 'redux'
 import {useMemo} from 'react'
-import {TAppDispatch} from '../app/store'
+import {TAppDispatch} from '../store/types'
 
 export const useAppDispatch = () => useDispatch<TAppDispatch>()
 
