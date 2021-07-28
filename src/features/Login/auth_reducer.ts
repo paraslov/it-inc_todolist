@@ -8,8 +8,8 @@ import {TThunkApiConfigRejectedValue} from '../../store/types'
 const {setAppStatus} = commonAppActions
 
 //* ============================================================================================ Thunk Creators ======>>
-const login = createAsyncThunk<undefined, {data: TLoginParams}, TThunkApiConfigRejectedValue>
-('auth/login', async (payload , thunkAPI) => {
+const login = createAsyncThunk<undefined, { data: TLoginParams }, TThunkApiConfigRejectedValue>
+('auth/login', async (payload, thunkAPI) => {
     try {
         thunkAPI.dispatch(setAppStatus({status: 'loading'}))
         let data = await authAPI.login(payload.data)
@@ -17,10 +17,10 @@ const login = createAsyncThunk<undefined, {data: TLoginParams}, TThunkApiConfigR
             thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
             return
         } else {
-            return thunkServerResponseError(data, thunkAPI, false)
+            return thunkServerResponseError(data, thunkAPI)
         }
     } catch (error) {
-        return thunkServerCatchError(error, thunkAPI, false)
+        return thunkServerCatchError(error, thunkAPI)
     }
 })
 
@@ -56,7 +56,7 @@ export const slice = createSlice({
     extraReducers: builder => {
         builder.addCase(login.fulfilled, (state) => {
             state.isAuth = true
-        });
+        })
         builder.addCase(logout.fulfilled, (state) => {
             state.isAuth = false
         })

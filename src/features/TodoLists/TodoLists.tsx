@@ -1,6 +1,5 @@
 import {useSelector} from 'react-redux'
 import React, {useCallback, useEffect} from 'react'
-import {TTodoListDomain} from './todolists_reducer'
 import {Grid} from '@material-ui/core'
 import {AddItemForm} from '../../components'
 import {TodoList, todoListsActions} from './index'
@@ -58,7 +57,7 @@ export function TodoLists({demo = false}: PropsType) {
             </Grid>
 
             <Grid container spacing={2} style = {{flexWrap: 'nowrap', overflowX: 'scroll'}}>
-                {todoLists.map((tl: TTodoListDomain) => {
+                {todoLists.map(tl => {
                         return <Grid item key={tl.id}>
                             <div style={{width: '300px'}}>
                                 <TodoList

@@ -6,8 +6,6 @@ import {Task, tasksActions, todoListsActions} from '../index'
 import {TFilterValues, TTodoListDomain} from '../todolists_reducer'
 import {TaskStatuses} from '../../../api/tasks_api'
 import {TTaskDomain} from './tasks_reducer'
-import {useSelector} from 'react-redux'
-import {authSelectors} from '../../Login'
 import {TAddItemFormHelpers} from '../../../components/AddItemForm/AddItemForm'
 import {useActions, useAppDispatch} from '../../../utils/redux-utils'
 
@@ -20,8 +18,6 @@ export type TodolistPropsType = {
 
 export const TodoList = React.memo(({demo = false, ...props}: TodolistPropsType) => {
     console.log('TL R')
-    const
-        isAuth = useSelector(authSelectors.selectIsAuth)
     const {fetchTasks} = useActions(tasksActions)
     const {removeTodoList, _changeTodoListFilter, changeTodoListTitle} = useActions(todoListsActions)
 

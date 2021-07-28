@@ -5,6 +5,7 @@ import {thunkServerCatchError, thunkServerResponseError} from '../../../utils/th
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {commonAppActions} from '../../CommonActions/commonAppActions'
 import {TThunkApiConfigRejectedValue} from '../../../store/types'
+import {authActions} from '../../Login'
 
 const {setAppStatus} = commonAppActions
 
@@ -127,6 +128,9 @@ export const slice = createSlice({
                     state[action.payload.todoListId][index] =
                         {...state[action.payload.todoListId][index], ...action.payload.model}
                 }
+            })
+            .addCase(authActions.logout.fulfilled, (state) => {
+                Object.keys(state).map(key => delete state[key])
             })
     }
 })
