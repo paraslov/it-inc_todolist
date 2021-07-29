@@ -25,7 +25,7 @@ export const TodoList = React.memo(({demo = false, ...props}: TodolistPropsType)
 
     useEffect(() => {
         if(demo) return
-        fetchTasks({todoListId: props.todoList.id})
+        !props.tasks.length && fetchTasks({todoListId: props.todoList.id})
     }, [])
 
     //* Callbacks for EditableSpan, AddItemForm and Buttons callbacks  ===============================================>>

@@ -19,11 +19,6 @@ export function TodoLists({demo = false}: PropsType) {
 
     const {fetchTodoLists} = useActions(todoListsActions)
 
-    useEffect(() => {
-        if(demo || !isAuth) return
-        fetchTodoLists()
-    }, [])
-
     //* TodoLists data declaration section  =============================================================>
     const todoLists = useSelector(selectTodoLists)
 
@@ -46,6 +41,11 @@ export function TodoLists({demo = false}: PropsType) {
             helpers.setNewTaskTitle('')
         }
 
+    }, [])
+
+    useEffect(() => {
+        if(demo || !isAuth) return
+        !todoLists.length && fetchTodoLists()
     }, [])
 
     if(!isAuth) return <Redirect to={'/login'} />

@@ -1,5 +1,6 @@
 import {TFieldError} from '../api/api'
-import {rootReducer, store} from './store'
+import {store} from './store'
+import {rootReducer} from './rootReducer'
 
 export type TRootReducer = typeof rootReducer
 export type TAppState = ReturnType<TRootReducer>

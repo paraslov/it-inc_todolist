@@ -33,8 +33,9 @@ function App({demo = false}: PropsType) {
     const {initializeApp} = useActions(appActions)
 
     useEffect(() => {
-        if(!demo) initializeApp()
-    }, [isAppInitialized])
+        if(!isAppInitialized) initializeApp()
+        console.log('shoot')
+    }, [])
 
     if(!isAppInitialized) return <div style={{position: 'fixed', top: '40%', left: '40%'}}>
         <CircularProgress style={{width: '100px'}} />
@@ -42,7 +43,7 @@ function App({demo = false}: PropsType) {
 
     return (
         <div className="App">
-                <AppBar position="static">
+                <AppBar position="static" style={{height: '50px'}}>
                     <Toolbar>
                         <IconButton edge="start" color="inherit" aria-label="menu">
                             <Menu/>
